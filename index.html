@@ -5,6 +5,12 @@
 <title>Rockin' Troopers — Setlists</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0B0B0E">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Setlists">
 <style>
   :root {
     --fondo: #0B0B0E;
@@ -500,7 +506,7 @@ function pintarPortada() {
     b.onclick = () => abrirConcierto(i);
     cont.appendChild(b);
   });
-  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v3";
+  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v5";
 }
 
 /* ================= concierto ================= */
@@ -753,65 +759,88 @@ function pararAudio() {
 $("buscar").onclick = buscarItunes;
 $("busqueda").addEventListener("keydown", e => { if (e.key === "Enter") buscarItunes(); });
 
-function buscarItunes() {
+// JSONP genérico: iTunes no manda cabeceras CORS fiables (Safari las
+// rechaza) y algunos móviles bloquean dominios concretos, así que cada
+// búsqueda prueba iTunes y, si falla, cae a Deezer.
+function jsonp(url) {
+  return new Promise((resolve, reject) => {
+    const cb = "cb_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+    const s = document.createElement("script");
+    const timer = setTimeout(() => { limpiar(); reject(new Error("timeout")); }, 8000);
+    function limpiar() { clearTimeout(timer); delete window[cb]; s.remove(); }
+    window[cb] = d => { limpiar(); resolve(d); };
+    s.onerror = () => { limpiar(); reject(new Error("bloqueado")); };
+    s.src = url + "&callback=" + cb;
+    document.head.appendChild(s);
+  });
+}
+
+async function buscarItunes() {
   const q = $("busqueda").value.trim();
   if (!q) return;
   pararAudio();
   $("resultados").innerHTML = '<p class="ayuda">Buscando&hellip;</p>';
-  // JSONP: la API de iTunes no manda cabeceras CORS fiables en todos los
-  // navegadores (Safari iOS las rechaza), así que cargamos con callback.
-  const cb = "itunes_cb_" + Date.now();
-  const s = document.createElement("script");
-  const fallo = setTimeout(() => {
-    limpiar();
-    $("resultados").innerHTML = '<p class="ayuda">No se ha podido buscar (¿sin conexión?). Prueba otra vez.</p>';
-  }, 10000);
-  function limpiar() { clearTimeout(fallo); delete window[cb]; s.remove(); }
-  window[cb] = j => { limpiar(); pintarResultados(j.results || []); };
-  s.onerror = () => {
-    limpiar();
-    $("resultados").innerHTML = '<p class="ayuda">No se ha podido buscar (¿sin conexión?).</p>';
-  };
-  s.src = "https://itunes.apple.com/search?media=music&limit=8&callback=" + cb +
-    "&term=" + encodeURIComponent(q);
-  document.head.appendChild(s);
+  let res = null;
+  try {
+    const j = await jsonp("https://itunes.apple.com/search?media=music&limit=8&term=" + encodeURIComponent(q));
+    res = (j.results || []).map(r => ({
+      titulo: r.trackName || "", artista: r.artistName || "",
+      album: r.collectionName || "", anyo: r.releaseDate ? r.releaseDate.slice(0, 4) : "",
+      durS: Math.round((r.trackTimeMillis || 0) / 1000), preview: r.previewUrl || "",
+      tienda: "Apple Music", tiendaUrl: r.trackViewUrl || "", artwork: r.artworkUrl100 || "",
+    }));
+  } catch (e) {
+    try {
+      const j = await jsonp("https://api.deezer.com/search?output=jsonp&limit=8&q=" + encodeURIComponent(q));
+      res = (j.data || []).map(r => ({
+        titulo: r.title || "", artista: r.artist ? r.artist.name : "",
+        album: r.album ? r.album.title : "", anyo: "",
+        durS: r.duration || 0, preview: r.preview || "",
+        tienda: "Deezer", tiendaUrl: r.link || "", artwork: r.album ? r.album.cover_medium : "",
+      }));
+    } catch (e2) {
+      $("resultados").innerHTML = '<p class="ayuda">Sin conexión con iTunes ni con Deezer. ' +
+        'Puede ser un bloqueador de contenido o la red. Prueba con otra conexión o añade el tema a mano.</p>';
+      return;
+    }
+  }
+  pintarResultados(res);
 }
 
 function pintarResultados(res) {
   const cont = $("resultados");
   cont.innerHTML = res.length ? "" : '<p class="ayuda">Sin resultados. Prueba con menos palabras o añádelo a mano.</p>';
   res.forEach(r => {
-    const anyo = r.releaseDate ? r.releaseDate.slice(0, 4) : "";
     const div = document.createElement("div");
     div.className = "resultado";
     div.innerHTML =
-      '<img src="' + esc(r.artworkUrl100 || "") + '" alt="">' +
-      "<div><div class=\"rtit\">" + esc(r.trackName) + "</div>" +
-      '<div class="rsub">' + esc(r.artistName) + " · " + esc(r.collectionName || "") +
-      (anyo ? " · " + anyo : "") + " · " + fmtDur(Math.round((r.trackTimeMillis || 0) / 1000)) + "</div>" +
-      '<div class="rsub"><a style="color:var(--azul)" target="_blank" href="' + esc(r.trackViewUrl || "#") + '">Apple Music</a> &nbsp; ' +
-      '<a style="color:var(--verde)" target="_blank" href="https://open.spotify.com/search/' + encodeURIComponent(r.trackName + " " + r.artistName) + '">Spotify</a></div></div>' +
+      '<img src="' + esc(r.artwork) + '" alt="">' +
+      "<div><div class=\"rtit\">" + esc(r.titulo) + "</div>" +
+      '<div class="rsub">' + esc(r.artista) + " · " + esc(r.album) +
+      (r.anyo ? " · " + r.anyo : "") + " · " + fmtDur(r.durS) + "</div>" +
+      '<div class="rsub"><a style="color:var(--azul)" target="_blank" href="' + esc(r.tiendaUrl || "#") + '">' + r.tienda + "</a> &nbsp; " +
+      '<a style="color:var(--verde)" target="_blank" href="https://open.spotify.com/search/' + encodeURIComponent(r.titulo + " " + r.artista) + '">Spotify</a></div></div>' +
       '<div class="acciones">' +
-      (r.previewUrl ? '<button class="btn-mini play">▶</button>' : "") +
+      (r.preview ? '<button class="btn-mini play">▶</button>' : "") +
       '<button class="btn-mini principal-add">Añadir</button></div>';
     const bPlay = div.querySelector(".play");
     if (bPlay) bPlay.onclick = () => {
       if (botonSonando === bPlay) { pararAudio(); return; }
       pararAudio();
-      audioActual = new Audio(r.previewUrl);
+      audioActual = new Audio(r.preview);
       audioActual.play();
       audioActual.onended = pararAudio;
       bPlay.classList.add("sonando"); bPlay.textContent = "■";
       botonSonando = bPlay;
     };
     div.querySelector(".principal-add").onclick = () => abrirEditorTema({
-      titulo: (r.trackName || "").toUpperCase(),
-      artista: r.artistName || "",
-      dur: Math.round((r.trackTimeMillis || 0) / 1000),
-      album: r.collectionName || "",
-      anyo: anyo,
-      apple: r.trackViewUrl || "",
-      artwork: r.artworkUrl100 || "",
+      titulo: r.titulo.toUpperCase(),
+      artista: r.artista,
+      dur: r.durS,
+      album: r.album,
+      anyo: r.anyo,
+      apple: r.tiendaUrl,
+      artwork: r.artwork,
     });
     cont.appendChild(div);
   });
