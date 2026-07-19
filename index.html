@@ -681,18 +681,28 @@ function pararAudio() {
 $("buscar").onclick = buscarItunes;
 $("busqueda").addEventListener("keydown", e => { if (e.key === "Enter") buscarItunes(); });
 
-async function buscarItunes() {
+function buscarItunes() {
   const q = $("busqueda").value.trim();
   if (!q) return;
   pararAudio();
   $("resultados").innerHTML = '<p class="ayuda">Buscando&hellip;</p>';
-  try {
-    const r = await fetch("https://itunes.apple.com/search?media=music&limit=8&term=" + encodeURIComponent(q));
-    const j = await r.json();
-    pintarResultados(j.results || []);
-  } catch (e) {
+  // JSONP: la API de iTunes no manda cabeceras CORS fiables en todos los
+  // navegadores (Safari iOS las rechaza), así que cargamos con callback.
+  const cb = "itunes_cb_" + Date.now();
+  const s = document.createElement("script");
+  const fallo = setTimeout(() => {
+    limpiar();
+    $("resultados").innerHTML = '<p class="ayuda">No se ha podido buscar (¿sin conexión?). Prueba otra vez.</p>';
+  }, 10000);
+  function limpiar() { clearTimeout(fallo); delete window[cb]; s.remove(); }
+  window[cb] = j => { limpiar(); pintarResultados(j.results || []); };
+  s.onerror = () => {
+    limpiar();
     $("resultados").innerHTML = '<p class="ayuda">No se ha podido buscar (¿sin conexión?).</p>';
-  }
+  };
+  s.src = "https://itunes.apple.com/search?media=music&limit=8&callback=" + cb +
+    "&term=" + encodeURIComponent(q);
+  document.head.appendChild(s);
 }
 
 function pintarResultados(res) {
