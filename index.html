@@ -40,14 +40,10 @@
   /* ---------- PORTADA ---------- */
   #portada { max-width: 60rem; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
   .marca {
-    display: flex; align-items: baseline; gap: .75rem; flex-wrap: wrap;
-    border-bottom: 3px solid var(--rojo); padding-bottom: 1.1rem; margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap;
+    border-bottom: 3px solid var(--rojo); padding-bottom: 1rem; margin-bottom: 2rem;
   }
-  .marca h1 {
-    font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 900; letter-spacing: -.02em;
-    text-transform: uppercase; text-wrap: balance;
-  }
-  .marca h1 .rojo { color: var(--rojo); }
+  .marca img { height: clamp(4rem, 14vw, 6.5rem); width: auto; display: block; }
   .marca .sub { color: var(--apagado); font-size: 1rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; }
   .marca .hueco { flex: 1; }
   #btn-admin { color: var(--linea); font-size: 1.3rem; padding: .3rem .5rem; }
@@ -257,7 +253,7 @@
 
 <main id="portada">
   <header class="marca">
-    <h1>Rockin<span class="rojo">'</span> Troopers</h1>
+    <img src="logo.png" alt="Rockin' Troopers">
     <span class="sub">Setlists</span>
     <span class="hueco"></span>
     <button id="btn-admin" aria-label="Modo administrador">&#9881;</button>
