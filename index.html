@@ -178,6 +178,12 @@
     font-size: calc(1.05rem * var(--escala)); font-weight: 600;
   }
 
+  /* ---------- REPERTORIO ---------- */
+  #repertorio { display: none; }
+  .tarjeta.rep-card { border-left: 4px solid var(--rojo); }
+  .tema.rep { grid-template-columns: 1fr auto; }
+  #rep-filtro { max-width: 18rem; }
+
   /* ---------- ADMIN ---------- */
   #admin { display: none; max-width: 60rem; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
   .admin-cab { display: flex; align-items: baseline; gap: 1rem; border-bottom: 3px solid var(--ambar); padding-bottom: 1rem; margin-bottom: 1.8rem; flex-wrap: wrap; }
@@ -275,6 +281,22 @@
     <button class="foco-actual" id="foco-actual"></button>
     <button class="foco-otro siguiente" id="foco-next"></button>
   </div>
+</section>
+
+<section id="repertorio">
+  <div class="cabecera">
+    <button class="btn" id="rep-volver" aria-label="Volver a la lista">&#8592;</button>
+    <div class="cab-titulo">
+      <div class="lugar">Repertorio</div>
+      <div class="cuando" id="rep-resumen"></div>
+    </div>
+    <input class="campo" id="rep-filtro" placeholder="Buscar tema o artista&hellip;" autocomplete="off">
+    <div class="zoom">
+      <button class="btn" id="rep-menos" aria-label="Texto más pequeño">A&#8722;</button>
+      <button class="btn" id="rep-mas" aria-label="Texto más grande">A+</button>
+    </div>
+  </div>
+  <div id="rep-lista" style="max-width:68rem;margin:0 auto;padding:1rem 1.2rem 5rem"></div>
 </section>
 
 <section id="admin">
@@ -456,6 +478,15 @@ function pintarPortada() {
   const hoy = new Date().toISOString().slice(0, 10);
   const cont = $("lista-conciertos");
   cont.innerHTML = "";
+  const rep = document.createElement("button");
+  rep.className = "tarjeta rep-card";
+  const durTotal = MAESTRA.reduce((s, t) => s + (t.dur || 0), 0);
+  rep.innerHTML =
+    '<div class="cuando">Todos los temas de la banda</div>' +
+    '<div class="lugar">Repertorio</div>' +
+    '<div class="datos"><span>' + MAESTRA.length + " temas</span><span>" + fmtTotal(durTotal) + "</span></div>";
+  rep.onclick = abrirRepertorio;
+  cont.appendChild(rep);
   CONCIERTOS.forEach((c, i) => {
     const v = c.variantes[0];
     const pasado = c.fecha && c.fecha < hoy;
@@ -617,6 +648,47 @@ async function pedirWakeLock() {
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible" && conciertoActual !== null) pedirWakeLock();
 });
+
+/* ================= REPERTORIO ================= */
+function abrirRepertorio() {
+  $("portada").style.display = "none";
+  $("repertorio").style.display = "block";
+  window.scrollTo(0, 0);
+  pintarRepertorio();
+}
+$("rep-volver").onclick = () => {
+  $("repertorio").style.display = "none";
+  $("portada").style.display = "block";
+};
+$("rep-filtro").addEventListener("input", pintarRepertorio);
+$("rep-mas").onclick = () => { escala = Math.min(1.8, escala + 0.1); aplicarEscala(); };
+$("rep-menos").onclick = () => { escala = Math.max(0.6, escala - 0.1); aplicarEscala(); };
+
+function pintarRepertorio() {
+  const filtro = normalizar($("rep-filtro").value);
+  const cont = $("rep-lista");
+  cont.innerHTML = "";
+  let vistos = 0;
+  MAESTRA.forEach(t => {
+    if (filtro && !normalizar(t.titulo + " " + t.artista).includes(filtro)) return;
+    vistos += 1;
+    const fila = document.createElement("div");
+    fila.className = "tema rep";
+    fila.innerHTML =
+      "<div>" +
+        '<div class="titulo">' + esc(t.titulo) + "</div>" +
+        (t.artista ? '<div class="artista">' + esc(t.artista) + "</div>" : "") +
+        (t.comentario ? '<div class="comentario">' + esc(t.comentario) + "</div>" : "") +
+      "</div>" +
+      '<div class="cola">' +
+        (t.afinacion ? '<span class="badge ' + claseBadge(t.afinacion) + '">' + esc(t.afinacion) + "</span>" : "") +
+        (t.dur ? '<span class="dur">' + fmtDur(t.dur) + "</span>" : "") +
+      "</div>";
+    cont.appendChild(fila);
+  });
+  $("rep-resumen").textContent = vistos + " de " + MAESTRA.length + " temas";
+  if (!vistos) cont.innerHTML = '<p class="pie">Ningún tema coincide con la búsqueda.</p>';
+}
 
 /* ================= ADMIN ================= */
 $("btn-admin").onclick = () => {
