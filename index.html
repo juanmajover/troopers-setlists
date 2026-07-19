@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Rockin' Troopers — Setlists</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B0B0E">
+<style>
+  :root {
+    --fondo: #0B0B0E;
+    --panel: #141419;
+    --linea: #232329;
+    --tinta: #F5F2EC;
+    --apagado: #8B8894;
+    --rojo: #E23B2E;
+    --verde: #3FD68F;
+    --ambar: #FFB43A;
+    --naranja: #FF6B4A;
+    --azul: #6FB7FF;
+    --escala: 1;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: var(--fondo); }
+  body {
+    color: var(--tinta);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overscroll-behavior-y: none;
+  }
+  button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  input, textarea, select { font: inherit; color: var(--tinta); }
+
+  /* ---------- PORTADA ---------- */
+  #portada { max-width: 60rem; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  .marca {
+    display: flex; align-items: baseline; gap: .75rem; flex-wrap: wrap;
+    border-bottom: 3px solid var(--rojo); padding-bottom: 1.1rem; margin-bottom: 2rem;
+  }
+  .marca h1 {
+    font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 900; letter-spacing: -.02em;
+    text-transform: uppercase; text-wrap: balance;
+  }
+  .marca h1 .rojo { color: var(--rojo); }
+  .marca .sub { color: var(--apagado); font-size: 1rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; }
+  .marca .hueco { flex: 1; }
+  #btn-admin { color: var(--linea); font-size: 1.3rem; padding: .3rem .5rem; }
+  #btn-admin.activo { color: var(--ambar); }
+  #lista-conciertos { display: grid; gap: 1rem; }
+  .tarjeta {
+    display: block; width: 100%; text-align: left;
+    background: var(--panel); border: 1px solid var(--linea); border-radius: 4px;
+    padding: 1.4rem 1.6rem; transition: border-color .15s;
+  }
+  .tarjeta:active, .tarjeta:hover { border-color: var(--rojo); }
+  .tarjeta .cuando { color: var(--apagado); font-size: .95rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
+  .tarjeta .lugar { font-size: clamp(1.6rem, 4.5vw, 2.4rem); font-weight: 900; text-transform: uppercase; letter-spacing: -.01em; margin: .15rem 0 .4rem; }
+  .tarjeta .datos { color: var(--apagado); font-size: 1rem; display: flex; gap: 1.4rem; flex-wrap: wrap; font-variant-numeric: tabular-nums; }
+  .tarjeta.pasado { opacity: .45; }
+  .generado { margin-top: 2.5rem; color: var(--apagado); font-size: .85rem; text-align: center; }
+  #cargando { color: var(--apagado); text-align: center; padding: 4rem 1rem; font-size: 1.1rem; }
+
+  /* ---------- CONCIERTO ---------- */
+  #concierto { display: none; }
+  .cabecera {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--fondo) 88%, transparent);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--linea);
+    padding: .7rem 1rem;
+    padding-top: max(.7rem, env(safe-area-inset-top));
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  }
+  .btn {
+    border: 1px solid var(--linea); border-radius: 4px; background: var(--panel);
+    padding: .55rem .9rem; font-weight: 700; font-size: 1rem; min-width: 2.9rem;
+  }
+  .btn:active { border-color: var(--rojo); }
+  .btn.principal { background: var(--rojo); border-color: var(--rojo); color: #fff; }
+  .btn:disabled { opacity: .4; }
+  .cab-titulo { flex: 1; min-width: 10rem; }
+  .cab-titulo .lugar { font-weight: 900; text-transform: uppercase; font-size: 1.25rem; line-height: 1.1; }
+  .cab-titulo .cuando { color: var(--apagado); font-size: .85rem; text-transform: uppercase; letter-spacing: .1em; font-weight: 600; }
+  .variantes { display: flex; gap: .5rem; flex-wrap: wrap; }
+  .chip {
+    border: 1px solid var(--linea); border-radius: 999px; background: var(--panel);
+    padding: .45rem 1rem; font-weight: 700; font-size: .95rem; color: var(--apagado);
+  }
+  .chip.activa { color: var(--fondo); background: var(--rojo); border-color: var(--rojo); }
+  .zoom { display: flex; gap: .5rem; }
+
+  #temas { max-width: 68rem; margin: 0 auto; padding: 1rem 1.2rem 5rem; }
+  .seccion {
+    color: var(--rojo); font-weight: 800; letter-spacing: .28em; text-transform: uppercase;
+    font-size: calc(1.05rem * var(--escala));
+    display: flex; align-items: center; gap: 1rem;
+    margin: calc(1.6rem * var(--escala)) 0 calc(.6rem * var(--escala));
+  }
+  .seccion::after { content: ""; flex: 1; height: 1px; background: var(--linea); }
+  .tema {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 0 1.1rem; align-items: center;
+    width: 100%; text-align: left;
+    padding: calc(.85rem * var(--escala)) .2rem;
+    border-bottom: 1px solid var(--linea);
+  }
+  .tema .num {
+    color: var(--apagado); font-weight: 800; font-variant-numeric: tabular-nums;
+    font-size: calc(1.5rem * var(--escala)); min-width: 2.2ch; text-align: right;
+  }
+  .tema .titulo {
+    font-weight: 900; text-transform: uppercase; letter-spacing: -.01em; line-height: 1.05;
+    font-size: calc(2.15rem * var(--escala)); text-wrap: balance;
+  }
+  .tema .artista {
+    color: var(--apagado); font-weight: 600;
+    font-size: calc(1.05rem * var(--escala)); margin-top: .15rem;
+  }
+  .tema .comentario {
+    color: var(--ambar); font-weight: 600; line-height: 1.25;
+    font-size: calc(1.35rem * var(--escala)); margin-top: .3rem;
+  }
+  .cola { display: flex; flex-direction: column; align-items: flex-end; gap: .4rem; }
+  .badge {
+    font-weight: 900; letter-spacing: .04em; font-variant-numeric: tabular-nums;
+    border: 2px solid currentColor; border-radius: 4px;
+    padding: .3rem .6rem; font-size: calc(1.25rem * var(--escala)); white-space: nowrap;
+  }
+  .badge.drop { color: var(--verde); }
+  .badge.p1 { color: var(--ambar); }
+  .badge.p2 { color: var(--naranja); }
+  .badge.otro { color: var(--azul); }
+  .dur { color: var(--apagado); font-variant-numeric: tabular-nums; font-size: calc(1rem * var(--escala)); }
+  .tema.tocado { opacity: .28; }
+  .tema.tocado .titulo { text-decoration: line-through; text-decoration-thickness: 3px; text-decoration-color: var(--rojo); }
+  .pie { color: var(--apagado); text-align: center; padding: 1.5rem 0 0; font-size: 1rem; font-variant-numeric: tabular-nums; }
+  .pie b { color: var(--tinta); }
+
+  /* ---------- MODO DIRECTO ---------- */
+  #foco {
+    display: none; flex-direction: column;
+    min-height: calc(100vh - 5rem);
+    max-width: 74rem; margin: 0 auto; padding: 0 1.5rem 1rem;
+  }
+  .foco-otro { display: block; width: 100%; text-align: center; padding: calc(1rem * var(--escala)) .5rem; }
+  .foco-otro .etiqueta {
+    color: var(--apagado); font-size: calc(.85rem * var(--escala));
+    letter-spacing: .22em; text-transform: uppercase; font-weight: 700; margin-bottom: .25rem;
+  }
+  .foco-otro .linea {
+    color: var(--apagado); font-weight: 800; text-transform: uppercase;
+    font-size: calc(1.45rem * var(--escala)); line-height: 1.15; text-wrap: balance;
+  }
+  .foco-otro.siguiente .linea { color: var(--tinta); }
+  .foco-otro .mini-badge { font-weight: 900; font-size: calc(1.05rem * var(--escala)); margin-left: .6rem; white-space: nowrap; }
+  .foco-otro.vacio { visibility: hidden; }
+  .foco-actual {
+    flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; gap: calc(.9rem * var(--escala));
+    width: 100%; padding: calc(1rem * var(--escala)) .5rem;
+    border-top: 1px solid var(--linea); border-bottom: 1px solid var(--linea);
+  }
+  .foco-actual .contexto {
+    color: var(--rojo); font-weight: 800; letter-spacing: .28em; text-transform: uppercase;
+    font-size: calc(1rem * var(--escala));
+  }
+  .foco-actual .titulo {
+    font-weight: 900; text-transform: uppercase; letter-spacing: -.015em; line-height: 1.02;
+    font-size: calc(min(9vw, 4.6rem) * var(--escala)); text-wrap: balance;
+  }
+  .foco-actual .artista { color: var(--apagado); font-weight: 600; font-size: calc(1.5rem * var(--escala)); }
+  .foco-actual .badge { font-size: calc(1.9rem * var(--escala)); padding: .4rem .9rem; border-width: 3px; }
+  .foco-actual .comentario {
+    color: var(--ambar); font-weight: 700; line-height: 1.25;
+    font-size: calc(1.9rem * var(--escala)); max-width: 46ch; text-wrap: balance;
+  }
+  .foco-actual .posicion {
+    color: var(--apagado); font-variant-numeric: tabular-nums;
+    font-size: calc(1.05rem * var(--escala)); font-weight: 600;
+  }
+
+  /* ---------- ADMIN ---------- */
+  #admin { display: none; max-width: 60rem; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  .admin-cab { display: flex; align-items: baseline; gap: 1rem; border-bottom: 3px solid var(--ambar); padding-bottom: 1rem; margin-bottom: 1.8rem; flex-wrap: wrap; }
+  .admin-cab h2 { font-size: 1.7rem; font-weight: 900; text-transform: uppercase; }
+  .admin-cab .hueco { flex: 1; }
+  .bloque { background: var(--panel); border: 1px solid var(--linea); border-radius: 4px; padding: 1.3rem 1.4rem; margin-bottom: 1.3rem; }
+  .bloque h3 { font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: .9rem; color: var(--ambar); }
+  .bloque p.ayuda { color: var(--apagado); font-size: .95rem; line-height: 1.45; margin-bottom: .8rem; }
+  .fila-form { display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: .7rem; }
+  .campo {
+    background: var(--fondo); border: 1px solid var(--linea); border-radius: 4px;
+    padding: .6rem .8rem; font-size: 1rem; flex: 1; min-width: 8rem;
+  }
+  .campo:focus { outline: none; border-color: var(--ambar); }
+  textarea.campo { resize: vertical; min-height: 2.6rem; }
+  .resultado {
+    display: grid; grid-template-columns: auto 1fr auto; gap: .9rem; align-items: center;
+    border-bottom: 1px solid var(--linea); padding: .8rem 0;
+  }
+  .resultado img { width: 56px; height: 56px; border-radius: 4px; display: block; }
+  .resultado .rtit { font-weight: 800; font-size: 1.05rem; }
+  .resultado .rsub { color: var(--apagado); font-size: .9rem; margin-top: .15rem; }
+  .resultado .acciones { display: flex; gap: .5rem; align-items: center; }
+  .btn-mini {
+    border: 1px solid var(--linea); border-radius: 4px; background: var(--fondo);
+    padding: .45rem .7rem; font-weight: 700; font-size: .95rem; white-space: nowrap;
+  }
+  .btn-mini.play { min-width: 2.6rem; }
+  .btn-mini.sonando { border-color: var(--verde); color: var(--verde); }
+  .editor { background: var(--fondo); border: 1px dashed var(--ambar); border-radius: 4px; padding: 1rem; margin-top: .8rem; }
+  .chips-afinacion { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .7rem; }
+  .chips-afinacion .chip.activa { background: var(--ambar); border-color: var(--ambar); color: var(--fondo); }
+  .lista-extra { border-top: 1px solid var(--linea); }
+  .item-extra { display: flex; align-items: center; gap: .8rem; border-bottom: 1px solid var(--linea); padding: .6rem 0; }
+  .item-extra .nombre { flex: 1; font-weight: 700; }
+  .item-extra .detalle { color: var(--apagado); font-size: .9rem; }
+  .constructor { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  @media (max-width: 700px) { .constructor { grid-template-columns: 1fr; } }
+  .col-titulo { font-size: .85rem; letter-spacing: .14em; text-transform: uppercase; color: var(--apagado); font-weight: 700; margin-bottom: .5rem; }
+  .banco { max-height: 24rem; overflow-y: auto; border: 1px solid var(--linea); border-radius: 4px; }
+  .banco-item { display: flex; align-items: center; gap: .6rem; width: 100%; text-align: left; padding: .55rem .7rem; border-bottom: 1px solid var(--linea); }
+  .banco-item:active { background: var(--panel); }
+  .banco-item .bt { flex: 1; font-weight: 700; font-size: .98rem; }
+  .banco-item .ba { color: var(--apagado); font-size: .85rem; }
+  .elegidos { border: 1px solid var(--linea); border-radius: 4px; min-height: 6rem; }
+  .elegido { display: flex; align-items: center; gap: .5rem; padding: .5rem .6rem; border-bottom: 1px solid var(--linea); }
+  .elegido.es-seccion { color: var(--rojo); font-weight: 800; text-transform: uppercase; letter-spacing: .1em; }
+  .elegido .en { flex: 1; font-weight: 700; font-size: .95rem; }
+  .elegido .flechas { display: flex; gap: .3rem; }
+  .toast {
+    position: fixed; bottom: 1.4rem; left: 50%; transform: translateX(-50%);
+    background: var(--panel); border: 1px solid var(--verde); color: var(--verde);
+    border-radius: 4px; padding: .8rem 1.4rem; font-weight: 700; z-index: 50;
+    max-width: 90vw; text-align: center;
+  }
+  .toast.error { border-color: var(--naranja); color: var(--naranja); }
+  @media (max-width: 600px) {
+    .tema .titulo { font-size: calc(1.5rem * var(--escala)); }
+    .tema .comentario { font-size: calc(1.1rem * var(--escala)); }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<main id="portada">
+  <header class="marca">
+    <h1>Rockin<span class="rojo">'</span> Troopers</h1>
+    <span class="sub">Setlists</span>
+    <span class="hueco"></span>
+    <button id="btn-admin" aria-label="Modo administrador">&#9881;</button>
+  </header>
+  <div id="cargando">Cargando setlists&hellip;</div>
+  <div id="lista-conciertos"></div>
+  <p class="generado" id="generado"></p>
+</main>
+
+<section id="concierto">
+  <div class="cabecera">
+    <button class="btn" id="volver" aria-label="Volver a la lista">&#8592;</button>
+    <div class="cab-titulo">
+      <div class="lugar" id="cab-lugar"></div>
+      <div class="cuando" id="cab-fecha"></div>
+    </div>
+    <div class="variantes" id="variantes"></div>
+    <button class="btn" id="modo">Directo</button>
+    <div class="zoom">
+      <button class="btn" id="menos" aria-label="Texto más pequeño">A&#8722;</button>
+      <button class="btn" id="mas" aria-label="Texto más grande">A+</button>
+    </div>
+  </div>
+  <div id="temas"></div>
+  <div id="foco">
+    <button class="foco-otro anterior" id="foco-prev"></button>
+    <button class="foco-actual" id="foco-actual"></button>
+    <button class="foco-otro siguiente" id="foco-next"></button>
+  </div>
+</section>
+
+<section id="admin">
+  <div class="admin-cab">
+    <h2>Modo administrador</h2>
+    <span class="hueco"></span>
+    <button class="btn" id="admin-salir">Salir</button>
+  </div>
+
+  <div class="bloque" id="bloque-token" style="display:none">
+    <h3>Clave de publicación</h3>
+    <p class="ayuda">Pega aquí tu token de GitHub (se guarda solo en este dispositivo).
+    Sin él puedes preparar cambios pero no publicarlos.</p>
+    <div class="fila-form">
+      <input class="campo" type="password" id="token-input" placeholder="github_pat_...">
+      <button class="btn principal" id="token-guardar">Guardar</button>
+    </div>
+  </div>
+
+  <div class="bloque">
+    <h3>Buscar y añadir un tema a la base</h3>
+    <div class="fila-form">
+      <input class="campo" id="busqueda" placeholder="Tema y artista, p. ej. Lola Montez Volbeat"
+             autocomplete="off" enterkeyhint="search">
+      <button class="btn principal" id="buscar">Buscar</button>
+    </div>
+    <div id="resultados"></div>
+    <p class="ayuda" style="margin-top:.8rem">
+      <button class="btn-mini" id="alta-mano">&#65291; Añadir a mano (medleys, versiones propias&hellip;)</button>
+    </p>
+    <div id="editor-tema" style="display:none"></div>
+  </div>
+
+  <div class="bloque">
+    <h3>Nuevo concierto</h3>
+    <div class="fila-form">
+      <input class="campo" id="c-lugar" placeholder="Sala (p. ej. Blacknote)">
+      <input class="campo" id="c-fecha" type="date">
+    </div>
+    <div class="constructor">
+      <div>
+        <div class="col-titulo">Setlist base — toca para añadir</div>
+        <input class="campo" id="banco-filtro" placeholder="Filtrar temas&hellip;" style="width:100%;margin-bottom:.5rem">
+        <div class="banco" id="banco"></div>
+      </div>
+      <div>
+        <div class="col-titulo">Temas del concierto</div>
+        <div class="elegidos" id="elegidos"></div>
+        <div class="fila-form" style="margin-top:.6rem">
+          <input class="campo" id="seccion-nombre" placeholder="Nombre de sección (ARRANQUE&hellip;)">
+          <button class="btn-mini" id="seccion-add">&#65291; Sección</button>
+        </div>
+        <div class="fila-form" style="margin-top:.4rem">
+          <button class="btn principal" id="c-guardar" style="flex:1">Guardar y publicar concierto</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bloque">
+    <h3>Añadido desde la app</h3>
+    <p class="ayuda">Temas y conciertos creados aquí (lo del Numbers no se toca). Borrar algo de esta lista también se publica al momento.</p>
+    <div class="col-titulo">Temas</div>
+    <div class="lista-extra" id="extra-temas"></div>
+    <div class="col-titulo" style="margin-top:1rem">Conciertos</div>
+    <div class="lista-extra" id="extra-conciertos"></div>
+  </div>
+</section>
+
+<script>
+/* ================= configuración ================= */
+const REPO_OWNER = "juanmajover";
+const REPO_NOMBRE = "troopers-setlists";
+const RUTA_EXTRA = "extra.json";
+
+/* ================= estado ================= */
+const $ = id => document.getElementById(id);
+let DATOS = null;          // data.json (del Numbers)
+let EXTRA = { temas: [], conciertos: [] };  // extra.json (añadido desde la app)
+let extraSha = null;       // sha del extra.json en GitHub (para publicar cambios)
+let CONCIERTOS = [];       // fusión, ordenada
+let MAESTRA = [];          // fusión de temas base
+let escala = parseFloat(localStorage.getItem("rt-escala") || "1");
+let conciertoActual = null, varianteActual = 0;
+let modoFoco = localStorage.getItem("rt-modo") === "foco";
+let focoIdx = 0;
+let token = localStorage.getItem("rt-token") || "";
+let cItems = [];           // constructor de concierto
+let audioActual = null, botonSonando = null;
+
+/* ================= utilidades ================= */
+function fmtDur(s) {
+  if (!s) return "";
+  const m = Math.floor(s / 60), r = s % 60;
+  return m + ":" + String(r).padStart(2, "0");
+}
+function fmtTotal(s) {
+  if (!s) return "";
+  const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60);
+  return h ? h + " h " + m + " min" : m + " min";
+}
+function claseBadge(tune) {
+  if (/DROP/.test(tune)) return "drop";
+  if (/-\s*1/.test(tune)) return "p1";
+  if (/-\s*2/.test(tune)) return "p2";
+  return "otro";
+}
+function normalizar(t) {
+  return (t || "").normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/’|‘/g, "'").replace(/\s+/g, " ").trim().toUpperCase();
+}
+function esc(t) {
+  return String(t == null ? "" : t).replace(/&/g, "&amp;").replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+function fechaTexto(iso) {
+  if (!iso) return "";
+  const d = new Date(iso + "T12:00:00");
+  return d.toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" });
+}
+let toastTimer = null;
+function toast(msg, esError) {
+  document.querySelectorAll(".toast").forEach(e => e.remove());
+  const d = document.createElement("div");
+  d.className = "toast" + (esError ? " error" : "");
+  d.textContent = msg;
+  document.body.appendChild(d);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => d.remove(), 3500);
+}
+
+/* ================= carga de datos ================= */
+async function cargar() {
+  try {
+    const t = Date.now();
+    const [rd, re] = await Promise.all([
+      fetch("data.json?t=" + t),
+      fetch(RUTA_EXTRA + "?t=" + t),
+    ]);
+    DATOS = await rd.json();
+    if (re.ok) EXTRA = await re.json();
+  } catch (e) {
+    $("cargando").textContent = "No se han podido cargar los datos. Comprueba la conexión y recarga.";
+    return;
+  }
+  fusionar();
+  $("cargando").style.display = "none";
+  pintarPortada();
+}
+
+function fusionar() {
+  // temas: base del Numbers + añadidos desde la app (sin duplicar)
+  const vistos = new Set(DATOS.maestra.map(t => normalizar(t.nombre)));
+  MAESTRA = DATOS.maestra.concat(EXTRA.temas.filter(t => !vistos.has(normalizar(t.nombre))));
+  MAESTRA.sort((a, b) => normalizar(a.titulo) < normalizar(b.titulo) ? -1 : 1);
+  // conciertos: fusionar por (lugar, fecha)
+  const mapa = new Map();
+  DATOS.conciertos.forEach(c => mapa.set(c.lugar + "|" + c.fecha, JSON.parse(JSON.stringify(c))));
+  (EXTRA.conciertos || []).forEach(c => {
+    const k = c.lugar + "|" + c.fecha;
+    if (mapa.has(k)) mapa.get(k).variantes.push(...c.variantes);
+    else mapa.set(k, JSON.parse(JSON.stringify(c)));
+  });
+  CONCIERTOS = [...mapa.values()];
+  CONCIERTOS.sort((a, b) => (b.fecha || "0000") < (a.fecha || "0000") ? -1 : 1);
+}
+
+/* ================= escala ================= */
+function aplicarEscala() {
+  document.documentElement.style.setProperty("--escala", escala);
+  localStorage.setItem("rt-escala", escala);
+}
+$("mas").onclick = () => { escala = Math.min(1.8, escala + 0.1); aplicarEscala(); };
+$("menos").onclick = () => { escala = Math.max(0.6, escala - 0.1); aplicarEscala(); };
+aplicarEscala();
+
+/* ================= portada ================= */
+function pintarPortada() {
+  const hoy = new Date().toISOString().slice(0, 10);
+  const cont = $("lista-conciertos");
+  cont.innerHTML = "";
+  CONCIERTOS.forEach((c, i) => {
+    const v = c.variantes[0];
+    const pasado = c.fecha && c.fecha < hoy;
+    const b = document.createElement("button");
+    b.className = "tarjeta" + (pasado ? " pasado" : "");
+    b.innerHTML =
+      '<div class="cuando">' + esc(c.fechaTexto || "") + (pasado ? " · ya tocado" : "") + "</div>" +
+      '<div class="lugar">' + esc(c.lugar) + "</div>" +
+      '<div class="datos"><span>' + v.nTemas + " temas</span><span>" + fmtTotal(v.total) + "</span>" +
+      (c.variantes.length > 1 ? "<span>" + c.variantes.length + " versiones</span>" : "") + "</div>";
+    b.onclick = () => abrirConcierto(i);
+    cont.appendChild(b);
+  });
+  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "");
+}
+
+/* ================= concierto ================= */
+function abrirConcierto(i) {
+  conciertoActual = i;
+  varianteActual = 0;
+  focoIdx = 0;
+  $("portada").style.display = "none";
+  $("concierto").style.display = "block";
+  window.scrollTo(0, 0);
+  pintarConcierto();
+  pedirWakeLock();
+}
+$("volver").onclick = () => {
+  $("concierto").style.display = "none";
+  $("portada").style.display = "block";
+};
+
+function pintarConcierto() {
+  const c = CONCIERTOS[conciertoActual];
+  $("cab-lugar").textContent = c.lugar;
+  $("cab-fecha").textContent = c.fechaTexto || "";
+
+  const vs = $("variantes");
+  vs.innerHTML = "";
+  if (c.variantes.length > 1) {
+    c.variantes.forEach((v, j) => {
+      const ch = document.createElement("button");
+      ch.className = "chip" + (j === varianteActual ? " activa" : "");
+      ch.textContent = v.nombre;
+      ch.onclick = () => { varianteActual = j; focoIdx = 0; pintarConcierto(); };
+      vs.appendChild(ch);
+    });
+  }
+
+  $("modo").textContent = modoFoco ? "Lista" : "Directo";
+  $("temas").style.display = modoFoco ? "none" : "block";
+  $("foco").style.display = modoFoco ? "flex" : "none";
+  if (modoFoco) { pintarFoco(); return; }
+
+  const v = c.variantes[varianteActual];
+  const cont = $("temas");
+  cont.innerHTML = "";
+  v.temas.forEach(t => {
+    if (t.seccion) {
+      const s = document.createElement("div");
+      s.className = "seccion";
+      s.textContent = t.seccion;
+      cont.appendChild(s);
+      return;
+    }
+    const fila = document.createElement("button");
+    fila.className = "tema";
+    fila.innerHTML =
+      '<div class="num">' + t.n + "</div>" +
+      "<div>" +
+        '<div class="titulo">' + esc(t.titulo) + "</div>" +
+        (t.artista ? '<div class="artista">' + esc(t.artista) + "</div>" : "") +
+        (t.comentario ? '<div class="comentario">' + esc(t.comentario) + "</div>" : "") +
+      "</div>" +
+      '<div class="cola">' +
+        (t.tune ? '<span class="badge ' + claseBadge(t.tune) + '">' + esc(t.tune) + "</span>" : "") +
+        (t.dur ? '<span class="dur">' + fmtDur(t.dur) + "</span>" : "") +
+      "</div>";
+    fila.onclick = () => fila.classList.toggle("tocado");
+    cont.appendChild(fila);
+  });
+  const pie = document.createElement("div");
+  pie.className = "pie";
+  pie.innerHTML = v.nTemas + " temas · <b>" + fmtTotal(v.total) + "</b> de música";
+  cont.appendChild(pie);
+}
+
+/* ================= modo directo ================= */
+$("modo").onclick = () => {
+  modoFoco = !modoFoco;
+  localStorage.setItem("rt-modo", modoFoco ? "foco" : "lista");
+  pintarConcierto();
+};
+
+function cancionesConSeccion() {
+  const v = CONCIERTOS[conciertoActual].variantes[varianteActual];
+  const lista = [];
+  let sec = "";
+  v.temas.forEach(t => {
+    if (t.seccion) sec = t.seccion;
+    else lista.push(Object.assign({ sec }, t));
+  });
+  return lista;
+}
+
+function htmlOtro(etiqueta, t) {
+  if (!t) return "";
+  const clase = claseBadge(t.tune || "");
+  const color = { drop: "verde", p1: "ambar", p2: "naranja", otro: "azul" }[clase];
+  return '<div class="etiqueta">' + etiqueta + "</div>" +
+    '<div class="linea">' + t.n + ". " + esc(t.titulo) +
+    (t.tune ? '<span class="mini-badge" style="color:var(--' + color + ')">' + esc(t.tune) + "</span>" : "") +
+    "</div>";
+}
+
+function pintarFoco() {
+  const canciones = cancionesConSeccion();
+  if (!canciones.length) return;
+  focoIdx = Math.max(0, Math.min(focoIdx, canciones.length - 1));
+  const t = canciones[focoIdx];
+  const prev = canciones[focoIdx - 1], next = canciones[focoIdx + 1];
+
+  const bPrev = $("foco-prev");
+  bPrev.className = "foco-otro anterior" + (prev ? "" : " vacio");
+  bPrev.innerHTML = htmlOtro("Anterior", prev);
+
+  $("foco-actual").innerHTML =
+    (t.sec ? '<div class="contexto">' + esc(t.sec) + "</div>" : "") +
+    '<div class="titulo">' + esc(t.titulo) + "</div>" +
+    (t.artista ? '<div class="artista">' + esc(t.artista) + (t.dur ? " · " + fmtDur(t.dur) : "") + "</div>" : "") +
+    (t.tune ? '<span class="badge ' + claseBadge(t.tune) + '">' + esc(t.tune) + "</span>" : "") +
+    (t.comentario ? '<div class="comentario">' + esc(t.comentario) + "</div>" : "") +
+    '<div class="posicion">' + t.n + " / " + canciones.length + "</div>";
+
+  const bNext = $("foco-next");
+  if (next) {
+    bNext.className = "foco-otro siguiente";
+    bNext.innerHTML = htmlOtro("Siguiente", next);
+  } else {
+    bNext.className = "foco-otro siguiente";
+    bNext.innerHTML = '<div class="etiqueta">Fin del set</div>';
+  }
+}
+
+$("foco-prev").onclick = () => { focoIdx--; pintarFoco(); };
+$("foco-actual").onclick = () => { focoIdx++; pintarFoco(); };
+$("foco-next").onclick = () => { focoIdx++; pintarFoco(); };
+document.addEventListener("keydown", e => {
+  if (!modoFoco || conciertoActual === null || $("concierto").style.display !== "block") return;
+  if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === " ") { focoIdx++; pintarFoco(); }
+  if (e.key === "ArrowLeft" || e.key === "ArrowUp") { focoIdx--; pintarFoco(); }
+});
+
+/* ================= pantalla siempre encendida ================= */
+let wakeLock = null;
+async function pedirWakeLock() {
+  try { wakeLock = await navigator.wakeLock.request("screen"); } catch (e) {}
+}
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && conciertoActual !== null) pedirWakeLock();
+});
+
+/* ================= ADMIN ================= */
+$("btn-admin").onclick = () => {
+  $("portada").style.display = "none";
+  $("admin").style.display = "block";
+  window.scrollTo(0, 0);
+  pintarAdmin();
+};
+$("admin-salir").onclick = () => {
+  pararAudio();
+  $("admin").style.display = "none";
+  $("portada").style.display = "block";
+  pintarPortada();
+};
+
+function pintarAdmin() {
+  $("bloque-token").style.display = token ? "none" : "block";
+  pintarBanco();
+  pintarElegidos();
+  pintarExtras();
+}
+
+$("token-guardar").onclick = () => {
+  const t = $("token-input").value.trim();
+  if (!t) return;
+  token = t;
+  localStorage.setItem("rt-token", t);
+  $("token-input").value = "";
+  toast("Clave guardada en este dispositivo");
+  pintarAdmin();
+};
+
+/* ---------- publicar extra.json en GitHub ---------- */
+function b64(str) {
+  return btoa(String.fromCharCode(...new TextEncoder().encode(str)));
+}
+async function publicarExtra(mensaje) {
+  if (!token) { toast("Falta la clave de publicación (arriba)", true); throw new Error("sin token"); }
+  const url = "https://api.github.com/repos/" + REPO_OWNER + "/" + REPO_NOMBRE + "/contents/" + RUTA_EXTRA;
+  const cab = { Authorization: "Bearer " + token, Accept: "application/vnd.github+json" };
+  // sha actual (puede haber cambiado desde la carga)
+  const r0 = await fetch(url + "?t=" + Date.now(), { headers: cab });
+  if (r0.ok) extraSha = (await r0.json()).sha;
+  const cuerpo = { message: mensaje, content: b64(JSON.stringify(EXTRA, null, 1)) };
+  if (extraSha) cuerpo.sha = extraSha;
+  const r = await fetch(url, { method: "PUT", headers: cab, body: JSON.stringify(cuerpo) });
+  if (!r.ok) {
+    const e = await r.json().catch(() => ({}));
+    toast("Error al publicar: " + (e.message || r.status), true);
+    throw new Error("publicar");
+  }
+  extraSha = (await r.json()).content.sha;
+  fusionar();
+  toast("Publicado ✓ " + mensaje);
+}
+
+/* ---------- buscador iTunes ---------- */
+function pararAudio() {
+  if (audioActual) { audioActual.pause(); audioActual = null; }
+  if (botonSonando) { botonSonando.classList.remove("sonando"); botonSonando.textContent = "▶"; botonSonando = null; }
+}
+$("buscar").onclick = buscarItunes;
+$("busqueda").addEventListener("keydown", e => { if (e.key === "Enter") buscarItunes(); });
+
+async function buscarItunes() {
+  const q = $("busqueda").value.trim();
+  if (!q) return;
+  pararAudio();
+  $("resultados").innerHTML = '<p class="ayuda">Buscando&hellip;</p>';
+  try {
+    const r = await fetch("https://itunes.apple.com/search?media=music&limit=8&term=" + encodeURIComponent(q));
+    const j = await r.json();
+    pintarResultados(j.results || []);
+  } catch (e) {
+    $("resultados").innerHTML = '<p class="ayuda">No se ha podido buscar (¿sin conexión?).</p>';
+  }
+}
+
+function pintarResultados(res) {
+  const cont = $("resultados");
+  cont.innerHTML = res.length ? "" : '<p class="ayuda">Sin resultados. Prueba con menos palabras o añádelo a mano.</p>';
+  res.forEach(r => {
+    const anyo = r.releaseDate ? r.releaseDate.slice(0, 4) : "";
+    const div = document.createElement("div");
+    div.className = "resultado";
+    div.innerHTML =
+      '<img src="' + esc(r.artworkUrl100 || "") + '" alt="">' +
+      "<div><div class=\"rtit\">" + esc(r.trackName) + "</div>" +
+      '<div class="rsub">' + esc(r.artistName) + " · " + esc(r.collectionName || "") +
+      (anyo ? " · " + anyo : "") + " · " + fmtDur(Math.round((r.trackTimeMillis || 0) / 1000)) + "</div>" +
+      '<div class="rsub"><a style="color:var(--azul)" target="_blank" href="' + esc(r.trackViewUrl || "#") + '">Apple Music</a> &nbsp; ' +
+      '<a style="color:var(--verde)" target="_blank" href="https://open.spotify.com/search/' + encodeURIComponent(r.trackName + " " + r.artistName) + '">Spotify</a></div></div>' +
+      '<div class="acciones">' +
+      (r.previewUrl ? '<button class="btn-mini play">▶</button>' : "") +
+      '<button class="btn-mini principal-add">Añadir</button></div>';
+    const bPlay = div.querySelector(".play");
+    if (bPlay) bPlay.onclick = () => {
+      if (botonSonando === bPlay) { pararAudio(); return; }
+      pararAudio();
+      audioActual = new Audio(r.previewUrl);
+      audioActual.play();
+      audioActual.onended = pararAudio;
+      bPlay.classList.add("sonando"); bPlay.textContent = "■";
+      botonSonando = bPlay;
+    };
+    div.querySelector(".principal-add").onclick = () => abrirEditorTema({
+      titulo: (r.trackName || "").toUpperCase(),
+      artista: r.artistName || "",
+      dur: Math.round((r.trackTimeMillis || 0) / 1000),
+      album: r.collectionName || "",
+      anyo: anyo,
+      apple: r.trackViewUrl || "",
+      artwork: r.artworkUrl100 || "",
+    });
+    cont.appendChild(div);
+  });
+}
+
+$("alta-mano").onclick = () => abrirEditorTema({ titulo: "", artista: "", dur: null });
+
+/* ---------- editor de tema nuevo ---------- */
+function abrirEditorTema(base) {
+  const ed = $("editor-tema");
+  ed.style.display = "block";
+  ed.className = "editor";
+  ed.innerHTML =
+    '<div class="fila-form"><input class="campo" id="et-titulo" placeholder="TÍTULO" value="' + esc(base.titulo) + '">' +
+    '<input class="campo" id="et-artista" placeholder="Artista" value="' + esc(base.artista) + '">' +
+    '<input class="campo" id="et-dur" placeholder="Duración (m:ss)" value="' + (base.dur ? fmtDur(base.dur) : "") + '" style="max-width:9rem"></div>' +
+    '<div class="col-titulo">Afinación</div>' +
+    '<div class="chips-afinacion" id="et-chips">' +
+    ["", "DROP D", "PITCH -1", "PITCH -2"].map((a, i) =>
+      '<button class="chip' + (i === 0 ? " activa" : "") + '" data-a="' + a + '">' + (a || "Estándar") + "</button>").join("") +
+    '<input class="campo" id="et-otra" placeholder="otra&hellip;" style="max-width:8rem"></div>' +
+    '<textarea class="campo" id="et-coment" placeholder="Comentario (se ve en el escenario)" style="width:100%"></textarea>' +
+    '<div class="fila-form" style="margin-top:.7rem">' +
+    '<button class="btn principal" id="et-guardar">Guardar en la setlist base</button>' +
+    '<button class="btn" id="et-cancelar">Cancelar</button></div>';
+  ed.scrollIntoView({ behavior: "smooth", block: "center" });
+  let afin = "";
+  ed.querySelectorAll("#et-chips .chip").forEach(ch => ch.onclick = () => {
+    ed.querySelectorAll("#et-chips .chip").forEach(x => x.classList.remove("activa"));
+    ch.classList.add("activa");
+    afin = ch.dataset.a;
+    $("et-otra").value = "";
+  });
+  $("et-cancelar").onclick = () => { ed.style.display = "none"; };
+  $("et-guardar").onclick = async () => {
+    const titulo = $("et-titulo").value.trim().toUpperCase();
+    const artista = $("et-artista").value.trim();
+    if (!titulo) { toast("Falta el título", true); return; }
+    const otra = $("et-otra").value.trim().toUpperCase();
+    const durTxt = $("et-dur").value.trim();
+    let dur = null;
+    if (/^\d+:\d{1,2}$/.test(durTxt)) {
+      const [m, s] = durTxt.split(":").map(Number);
+      dur = m * 60 + s;
+    }
+    const nombre = titulo + (artista ? " - " + artista : "");
+    if (MAESTRA.some(t => normalizar(t.nombre) === normalizar(nombre))) {
+      toast("Ese tema ya está en la base", true); return;
+    }
+    const tema = {
+      nombre, titulo, artista,
+      afinacion: otra || afin,
+      comentario: $("et-coment").value.trim(),
+      dur,
+      album: base.album || "", anyo: base.anyo || "", apple: base.apple || "", artwork: base.artwork || "",
+    };
+    $("et-guardar").disabled = true;
+    try {
+      EXTRA.temas.push(tema);
+      await publicarExtra("Añadido tema: " + nombre);
+      ed.style.display = "none";
+      pintarAdmin();
+    } catch (e) {
+      EXTRA.temas = EXTRA.temas.filter(t => t !== tema);
+    }
+    $("et-guardar").disabled = false;
+  };
+}
+
+/* ---------- constructor de concierto ---------- */
+function pintarBanco() {
+  const filtro = normalizar($("banco-filtro").value);
+  const cont = $("banco");
+  cont.innerHTML = "";
+  MAESTRA.forEach(t => {
+    if (filtro && !normalizar(t.titulo + " " + t.artista).includes(filtro)) return;
+    const b = document.createElement("button");
+    b.className = "banco-item";
+    b.innerHTML = '<span class="bt">' + esc(t.titulo) + '</span><span class="ba">' + esc(t.artista) +
+      (t.afinacion ? " · " + esc(t.afinacion) : "") + "</span><span>&#65291;</span>";
+    b.onclick = () => { cItems.push({ tema: t }); pintarElegidos(); };
+    cont.appendChild(b);
+  });
+}
+$("banco-filtro").addEventListener("input", pintarBanco);
+
+$("seccion-add").onclick = () => {
+  const n = $("seccion-nombre").value.trim().toUpperCase();
+  if (!n) return;
+  cItems.push({ seccion: n });
+  $("seccion-nombre").value = "";
+  pintarElegidos();
+};
+
+function pintarElegidos() {
+  const cont = $("elegidos");
+  cont.innerHTML = cItems.length ? "" : '<p class="ayuda" style="padding:.8rem">Aún no hay temas. Toca en la lista de la izquierda.</p>';
+  cItems.forEach((it, i) => {
+    const d = document.createElement("div");
+    d.className = "elegido" + (it.seccion ? " es-seccion" : "");
+    d.innerHTML = '<span class="en">' + esc(it.seccion || it.tema.titulo) + "</span>" +
+      '<span class="flechas">' +
+      '<button class="btn-mini sube">↑</button>' +
+      '<button class="btn-mini baja">↓</button>' +
+      '<button class="btn-mini quita">✕</button></span>';
+    d.querySelector(".sube").onclick = () => { if (i > 0) { [cItems[i - 1], cItems[i]] = [cItems[i], cItems[i - 1]]; pintarElegidos(); } };
+    d.querySelector(".baja").onclick = () => { if (i < cItems.length - 1) { [cItems[i + 1], cItems[i]] = [cItems[i], cItems[i + 1]]; pintarElegidos(); } };
+    d.querySelector(".quita").onclick = () => { cItems.splice(i, 1); pintarElegidos(); };
+    cont.appendChild(d);
+  });
+}
+
+$("c-guardar").onclick = async () => {
+  const lugar = $("c-lugar").value.trim();
+  const fecha = $("c-fecha").value;
+  const temasSel = cItems.filter(it => it.tema);
+  if (!lugar || !fecha) { toast("Faltan la sala o la fecha", true); return; }
+  if (!temasSel.length) { toast("El concierto no tiene temas", true); return; }
+  let n = 0, total = 0;
+  const temas = cItems.map(it => {
+    if (it.seccion) return { seccion: it.seccion };
+    n += 1;
+    total += it.tema.dur || 0;
+    return {
+      n, titulo: it.tema.titulo, artista: it.tema.artista,
+      tune: it.tema.afinacion || "", dur: it.tema.dur, comentario: it.tema.comentario || "",
+    };
+  });
+  const concierto = {
+    lugar, fecha, fechaTexto: fechaTexto(fecha),
+    variantes: [{ nombre: "Set", temas, total, nTemas: n }],
+  };
+  $("c-guardar").disabled = true;
+  try {
+    EXTRA.conciertos = EXTRA.conciertos || [];
+    EXTRA.conciertos.push(concierto);
+    await publicarExtra("Nuevo concierto: " + lugar + " " + fecha);
+    cItems = [];
+    $("c-lugar").value = ""; $("c-fecha").value = "";
+    pintarAdmin();
+  } catch (e) {
+    EXTRA.conciertos = EXTRA.conciertos.filter(c => c !== concierto);
+  }
+  $("c-guardar").disabled = false;
+};
+
+/* ---------- lo añadido desde la app ---------- */
+function pintarExtras() {
+  const ct = $("extra-temas");
+  ct.innerHTML = EXTRA.temas.length ? "" : '<p class="ayuda">Nada todavía.</p>';
+  EXTRA.temas.forEach((t, i) => {
+    const d = document.createElement("div");
+    d.className = "item-extra";
+    d.innerHTML = '<span class="nombre">' + esc(t.titulo) + '</span><span class="detalle">' +
+      esc(t.artista) + (t.afinacion ? " · " + esc(t.afinacion) : "") + "</span>" +
+      '<button class="btn-mini">✕</button>';
+    d.querySelector("button").onclick = async () => {
+      const quitado = EXTRA.temas.splice(i, 1)[0];
+      try { await publicarExtra("Borrado tema: " + quitado.nombre); pintarAdmin(); }
+      catch (e) { EXTRA.temas.splice(i, 0, quitado); }
+    };
+    ct.appendChild(d);
+  });
+  const cc = $("extra-conciertos");
+  const lista = EXTRA.conciertos || [];
+  cc.innerHTML = lista.length ? "" : '<p class="ayuda">Nada todavía.</p>';
+  lista.forEach((c, i) => {
+    const d = document.createElement("div");
+    d.className = "item-extra";
+    d.innerHTML = '<span class="nombre">' + esc(c.lugar) + '</span><span class="detalle">' +
+      esc(c.fechaTexto) + " · " + c.variantes[0].nTemas + " temas</span>" +
+      '<button class="btn-mini">✕</button>';
+    d.querySelector("button").onclick = async () => {
+      const quitado = EXTRA.conciertos.splice(i, 1)[0];
+      try { await publicarExtra("Borrado concierto: " + quitado.lugar + " " + quitado.fecha); pintarAdmin(); }
+      catch (e) { EXTRA.conciertos.splice(i, 0, quitado); }
+    };
+    cc.appendChild(d);
+  });
+}
+
+cargar();
+</script>
+</body>
+</html>

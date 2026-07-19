@@ -1,0 +1,3219 @@
+{
+ "generado": "19/07/2026 17:39",
+ "maestra": [
+  {
+   "nombre": "99 RED BALLOONS - Goldfinger",
+   "titulo": "99 RED BALLOONS",
+   "artista": "Goldfinger",
+   "afinacion": "DROP D",
+   "comentario": "",
+   "dur": 229
+  },
+  {
+   "nombre": "ALL MY LIFE - Foo Fighters",
+   "titulo": "ALL MY LIFE",
+   "artista": "Foo Fighters",
+   "afinacion": "PITCH -1",
+   "comentario": "",
+   "dur": 263
+  },
+  {
+   "nombre": "ALL THE SMALL THINGS - Blink-182",
+   "titulo": "ALL THE SMALL THINGS",
+   "artista": "Blink-182",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 167
+  },
+  {
+   "nombre": "ARE YOU GONNA GO MY WAY - Lenny Kravitz",
+   "titulo": "ARE YOU GONNA GO MY WAY",
+   "artista": "Lenny Kravitz",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 212
+  },
+  {
+   "nombre": "BLITZKRIEG BOP - Ramones",
+   "titulo": "BLITZKRIEG BOP",
+   "artista": "Ramones",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 133
+  },
+  {
+   "nombre": "BORN TO BE WILD - Steppenwolf",
+   "titulo": "BORN TO BE WILD",
+   "artista": "Steppenwolf",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 211
+  },
+  {
+   "nombre": "BULLET WITH… - The Smashing Pumpkins",
+   "titulo": "BULLET WITH…",
+   "artista": "The Smashing Pumpkins",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 258
+  },
+  {
+   "nombre": "BURNING LOVE - Carburetors",
+   "titulo": "BURNING LOVE",
+   "artista": "Carburetors",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 172
+  },
+  {
+   "nombre": "CELEBRITY SKIN - Hole",
+   "titulo": "CELEBRITY SKIN",
+   "artista": "Hole",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 163
+  },
+  {
+   "nombre": "CELEBRITY SKIN - Hole",
+   "titulo": "CELEBRITY SKIN",
+   "artista": "Hole",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 163
+  },
+  {
+   "nombre": "COME TOGETHER - The Beatles",
+   "titulo": "COME TOGETHER",
+   "artista": "The Beatles",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 260
+  },
+  {
+   "nombre": "CRAZY LITTLE THING CALLED LOVE - Queen",
+   "titulo": "CRAZY LITTLE THING CALLED LOVE",
+   "artista": "Queen",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 165
+  },
+  {
+   "nombre": "DANCE MACABRE - Ghost",
+   "titulo": "DANCE MACABRE",
+   "artista": "Ghost",
+   "afinacion": "PITCH -2",
+   "comentario": "",
+   "dur": 220
+  },
+  {
+   "nombre": "DON’T LOOK BACK IN ANGER - Oasis",
+   "titulo": "DON’T LOOK BACK IN ANGER",
+   "artista": "Oasis",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 288
+  },
+  {
+   "nombre": "DON’T SAY IT’S OVER - Gun",
+   "titulo": "DON’T SAY IT’S OVER",
+   "artista": "Gun",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 250
+  },
+  {
+   "nombre": "ENTER SANDMAN - Metallica",
+   "titulo": "ENTER SANDMAN",
+   "artista": "Metallica",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 307
+  },
+  {
+   "nombre": "EVEN FLOW - Pearl Jam",
+   "titulo": "EVEN FLOW",
+   "artista": "Pearl Jam",
+   "afinacion": "DROP D",
+   "comentario": "",
+   "dur": 293
+  },
+  {
+   "nombre": "FOR WHOM THE BELL… - Metallica",
+   "titulo": "FOR WHOM THE BELL…",
+   "artista": "Metallica",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 310
+  },
+  {
+   "nombre": "GOD SAVE THE QUEEN - Sex Pistols",
+   "titulo": "GOD SAVE THE QUEEN",
+   "artista": "Sex Pistols",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 199
+  },
+  {
+   "nombre": "GOLD ON THE CEILING - The Black Keys",
+   "titulo": "GOLD ON THE CEILING",
+   "artista": "The Black Keys",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 224
+  },
+  {
+   "nombre": "HASH PIPE - Weezer",
+   "titulo": "HASH PIPE",
+   "artista": "Weezer",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 187
+  },
+  {
+   "nombre": "HEROES - Motörhead",
+   "titulo": "HEROES",
+   "artista": "Motörhead",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 261
+  },
+  {
+   "nombre": "HIGHER - Creed",
+   "titulo": "HIGHER",
+   "artista": "Creed",
+   "afinacion": "DROP D",
+   "comentario": "",
+   "dur": 317
+  },
+  {
+   "nombre": "HUSH - Kula Shaker",
+   "titulo": "HUSH",
+   "artista": "Kula Shaker",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 175
+  },
+  {
+   "nombre": "HYSTERIA - Muse",
+   "titulo": "HYSTERIA",
+   "artista": "Muse",
+   "afinacion": "PITCH -1",
+   "comentario": "",
+   "dur": 227
+  },
+  {
+   "nombre": "KILLING IN THE NAME - Rage Against the Machine",
+   "titulo": "KILLING IN THE NAME",
+   "artista": "Rage Against the Machine",
+   "afinacion": "DROP D",
+   "comentario": "",
+   "dur": 314
+  },
+  {
+   "nombre": "KINGS OF LEON - Kings of Leon",
+   "titulo": "KINGS OF LEON",
+   "artista": "Kings of Leon",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 231
+  },
+  {
+   "nombre": "KNIGHTS OF CYDONIA - Muse",
+   "titulo": "KNIGHTS OF CYDONIA",
+   "artista": "Muse",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 368
+  },
+  {
+   "nombre": "LAST NITE - The Strokes",
+   "titulo": "LAST NITE",
+   "artista": "The Strokes",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 194
+  },
+  {
+   "nombre": "LEARN TO FLY - Foo Fighters",
+   "titulo": "LEARN TO FLY",
+   "artista": "Foo Fighters",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 235
+  },
+  {
+   "nombre": "LOLA MONTEZ - Volbeat",
+   "titulo": "LOLA MONTEZ",
+   "artista": "Volbeat",
+   "afinacion": "PITCH -1",
+   "comentario": "",
+   "dur": 269
+  },
+  {
+   "nombre": "MAMA I’M COMING HOME - Ozzy Osbourne",
+   "titulo": "MAMA I’M COMING HOME",
+   "artista": "Ozzy Osbourne",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 252
+  },
+  {
+   "nombre": "MEDLEY BLACK SABATH - R1K",
+   "titulo": "MEDLEY BLACK SABATH",
+   "artista": "R1K",
+   "afinacion": "PITCH -1",
+   "comentario": "",
+   "dur": 262
+  },
+  {
+   "nombre": "MEDLEY GREEN DAY - Green Day",
+   "titulo": "MEDLEY GREEN DAY",
+   "artista": "Green Day",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 360
+  },
+  {
+   "nombre": "MEDLEY HENDRIX-ZEPPELIN - Rockin'1000",
+   "titulo": "MEDLEY HENDRIX-ZEPPELIN",
+   "artista": "Rockin'1000",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 275
+  },
+  {
+   "nombre": "MR. BRIGHTSIDE - The Killers",
+   "titulo": "MR. BRIGHTSIDE",
+   "artista": "The Killers",
+   "afinacion": "FER EB",
+   "comentario": "",
+   "dur": 222
+  },
+  {
+   "nombre": "MY HERO - Foo Fighters",
+   "titulo": "MY HERO",
+   "artista": "Foo Fighters",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 260
+  },
+  {
+   "nombre": "PARANOID - Black Sabbath",
+   "titulo": "PARANOID",
+   "artista": "Black Sabbath",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 167
+  },
+  {
+   "nombre": "ROCK N ROLL ALL NITE - Kiss",
+   "titulo": "ROCK N ROLL ALL NITE",
+   "artista": "Kiss",
+   "afinacion": "PITCH -1",
+   "comentario": "",
+   "dur": 217
+  },
+  {
+   "nombre": "ROCK N ROLL STAR - Oasis",
+   "titulo": "ROCK N ROLL STAR",
+   "artista": "Oasis",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 226
+  },
+  {
+   "nombre": "ROCKIN IN THE FREE WORLD - Neil Young",
+   "titulo": "ROCKIN IN THE FREE WORLD",
+   "artista": "Neil Young",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 247
+  },
+  {
+   "nombre": "SEVEN NATION ARMY - The White Stripes",
+   "titulo": "SEVEN NATION ARMY",
+   "artista": "The White Stripes",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 232
+  },
+  {
+   "nombre": "SHOULD I STAY OR SHOULD I GO - The Clash",
+   "titulo": "SHOULD I STAY OR SHOULD I GO",
+   "artista": "The Clash",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 188
+  },
+  {
+   "nombre": "SMELLS LIKE TEEN SPIRIT - Nirvana",
+   "titulo": "SMELLS LIKE TEEN SPIRIT",
+   "artista": "Nirvana",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 301
+  },
+  {
+   "nombre": "SONG 2 - Blur",
+   "titulo": "SONG 2",
+   "artista": "Blur",
+   "afinacion": "PITCH -1",
+   "comentario": "",
+   "dur": 121
+  },
+  {
+   "nombre": "SUPERSONIC - Oasis",
+   "titulo": "SUPERSONIC",
+   "artista": "Oasis",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 284
+  },
+  {
+   "nombre": "SYMPHONY OF DESTRUCTION - Megadeth",
+   "titulo": "SYMPHONY OF DESTRUCTION",
+   "artista": "Megadeth",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 247
+  },
+  {
+   "nombre": "USE SOMEBODY - Kings of Leon",
+   "titulo": "USE SOMEBODY",
+   "artista": "Kings of Leon",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 231
+  },
+  {
+   "nombre": "WANT YOU BAD - The Offspring",
+   "titulo": "WANT YOU BAD",
+   "artista": "The Offspring",
+   "afinacion": "PITCH -2",
+   "comentario": "",
+   "dur": 203
+  },
+  {
+   "nombre": "WHAT A WONDERFUL WORLD - Joey Ramone",
+   "titulo": "WHAT A WONDERFUL WORLD",
+   "artista": "Joey Ramone",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 143
+  },
+  {
+   "nombre": "When I Come Around - Green Day",
+   "titulo": "WHEN I COME AROUND",
+   "artista": "Green Day",
+   "afinacion": "PITCH -1",
+   "comentario": "",
+   "dur": 178
+  },
+  {
+   "nombre": "WHERE IS MY MIND - Pixies",
+   "titulo": "WHERE IS MY MIND",
+   "artista": "Pixies",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 229
+  },
+  {
+   "nombre": "WICKED GAME - HIM",
+   "titulo": "WICKED GAME",
+   "artista": "HIM",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 246
+  },
+  {
+   "nombre": "WON’T GET FOOLED AGAIN - The Who",
+   "titulo": "WON’T GET FOOLED AGAIN",
+   "artista": "The Who",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 276
+  },
+  {
+   "nombre": "YELLOW - Coldplay",
+   "titulo": "YELLOW",
+   "artista": "Coldplay",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 269
+  }
+ ],
+ "conciertos": [
+  {
+   "lugar": "Glam",
+   "fecha": "2026-10-17",
+   "fechaTexto": "17 de octubre de 2026",
+   "variantes": [
+    {
+     "nombre": "JM",
+     "temas": [
+      {
+       "n": 1,
+       "titulo": "DON’T SAY IT’S OVER",
+       "artista": "Gun",
+       "tune": "",
+       "dur": 250,
+       "comentario": ""
+      },
+      {
+       "n": 2,
+       "titulo": "WANT YOU BAD",
+       "artista": "The Offspring",
+       "tune": "PITCH -2",
+       "dur": 203,
+       "comentario": ""
+      },
+      {
+       "n": 3,
+       "titulo": "HASH PIPE",
+       "artista": "Weezer",
+       "tune": "",
+       "dur": 187,
+       "comentario": ""
+      },
+      {
+       "n": 4,
+       "titulo": "USE SOMEBODY",
+       "artista": "Kings of Leon",
+       "tune": "",
+       "dur": 231,
+       "comentario": ""
+      },
+      {
+       "n": 5,
+       "titulo": "DANCE MACABRE",
+       "artista": "Ghost",
+       "tune": "PITCH -2",
+       "dur": 220,
+       "comentario": ""
+      },
+      {
+       "n": 6,
+       "titulo": "CELEBRITY SKIN",
+       "artista": "Hole",
+       "tune": "",
+       "dur": 163,
+       "comentario": ""
+      },
+      {
+       "n": 7,
+       "titulo": "GOLD ON THE CEILING",
+       "artista": "The Black Keys",
+       "tune": "",
+       "dur": 224,
+       "comentario": ""
+      },
+      {
+       "n": 8,
+       "titulo": "SONG 2",
+       "artista": "Blur",
+       "tune": "PITCH -1",
+       "dur": 121,
+       "comentario": ""
+      },
+      {
+       "n": 9,
+       "titulo": "KILLING IN THE NAME",
+       "artista": "Rage Against the Machine",
+       "tune": "DROP D",
+       "dur": 314,
+       "comentario": ""
+      },
+      {
+       "n": 10,
+       "titulo": "WON’T GET FOOLED AGAIN",
+       "artista": "The Who",
+       "tune": "",
+       "dur": 276,
+       "comentario": ""
+      },
+      {
+       "n": 11,
+       "titulo": "MEDLEY BLACK SABATH",
+       "artista": "R1K",
+       "tune": "PITCH -1",
+       "dur": 262,
+       "comentario": ""
+      },
+      {
+       "n": 12,
+       "titulo": "KILLING IN THE NAME",
+       "artista": "Rage Against the Machine",
+       "tune": "DROP D",
+       "dur": 314,
+       "comentario": ""
+      },
+      {
+       "n": 13,
+       "titulo": "KNIGHTS OF CYDONIA",
+       "artista": "Muse",
+       "tune": "",
+       "dur": 368,
+       "comentario": ""
+      },
+      {
+       "n": 14,
+       "titulo": "MEDLEY GREEN DAY",
+       "artista": "Green Day",
+       "tune": "",
+       "dur": 360,
+       "comentario": ""
+      },
+      {
+       "n": 15,
+       "titulo": "FOR WHOM THE BELL…",
+       "artista": "Metallica",
+       "tune": "",
+       "dur": 310,
+       "comentario": ""
+      },
+      {
+       "n": 16,
+       "titulo": "MAMA I’M COMING HOME",
+       "artista": "Ozzy Osbourne",
+       "tune": "",
+       "dur": 252,
+       "comentario": ""
+      },
+      {
+       "n": 17,
+       "titulo": "SYMPHONY OF DESTRUCTION",
+       "artista": "Megadeth",
+       "tune": "",
+       "dur": 247,
+       "comentario": ""
+      },
+      {
+       "n": 18,
+       "titulo": "MY HERO",
+       "artista": "Foo Fighters",
+       "tune": "",
+       "dur": 260,
+       "comentario": ""
+      },
+      {
+       "n": 19,
+       "titulo": "COME TOGETHER",
+       "artista": "The Beatles",
+       "tune": "",
+       "dur": 260,
+       "comentario": ""
+      },
+      {
+       "seccion": "TOTAL DURACIÓN"
+      },
+      {
+       "seccion": "TOTAL DISTINTAS DEL ULTIMO GLAM"
+      },
+      {
+       "seccion": "TEMAS NUEVOS RESPECTO A 9/1/26 (1:30:50)"
+      }
+     ],
+     "total": 4822,
+     "nTemas": 19
+    }
+   ]
+  },
+  {
+   "lugar": "Blacknote",
+   "fecha": "2026-07-17",
+   "fechaTexto": "17 de julio de 2026",
+   "variantes": [
+    {
+     "nombre": "Fran",
+     "temas": [
+      {
+       "n": 1,
+       "titulo": "DON’T SAY IT’S OVER",
+       "artista": "Gun",
+       "tune": "",
+       "dur": 250,
+       "comentario": ""
+      },
+      {
+       "n": 2,
+       "titulo": "ARE YOU GONNA GO MY WAY",
+       "artista": "Lenny Kravitz",
+       "tune": "",
+       "dur": 212,
+       "comentario": ""
+      },
+      {
+       "n": 3,
+       "titulo": "ROCK N ROLL ALL NITE",
+       "artista": "Kiss",
+       "tune": "PITCH -1",
+       "dur": 217,
+       "comentario": ""
+      },
+      {
+       "n": 4,
+       "titulo": "LOLA MONTEZ",
+       "artista": "Volbeat",
+       "tune": "PITCH -1",
+       "dur": 269,
+       "comentario": ""
+      },
+      {
+       "n": 5,
+       "titulo": "GOLD ON THE CEILING",
+       "artista": "The Black Keys",
+       "tune": "",
+       "dur": 224,
+       "comentario": ""
+      },
+      {
+       "n": 6,
+       "titulo": "WHAT A WONDERFUL WORLD",
+       "artista": "Joey Ramone",
+       "tune": "",
+       "dur": 143,
+       "comentario": ""
+      },
+      {
+       "n": 7,
+       "titulo": "WANT YOU BAD",
+       "artista": "The Offspring",
+       "tune": "PITCH -2",
+       "dur": 203,
+       "comentario": ""
+      },
+      {
+       "n": 8,
+       "titulo": "99 RED BALLOONS",
+       "artista": "Goldfinger",
+       "tune": "DROP D",
+       "dur": 229,
+       "comentario": ""
+      },
+      {
+       "n": 9,
+       "titulo": "LAST NITE",
+       "artista": "The Strokes",
+       "tune": "",
+       "dur": 194,
+       "comentario": ""
+      },
+      {
+       "n": 10,
+       "titulo": "HUSH",
+       "artista": "Kula Shaker",
+       "tune": "",
+       "dur": 175,
+       "comentario": ""
+      },
+      {
+       "n": 11,
+       "titulo": "DANCE MACABRE",
+       "artista": "Ghost",
+       "tune": "PITCH -2",
+       "dur": 220,
+       "comentario": ""
+      },
+      {
+       "n": 12,
+       "titulo": "WICKED GAME",
+       "artista": "HIM",
+       "tune": "",
+       "dur": 246,
+       "comentario": ""
+      },
+      {
+       "n": 13,
+       "titulo": "MR. BRIGHTSIDE",
+       "artista": "The Killers",
+       "tune": "FER EB",
+       "dur": 222,
+       "comentario": ""
+      },
+      {
+       "n": 14,
+       "titulo": "ROCK N ROLL STAR",
+       "artista": "Oasis",
+       "tune": "",
+       "dur": 226,
+       "comentario": ""
+      },
+      {
+       "n": 15,
+       "titulo": "HASH PIPE",
+       "artista": "Weezer",
+       "tune": "",
+       "dur": 187,
+       "comentario": ""
+      },
+      {
+       "n": 16,
+       "titulo": "MY HERO",
+       "artista": "Foo Fighters",
+       "tune": "",
+       "dur": 260,
+       "comentario": ""
+      },
+      {
+       "n": 17,
+       "titulo": "USE SOMEBODY",
+       "artista": "Kings of Leon",
+       "tune": "",
+       "dur": 231,
+       "comentario": ""
+      },
+      {
+       "n": 18,
+       "titulo": "HIGHER",
+       "artista": "Creed",
+       "tune": "DROP D",
+       "dur": 317,
+       "comentario": ""
+      },
+      {
+       "n": 19,
+       "titulo": "CELEBRITY SKIN",
+       "artista": "Hole",
+       "tune": "",
+       "dur": 163,
+       "comentario": ""
+      },
+      {
+       "n": 20,
+       "titulo": "SONG 2",
+       "artista": "Blur",
+       "tune": "PITCH -1",
+       "dur": 121,
+       "comentario": ""
+      },
+      {
+       "n": 21,
+       "titulo": "BLITZKRIEG BOP",
+       "artista": "Ramones",
+       "tune": "",
+       "dur": 133,
+       "comentario": ""
+      },
+      {
+       "n": 22,
+       "titulo": "ALL THE SMALL THINGS",
+       "artista": "Blink-182",
+       "tune": "",
+       "dur": 167,
+       "comentario": ""
+      },
+      {
+       "n": 23,
+       "titulo": "BURNING LOVE",
+       "artista": "Carburetors",
+       "tune": "",
+       "dur": 172,
+       "comentario": ""
+      },
+      {
+       "n": 24,
+       "titulo": "SEVEN NATION ARMY",
+       "artista": "The White Stripes",
+       "tune": "",
+       "dur": 232,
+       "comentario": ""
+      },
+      {
+       "n": 25,
+       "titulo": "MEDLEY HENDRIX-ZEPPELIN",
+       "artista": "Rockin'1000",
+       "tune": "",
+       "dur": 275,
+       "comentario": ""
+      },
+      {
+       "seccion": "TOTAL DURACIÓN"
+      },
+      {
+       "seccion": "TOTAL DISTINTAS DEL ULTIMO BLACKNOTE"
+      },
+      {
+       "seccion": "TEMAS NUEVOS RESPECTO A 9/1/26 (1:30:50)"
+      }
+     ],
+     "total": 5288,
+     "nTemas": 25
+    },
+    {
+     "nombre": "Edu",
+     "temas": [
+      {
+       "n": 1,
+       "titulo": "SHOULD I STAY OR SHOULD I GO",
+       "artista": "The Clash",
+       "tune": "",
+       "dur": 188,
+       "comentario": ""
+      },
+      {
+       "n": 2,
+       "titulo": "WHEN I COME AROUND",
+       "artista": "Green Day",
+       "tune": "PITCH -1",
+       "dur": 178,
+       "comentario": ""
+      },
+      {
+       "n": 3,
+       "titulo": "BORN TO BE WILD",
+       "artista": "Steppenwolf",
+       "tune": "",
+       "dur": 211,
+       "comentario": ""
+      },
+      {
+       "n": 4,
+       "titulo": "HEROES",
+       "artista": "Motörhead",
+       "tune": "",
+       "dur": 261,
+       "comentario": ""
+      },
+      {
+       "n": 5,
+       "titulo": "HUSH",
+       "artista": "Kula Shaker",
+       "tune": "",
+       "dur": 175,
+       "comentario": ""
+      },
+      {
+       "n": 6,
+       "titulo": "ROCK N ROLL STAR",
+       "artista": "Oasis",
+       "tune": "",
+       "dur": 226,
+       "comentario": ""
+      },
+      {
+       "n": 7,
+       "titulo": "CELEBRITY SKIN",
+       "artista": "Hole",
+       "tune": "",
+       "dur": 163,
+       "comentario": ""
+      },
+      {
+       "n": 8,
+       "titulo": "HASH PIPE",
+       "artista": "Weezer",
+       "tune": "",
+       "dur": 187,
+       "comentario": ""
+      },
+      {
+       "n": 9,
+       "titulo": "WICKED GAME",
+       "artista": "HIM",
+       "tune": "",
+       "dur": 246,
+       "comentario": ""
+      },
+      {
+       "n": 10,
+       "titulo": "USE SOMEBODY",
+       "artista": "Kings of Leon",
+       "tune": "",
+       "dur": 231,
+       "comentario": ""
+      },
+      {
+       "n": 11,
+       "titulo": "DON’T LOOK BACK IN ANGER",
+       "artista": "Oasis",
+       "tune": "",
+       "dur": 288,
+       "comentario": ""
+      },
+      {
+       "n": 12,
+       "titulo": "COME TOGETHER",
+       "artista": "The Beatles",
+       "tune": "",
+       "dur": 260,
+       "comentario": ""
+      },
+      {
+       "n": 13,
+       "titulo": "DANCE MACABRE",
+       "artista": "Ghost",
+       "tune": "PITCH -2",
+       "dur": 220,
+       "comentario": ""
+      },
+      {
+       "n": 14,
+       "titulo": "DON’T SAY IT’S OVER",
+       "artista": "Gun",
+       "tune": "",
+       "dur": 250,
+       "comentario": ""
+      },
+      {
+       "n": 15,
+       "titulo": "HIGHER",
+       "artista": "Creed",
+       "tune": "DROP D",
+       "dur": 317,
+       "comentario": ""
+      },
+      {
+       "n": 16,
+       "titulo": "ARE YOU GONNA GO MY WAY",
+       "artista": "Lenny Kravitz",
+       "tune": "",
+       "dur": 212,
+       "comentario": ""
+      },
+      {
+       "n": 17,
+       "titulo": "ROCKIN IN THE FREE WORLD",
+       "artista": "Neil Young",
+       "tune": "",
+       "dur": 247,
+       "comentario": ""
+      },
+      {
+       "n": 18,
+       "titulo": "WON’T GET FOOLED AGAIN",
+       "artista": "The Who",
+       "tune": "",
+       "dur": 276,
+       "comentario": ""
+      },
+      {
+       "n": 19,
+       "titulo": "WANT YOU BAD",
+       "artista": "The Offspring",
+       "tune": "PITCH -2",
+       "dur": 203,
+       "comentario": ""
+      },
+      {
+       "n": 20,
+       "titulo": "BLITZKRIEG BOP",
+       "artista": "Ramones",
+       "tune": "",
+       "dur": 133,
+       "comentario": ""
+      },
+      {
+       "n": 21,
+       "titulo": "MR. BRIGHTSIDE",
+       "artista": "The Killers",
+       "tune": "FER EB",
+       "dur": 222,
+       "comentario": ""
+      },
+      {
+       "n": 22,
+       "titulo": "ROCK N ROLL ALL NITE",
+       "artista": "Kiss",
+       "tune": "PITCH -1",
+       "dur": 217,
+       "comentario": ""
+      },
+      {
+       "n": 23,
+       "titulo": "WHAT A WONDERFUL WORLD",
+       "artista": "Joey Ramone",
+       "tune": "",
+       "dur": 143,
+       "comentario": ""
+      },
+      {
+       "seccion": "TOTAL DURACIÓN"
+      },
+      {
+       "seccion": "TOTAL DISTINTAS DEL ULTIMO BLACKNOTE"
+      },
+      {
+       "seccion": "TEMAS NUEVOS RESPECTO A 9/1/26 (1:30:50)"
+      }
+     ],
+     "total": 5054,
+     "nTemas": 23
+    },
+    {
+     "nombre": "Fer 1",
+     "temas": [
+      {
+       "n": 1,
+       "titulo": "ROCK N ROLL ALL NITE",
+       "artista": "Kiss",
+       "tune": "PITCH -1",
+       "dur": 217,
+       "comentario": ""
+      },
+      {
+       "n": 2,
+       "titulo": "DON’T SAY IT’S OVER",
+       "artista": "Gun",
+       "tune": "",
+       "dur": 250,
+       "comentario": ""
+      },
+      {
+       "n": 3,
+       "titulo": "ARE YOU GONNA GO MY WAY",
+       "artista": "Lenny Kravitz",
+       "tune": "",
+       "dur": 212,
+       "comentario": ""
+      },
+      {
+       "n": 4,
+       "titulo": "LAST NITE",
+       "artista": "The Strokes",
+       "tune": "",
+       "dur": 194,
+       "comentario": ""
+      },
+      {
+       "n": 5,
+       "titulo": "HUSH",
+       "artista": "Kula Shaker",
+       "tune": "",
+       "dur": 175,
+       "comentario": ""
+      },
+      {
+       "n": 6,
+       "titulo": "WICKED GAME",
+       "artista": "HIM",
+       "tune": "",
+       "dur": 246,
+       "comentario": ""
+      },
+      {
+       "n": 7,
+       "titulo": "USE SOMEBODY",
+       "artista": "Kings of Leon",
+       "tune": "",
+       "dur": 231,
+       "comentario": ""
+      },
+      {
+       "n": 8,
+       "titulo": "ROCK N ROLL STAR",
+       "artista": "Oasis",
+       "tune": "",
+       "dur": 226,
+       "comentario": ""
+      },
+      {
+       "n": 9,
+       "titulo": "WHAT A WONDERFUL WORLD",
+       "artista": "Joey Ramone",
+       "tune": "",
+       "dur": 143,
+       "comentario": ""
+      },
+      {
+       "n": 10,
+       "titulo": "CELEBRITY SKIN",
+       "artista": "Hole",
+       "tune": "",
+       "dur": 163,
+       "comentario": ""
+      },
+      {
+       "n": 11,
+       "titulo": "HASH PIPE",
+       "artista": "Weezer",
+       "tune": "",
+       "dur": 187,
+       "comentario": ""
+      },
+      {
+       "n": 12,
+       "titulo": "SEVEN NATION ARMY",
+       "artista": "The White Stripes",
+       "tune": "",
+       "dur": 232,
+       "comentario": ""
+      },
+      {
+       "n": 13,
+       "titulo": "MY HERO",
+       "artista": "Foo Fighters",
+       "tune": "",
+       "dur": 260,
+       "comentario": ""
+      },
+      {
+       "n": 14,
+       "titulo": "HIGHER",
+       "artista": "Creed",
+       "tune": "DROP D",
+       "dur": 317,
+       "comentario": ""
+      },
+      {
+       "n": 15,
+       "titulo": "LOLA MONTEZ",
+       "artista": "Volbeat",
+       "tune": "PITCH -1",
+       "dur": 269,
+       "comentario": ""
+      },
+      {
+       "n": 16,
+       "titulo": "DANCE MACABRE",
+       "artista": "Ghost",
+       "tune": "PITCH -2",
+       "dur": 220,
+       "comentario": ""
+      },
+      {
+       "n": 17,
+       "titulo": "99 RED BALLOONS",
+       "artista": "Goldfinger",
+       "tune": "DROP D",
+       "dur": 229,
+       "comentario": ""
+      },
+      {
+       "n": 18,
+       "titulo": "MR. BRIGHTSIDE",
+       "artista": "The Killers",
+       "tune": "FER EB",
+       "dur": 222,
+       "comentario": ""
+      },
+      {
+       "n": 19,
+       "titulo": "SONG 2",
+       "artista": "Blur",
+       "tune": "PITCH -1",
+       "dur": 121,
+       "comentario": ""
+      },
+      {
+       "n": 20,
+       "titulo": "BLITZKRIEG BOP",
+       "artista": "Ramones",
+       "tune": "",
+       "dur": 133,
+       "comentario": ""
+      },
+      {
+       "n": 21,
+       "titulo": "WANT YOU BAD",
+       "artista": "The Offspring",
+       "tune": "PITCH -2",
+       "dur": 203,
+       "comentario": ""
+      },
+      {
+       "n": 22,
+       "titulo": "ALL THE SMALL THINGS",
+       "artista": "Blink-182",
+       "tune": "",
+       "dur": 167,
+       "comentario": ""
+      },
+      {
+       "n": 23,
+       "titulo": "ENTER SANDMAN",
+       "artista": "Metallica",
+       "tune": "",
+       "dur": 307,
+       "comentario": ""
+      },
+      {
+       "n": 24,
+       "titulo": "MEDLEY HENDRIX-ZEPPELIN",
+       "artista": "Rockin'1000",
+       "tune": "",
+       "dur": 275,
+       "comentario": ""
+      },
+      {
+       "seccion": "TOTAL DURACIÓN"
+      },
+      {
+       "seccion": "TOTAL DISTINTAS DEL ULTIMO BLACKNOTE"
+      },
+      {
+       "seccion": "TEMAS NUEVOS RESPECTO A 9/1/26 (1:30:50)"
+      }
+     ],
+     "total": 5199,
+     "nTemas": 24
+    },
+    {
+     "nombre": "Set",
+     "temas": [
+      {
+       "seccion": "ARRANQUE"
+      },
+      {
+       "n": 1,
+       "titulo": "ROCK N ROLL STAR",
+       "artista": "Oasis",
+       "tune": "",
+       "dur": 226,
+       "comentario": ""
+      },
+      {
+       "n": 2,
+       "titulo": "ALL THE SMALL THINGS",
+       "artista": "Blink-182",
+       "tune": "",
+       "dur": 167,
+       "comentario": ""
+      },
+      {
+       "n": 3,
+       "titulo": "WHEN I COME AROUND",
+       "artista": "Green Day",
+       "tune": "PITCH -1",
+       "dur": 178,
+       "comentario": ""
+      },
+      {
+       "n": 4,
+       "titulo": "WANT YOU BAD",
+       "artista": "The Offspring",
+       "tune": "PITCH -2",
+       "dur": 203,
+       "comentario": ""
+      },
+      {
+       "n": 5,
+       "titulo": "BLITZKRIEG BOP",
+       "artista": "Ramones",
+       "tune": "",
+       "dur": 133,
+       "comentario": ""
+      },
+      {
+       "n": 6,
+       "titulo": "SHOULD I STAY OR SHOULD I GO",
+       "artista": "The Clash",
+       "tune": "",
+       "dur": 188,
+       "comentario": ""
+      },
+      {
+       "seccion": "CAÑA CLASICA"
+      },
+      {
+       "n": 7,
+       "titulo": "BORN TO BE WILD",
+       "artista": "Steppenwolf",
+       "tune": "",
+       "dur": 211,
+       "comentario": ""
+      },
+      {
+       "n": 8,
+       "titulo": "CELEBRITY SKIN",
+       "artista": "Hole",
+       "tune": "",
+       "dur": 163,
+       "comentario": ""
+      },
+      {
+       "n": 9,
+       "titulo": "HASH PIPE",
+       "artista": "Weezer",
+       "tune": "",
+       "dur": 187,
+       "comentario": ""
+      },
+      {
+       "n": 10,
+       "titulo": "ENTER SANDMAN",
+       "artista": "Metallica",
+       "tune": "",
+       "dur": 307,
+       "comentario": ""
+      },
+      {
+       "seccion": "VALLE"
+      },
+      {
+       "n": 11,
+       "titulo": "WICKED GAME",
+       "artista": "HIM",
+       "tune": "",
+       "dur": 246,
+       "comentario": ""
+      },
+      {
+       "n": 12,
+       "titulo": "USE SOMEBODY",
+       "artista": "Kings of Leon",
+       "tune": "",
+       "dur": 231,
+       "comentario": ""
+      },
+      {
+       "n": 13,
+       "titulo": "DON’T LOOK BACK IN ANGER",
+       "artista": "Oasis",
+       "tune": "",
+       "dur": 288,
+       "comentario": ""
+      },
+      {
+       "n": 14,
+       "titulo": "HIGHER",
+       "artista": "Creed",
+       "tune": "DROP D",
+       "dur": 317,
+       "comentario": ""
+      },
+      {
+       "seccion": "REMONTADA"
+      },
+      {
+       "n": 15,
+       "titulo": "DON’T SAY IT’S OVER",
+       "artista": "Gun",
+       "tune": "",
+       "dur": 250,
+       "comentario": ""
+      },
+      {
+       "n": 16,
+       "titulo": "MR. BRIGHTSIDE",
+       "artista": "The Killers",
+       "tune": "FER EB",
+       "dur": 222,
+       "comentario": ""
+      },
+      {
+       "n": 17,
+       "titulo": "COME TOGETHER",
+       "artista": "The Beatles",
+       "tune": "",
+       "dur": 260,
+       "comentario": ""
+      },
+      {
+       "n": 18,
+       "titulo": "CRAZY LITTLE THING CALLED LOVE",
+       "artista": "Queen",
+       "tune": "",
+       "dur": 165,
+       "comentario": ""
+      },
+      {
+       "n": 19,
+       "titulo": "ARE YOU GONNA GO MY WAY",
+       "artista": "Lenny Kravitz",
+       "tune": "",
+       "dur": 212,
+       "comentario": ""
+      },
+      {
+       "seccion": "CLIMAX"
+      },
+      {
+       "n": 20,
+       "titulo": "SMELLS LIKE TEEN SPIRIT",
+       "artista": "Nirvana",
+       "tune": "",
+       "dur": 301,
+       "comentario": ""
+      },
+      {
+       "n": 21,
+       "titulo": "SONG 2",
+       "artista": "Blur",
+       "tune": "PITCH -1",
+       "dur": 121,
+       "comentario": ""
+      },
+      {
+       "n": 22,
+       "titulo": "MEDLEY BLACK SABATH",
+       "artista": "R1K",
+       "tune": "PITCH -1",
+       "dur": 262,
+       "comentario": ""
+      },
+      {
+       "n": 23,
+       "titulo": "KILLING IN THE NAME",
+       "artista": "Rage Against the Machine",
+       "tune": "DROP D",
+       "dur": 314,
+       "comentario": ""
+      },
+      {
+       "n": 24,
+       "titulo": "ROCK N ROLL ALL NITE",
+       "artista": "Kiss",
+       "tune": "PITCH -1",
+       "dur": 217,
+       "comentario": ""
+      },
+      {
+       "seccion": "BIS"
+      },
+      {
+       "n": 25,
+       "titulo": "WHAT A WONDERFUL WORLD",
+       "artista": "Joey Ramone",
+       "tune": "",
+       "dur": 143,
+       "comentario": ""
+      },
+      {
+       "seccion": "TOTAL DURACIÓN"
+      },
+      {
+       "seccion": "TOTAL DISTINTAS DEL ULTIMO BLACKNOTE"
+      },
+      {
+       "seccion": "TEMAS NUEVOS RESPECTO A 9/1/26 (1:30:50)"
+      }
+     ],
+     "total": 5512,
+     "nTemas": 25
+    },
+    {
+     "nombre": "1",
+     "temas": [
+      {
+       "seccion": "INTRO CAÑON"
+      },
+      {
+       "n": 1,
+       "titulo": "ANARCHY IN THE UK",
+       "artista": "Sex Pistols",
+       "tune": "",
+       "dur": 212,
+       "comentario": ""
+      },
+      {
+       "n": 2,
+       "titulo": "DANCE MACABRE",
+       "artista": "Ghost",
+       "tune": "PITCH -2",
+       "dur": 220,
+       "comentario": ""
+      },
+      {
+       "n": 3,
+       "titulo": "DANCING WITH MYSELF",
+       "artista": "Billy Idol & Generation X",
+       "tune": "",
+       "dur": 290,
+       "comentario": ""
+      },
+      {
+       "n": 4,
+       "titulo": "DON’T SAY IT’S OVER",
+       "artista": "Gun",
+       "tune": "",
+       "dur": 250,
+       "comentario": ""
+      },
+      {
+       "n": 5,
+       "titulo": "EVEN FLOW",
+       "artista": "Pearl Jam",
+       "tune": "DROP D",
+       "dur": 293,
+       "comentario": ""
+      },
+      {
+       "n": 6,
+       "titulo": "GOLD ON THE CEILING",
+       "artista": "The Black Keys",
+       "tune": "",
+       "dur": 224,
+       "comentario": ""
+      },
+      {
+       "n": 7,
+       "titulo": "HASH PIPE",
+       "artista": "Weezer",
+       "tune": "",
+       "dur": 187,
+       "comentario": ""
+      },
+      {
+       "n": 8,
+       "titulo": "MAMA I’M COMING HOME",
+       "artista": "Ozzy Osbourne",
+       "tune": "",
+       "dur": 252,
+       "comentario": ""
+      },
+      {
+       "n": 9,
+       "titulo": "SHARP DRESSED MAN",
+       "artista": "ZZ Top",
+       "tune": "",
+       "dur": 258,
+       "comentario": ""
+      },
+      {
+       "n": 10,
+       "titulo": "SYMPHONY OF DESTRUCTION",
+       "artista": "Megadeth",
+       "tune": "",
+       "dur": 247,
+       "comentario": ""
+      },
+      {
+       "n": 11,
+       "titulo": "WANT YOU BAD",
+       "artista": "The Offspring",
+       "tune": "PITCH -2",
+       "dur": 203,
+       "comentario": ""
+      },
+      {
+       "n": 12,
+       "titulo": "YOU REALLY GOT ME",
+       "artista": "Van Halen",
+       "tune": "",
+       "dur": 156,
+       "comentario": ""
+      },
+      {
+       "n": 13,
+       "titulo": "WHEN I COME AROUND",
+       "artista": "Green Day",
+       "tune": "PITCH -1",
+       "dur": 178,
+       "comentario": ""
+      },
+      {
+       "n": 14,
+       "titulo": "HIGHER",
+       "artista": "Creed",
+       "tune": "DROP D",
+       "dur": 317,
+       "comentario": ""
+      },
+      {
+       "n": 15,
+       "titulo": "ROCK N ROLL STAR",
+       "artista": "Oasis",
+       "tune": "",
+       "dur": 226,
+       "comentario": ""
+      },
+      {
+       "n": 16,
+       "titulo": "WHAT A WONDERFUL WORLD",
+       "artista": "Joey Ramone",
+       "tune": "",
+       "dur": 143,
+       "comentario": ""
+      },
+      {
+       "n": 17,
+       "titulo": "USE SOMEBODY",
+       "artista": "Kings of Leon",
+       "tune": "",
+       "dur": 231,
+       "comentario": ""
+      },
+      {
+       "n": 18,
+       "titulo": "CELEBRITY SKIN",
+       "artista": "Hole",
+       "tune": "",
+       "dur": 163,
+       "comentario": ""
+      },
+      {
+       "seccion": "TOTAL DURACIÓN"
+      },
+      {
+       "seccion": "TEMAS NUEVOS RESPECTO A 9/1/26 (1:30:50)"
+      }
+     ],
+     "total": 4050,
+     "nTemas": 18
+    },
+    {
+     "nombre": "2",
+     "temas": [
+      {
+       "seccion": "ARRANQUE"
+      },
+      {
+       "n": 1,
+       "titulo": "BORN TO BE WILD",
+       "artista": "Steppenwolf",
+       "tune": "",
+       "dur": 211,
+       "comentario": ""
+      },
+      {
+       "n": 2,
+       "titulo": "ROCK N ROLL STAR",
+       "artista": "Oasis",
+       "tune": "",
+       "dur": 226,
+       "comentario": ""
+      },
+      {
+       "n": 3,
+       "titulo": "SHOULD I STAY OR SHOULD I GO",
+       "artista": "The Clash",
+       "tune": "",
+       "dur": 188,
+       "comentario": ""
+      },
+      {
+       "n": 4,
+       "titulo": "WHEN I COME AROUND",
+       "artista": "Green Day",
+       "tune": "PITCH -1",
+       "dur": 178,
+       "comentario": ""
+      },
+      {
+       "n": 5,
+       "titulo": "WANT YOU BAD",
+       "artista": "The Offspring",
+       "tune": "PITCH -2",
+       "dur": 203,
+       "comentario": ""
+      },
+      {
+       "n": 6,
+       "titulo": "BLITZKRIEG BOP",
+       "artista": "Ramones",
+       "tune": "",
+       "dur": 133,
+       "comentario": ""
+      },
+      {
+       "seccion": "CAÑA"
+      },
+      {
+       "n": 7,
+       "titulo": "CELEBRITY SKIN",
+       "artista": "Hole",
+       "tune": "",
+       "dur": 163,
+       "comentario": ""
+      },
+      {
+       "n": 8,
+       "titulo": "HASH PIPE",
+       "artista": "Weezer",
+       "tune": "",
+       "dur": 187,
+       "comentario": ""
+      },
+      {
+       "n": 9,
+       "titulo": "HEROES",
+       "artista": "Motörhead",
+       "tune": "",
+       "dur": 261,
+       "comentario": ""
+      },
+      {
+       "n": 10,
+       "titulo": "HUSH",
+       "artista": "Kula Shaker",
+       "tune": "",
+       "dur": 175,
+       "comentario": ""
+      },
+      {
+       "seccion": "VALLE"
+      },
+      {
+       "n": 11,
+       "titulo": "WICKED GAME",
+       "artista": "HIM",
+       "tune": "",
+       "dur": 246,
+       "comentario": ""
+      },
+      {
+       "n": 12,
+       "titulo": "USE SOMEBODY",
+       "artista": "Kings of Leon",
+       "tune": "",
+       "dur": 231,
+       "comentario": ""
+      },
+      {
+       "n": 13,
+       "titulo": "DON’T LOOK BACK IN ANGER",
+       "artista": "Oasis",
+       "tune": "",
+       "dur": 288,
+       "comentario": ""
+      },
+      {
+       "n": 14,
+       "titulo": "HIGHER",
+       "artista": "Creed",
+       "tune": "DROP D",
+       "dur": 317,
+       "comentario": ""
+      },
+      {
+       "seccion": "REMONTADA"
+      },
+      {
+       "n": 15,
+       "titulo": "DON’T SAY IT’S OVER",
+       "artista": "Gun",
+       "tune": "",
+       "dur": 250,
+       "comentario": ""
+      },
+      {
+       "n": 16,
+       "titulo": "COME TOGETHER",
+       "artista": "The Beatles",
+       "tune": "",
+       "dur": 260,
+       "comentario": ""
+      },
+      {
+       "n": 17,
+       "titulo": "CRAZY LITTLE THING CALLED LOVE",
+       "artista": "Queen",
+       "tune": "",
+       "dur": 165,
+       "comentario": ""
+      },
+      {
+       "n": 18,
+       "titulo": "ROCKIN IN THE FREE WORLD",
+       "artista": "Neil Young",
+       "tune": "",
+       "dur": 247,
+       "comentario": ""
+      },
+      {
+       "n": 19,
+       "titulo": "ARE YOU GONNA GO MY WAY",
+       "artista": "Lenny Kravitz",
+       "tune": "",
+       "dur": 212,
+       "comentario": ""
+      },
+      {
+       "seccion": "CLIMAX"
+      },
+      {
+       "n": 20,
+       "titulo": "MEDLEY HENDRIX-ZEPPELIN",
+       "artista": "Rockin'1000",
+       "tune": "",
+       "dur": 275,
+       "comentario": ""
+      },
+      {
+       "n": 21,
+       "titulo": "WON’T GET FOOLED AGAIN",
+       "artista": "The Who",
+       "tune": "",
+       "dur": 276,
+       "comentario": ""
+      },
+      {
+       "n": 22,
+       "titulo": "ENTER SANDMAN",
+       "artista": "Metallica",
+       "tune": "",
+       "dur": 307,
+       "comentario": ""
+      },
+      {
+       "n": 23,
+       "titulo": "MEDLEY BLACK SABATH",
+       "artista": "R1K",
+       "tune": "PITCH -1",
+       "dur": 262,
+       "comentario": ""
+      },
+      {
+       "n": 24,
+       "titulo": "ROCK N ROLL ALL NITE",
+       "artista": "Kiss",
+       "tune": "PITCH -1",
+       "dur": 217,
+       "comentario": ""
+      },
+      {
+       "seccion": "BIS"
+      },
+      {
+       "n": 25,
+       "titulo": "WHAT A WONDERFUL WORLD",
+       "artista": "Joey Ramone",
+       "tune": "",
+       "dur": 143,
+       "comentario": ""
+      },
+      {
+       "seccion": "TOTAL DURACIÓN"
+      },
+      {
+       "seccion": "TOTAL DISTINTAS DEL ULTIMO BLACKNOTE"
+      },
+      {
+       "seccion": "TEMAS NUEVOS RESPECTO A 9/1/26 (1:30:50)"
+      }
+     ],
+     "total": 5621,
+     "nTemas": 25
+    }
+   ]
+  },
+  {
+   "lugar": "Blacknote",
+   "fecha": "2026-05-08",
+   "fechaTexto": "8 de mayo de 2026",
+   "variantes": [
+    {
+     "nombre": "Set 1",
+     "temas": [
+      {
+       "seccion": "INTRO CAÑON"
+      },
+      {
+       "n": 1,
+       "titulo": "ROCK N ROLL STAR",
+       "artista": "Oasis",
+       "tune": "",
+       "dur": 226,
+       "comentario": ""
+      },
+      {
+       "n": 2,
+       "titulo": "ARE YOU GONNA GO MY WAY",
+       "artista": "Lenny Kravitz",
+       "tune": "",
+       "dur": 212,
+       "comentario": ""
+      },
+      {
+       "n": 3,
+       "titulo": "ROCKIN IN THE FREE WORLD",
+       "artista": "Neil Young",
+       "tune": "",
+       "dur": 247,
+       "comentario": ""
+      },
+      {
+       "n": 4,
+       "titulo": "LEARN TO FLY",
+       "artista": "Foo Fighters",
+       "tune": "",
+       "dur": 235,
+       "comentario": ""
+      },
+      {
+       "n": 5,
+       "titulo": "WHEN I COME AROUND",
+       "artista": "Green Day",
+       "tune": "PITCH -1",
+       "dur": 178,
+       "comentario": ""
+      },
+      {
+       "n": 6,
+       "titulo": "ROCK N ROLL ALL NITE",
+       "artista": "Kiss",
+       "tune": "PITCH -1",
+       "dur": 217,
+       "comentario": ""
+      },
+      {
+       "n": 7,
+       "titulo": "WHAT A WONDERFUL WORLD",
+       "artista": "Joey Ramone",
+       "tune": "",
+       "dur": 143,
+       "comentario": ""
+      },
+      {
+       "seccion": "CLIMAX - MINI SPEECH (AGRADECIMIENTOS)"
+      },
+      {
+       "n": 8,
+       "titulo": "CRAZY LITTLE THING CALLED LOVE",
+       "artista": "Queen",
+       "tune": "",
+       "dur": 165,
+       "comentario": ""
+      },
+      {
+       "n": 9,
+       "titulo": "DON’T LOOK BACK IN ANGER",
+       "artista": "Oasis",
+       "tune": "",
+       "dur": 288,
+       "comentario": ""
+      },
+      {
+       "n": 10,
+       "titulo": "WHERE IS MY MIND",
+       "artista": "Pixies",
+       "tune": "",
+       "dur": 229,
+       "comentario": ""
+      },
+      {
+       "n": 11,
+       "titulo": "SEVEN NATION ARMY",
+       "artista": "The White Stripes",
+       "tune": "",
+       "dur": 232,
+       "comentario": ""
+      },
+      {
+       "seccion": "RECARGA DE ENERGIA - SPEECH (MOTIVATIONAL)"
+      },
+      {
+       "n": 12,
+       "titulo": "BURNING LOVE",
+       "artista": "Carburetors",
+       "tune": "",
+       "dur": 172,
+       "comentario": ""
+      },
+      {
+       "n": 13,
+       "titulo": "HEROES",
+       "artista": "Motörhead",
+       "tune": "",
+       "dur": 261,
+       "comentario": ""
+      },
+      {
+       "n": 14,
+       "titulo": "WICKED GAME",
+       "artista": "HIM",
+       "tune": "",
+       "dur": 246,
+       "comentario": ""
+      },
+      {
+       "n": 15,
+       "titulo": "LOLA MONTEZ",
+       "artista": "Volbeat",
+       "tune": "PITCH -1",
+       "dur": 269,
+       "comentario": ""
+      },
+      {
+       "n": 16,
+       "titulo": "BORN TO BE WILD",
+       "artista": "Steppenwolf",
+       "tune": "",
+       "dur": 211,
+       "comentario": ""
+      },
+      {
+       "seccion": "MOMENTO CANALLA - CAMBIO GUITARRA FER"
+      },
+      {
+       "n": 17,
+       "titulo": "HIGHER",
+       "artista": "Creed",
+       "tune": "DROP D",
+       "dur": 317,
+       "comentario": ""
+      },
+      {
+       "n": 18,
+       "titulo": "MR. BRIGHTSIDE",
+       "artista": "The Killers",
+       "tune": "FER EB",
+       "dur": 222,
+       "comentario": ""
+      },
+      {
+       "n": 19,
+       "titulo": "HUSH",
+       "artista": "Kula Shaker",
+       "tune": "",
+       "dur": 175,
+       "comentario": ""
+      },
+      {
+       "n": 20,
+       "titulo": "LAST NITE",
+       "artista": "The Strokes",
+       "tune": "",
+       "dur": 194,
+       "comentario": ""
+      },
+      {
+       "n": 21,
+       "titulo": "SHOULD I STAY OR SHOULD I GO",
+       "artista": "The Clash",
+       "tune": "",
+       "dur": 188,
+       "comentario": ""
+      },
+      {
+       "n": 22,
+       "titulo": "BLITZKRIEG BOP",
+       "artista": "Ramones",
+       "tune": "",
+       "dur": 133,
+       "comentario": ""
+      },
+      {
+       "n": 23,
+       "titulo": "ALL THE SMALL THINGS",
+       "artista": "Blink-182",
+       "tune": "",
+       "dur": 167,
+       "comentario": ""
+      },
+      {
+       "n": 24,
+       "titulo": "MEDLEY GREEN DAY",
+       "artista": "Green Day",
+       "tune": "",
+       "dur": 360,
+       "comentario": ""
+      },
+      {
+       "seccion": "BISES"
+      },
+      {
+       "n": 25,
+       "titulo": "HYSTERIA",
+       "artista": "Muse",
+       "tune": "PITCH -1",
+       "dur": 227,
+       "comentario": ""
+      },
+      {
+       "n": 26,
+       "titulo": "MEDLEY HENDRIX-ZEPPELIN",
+       "artista": "Rockin'1000",
+       "tune": "",
+       "dur": 275,
+       "comentario": ""
+      },
+      {
+       "seccion": "TOTAL DURACIÓN"
+      },
+      {
+       "seccion": "TEMAS NUEVOS RESPECTO A 9/1/26 (1:30:50)"
+      }
+     ],
+     "total": 5789,
+     "nTemas": 26
+    },
+    {
+     "nombre": "Set 2",
+     "temas": [
+      {
+       "n": 1,
+       "titulo": "BURNING LOVE",
+       "artista": "Carburetors",
+       "tune": "",
+       "dur": 172,
+       "comentario": ""
+      },
+      {
+       "n": 2,
+       "titulo": "ARE YOU GONNA GO MY WAY",
+       "artista": "Lenny Kravitz",
+       "tune": "",
+       "dur": 212,
+       "comentario": ""
+      },
+      {
+       "n": 3,
+       "titulo": "ROCKIN IN THE FREE WORLD",
+       "artista": "Neil Young",
+       "tune": "",
+       "dur": 247,
+       "comentario": ""
+      },
+      {
+       "n": 4,
+       "titulo": "WICKED GAME",
+       "artista": "HIM",
+       "tune": "",
+       "dur": 246,
+       "comentario": ""
+      },
+      {
+       "n": 5,
+       "titulo": "LOLA MONTEZ",
+       "artista": "Volbeat",
+       "tune": "PITCH -1",
+       "dur": 269,
+       "comentario": ""
+      },
+      {
+       "n": 6,
+       "titulo": "99 RED BALLOONS",
+       "artista": "Goldfinger",
+       "tune": "DROP D",
+       "dur": 229,
+       "comentario": ""
+      },
+      {
+       "n": 7,
+       "titulo": "CRAZY LITTLE THING CALLED LOVE",
+       "artista": "Queen",
+       "tune": "",
+       "dur": 165,
+       "comentario": ""
+      },
+      {
+       "n": 8,
+       "titulo": "WHERE IS MY MIND",
+       "artista": "Pixies",
+       "tune": "",
+       "dur": 229,
+       "comentario": ""
+      },
+      {
+       "n": 9,
+       "titulo": "WON’T GET FOOLED AGAIN",
+       "artista": "The Who",
+       "tune": "",
+       "dur": 276,
+       "comentario": ""
+      },
+      {
+       "n": 10,
+       "titulo": "BORN TO BE WILD",
+       "artista": "Steppenwolf",
+       "tune": "",
+       "dur": 211,
+       "comentario": ""
+      },
+      {
+       "n": 11,
+       "titulo": "PARANOID",
+       "artista": "Black Sabbath",
+       "tune": "",
+       "dur": 167,
+       "comentario": ""
+      },
+      {
+       "n": 12,
+       "titulo": "ALL MY LIFE",
+       "artista": "Foo Fighters",
+       "tune": "PITCH -1",
+       "dur": 263,
+       "comentario": ""
+      },
+      {
+       "n": 13,
+       "titulo": "SUPERSONIC",
+       "artista": "Oasis",
+       "tune": "",
+       "dur": 284,
+       "comentario": ""
+      },
+      {
+       "n": 14,
+       "titulo": "HEROES",
+       "artista": "Motörhead",
+       "tune": "",
+       "dur": 261,
+       "comentario": ""
+      },
+      {
+       "n": 15,
+       "titulo": "HUSH",
+       "artista": "Kula Shaker",
+       "tune": "",
+       "dur": 175,
+       "comentario": ""
+      },
+      {
+       "n": 16,
+       "titulo": "SEVEN NATION ARMY",
+       "artista": "The White Stripes",
+       "tune": "",
+       "dur": 232,
+       "comentario": ""
+      },
+      {
+       "n": 17,
+       "titulo": "MR. BRIGHTSIDE",
+       "artista": "The Killers",
+       "tune": "FER EB",
+       "dur": 222,
+       "comentario": ""
+      },
+      {
+       "n": 18,
+       "titulo": "LAST NITE",
+       "artista": "The Strokes",
+       "tune": "",
+       "dur": 194,
+       "comentario": ""
+      },
+      {
+       "n": 19,
+       "titulo": "SHOULD I STAY OR SHOULD I GO",
+       "artista": "The Clash",
+       "tune": "",
+       "dur": 188,
+       "comentario": ""
+      },
+      {
+       "n": 20,
+       "titulo": "BLITZKRIEG BOP",
+       "artista": "Ramones",
+       "tune": "",
+       "dur": 133,
+       "comentario": ""
+      },
+      {
+       "n": 21,
+       "titulo": "ALL THE SMALL THINGS",
+       "artista": "Blink-182",
+       "tune": "",
+       "dur": 167,
+       "comentario": ""
+      },
+      {
+       "n": 22,
+       "titulo": "MEDLEY GREEN DAY",
+       "artista": "Green Day",
+       "tune": "",
+       "dur": 360,
+       "comentario": ""
+      },
+      {
+       "n": 23,
+       "titulo": "LEARN TO FLY",
+       "artista": "Foo Fighters",
+       "tune": "",
+       "dur": 235,
+       "comentario": ""
+      },
+      {
+       "n": 24,
+       "titulo": "KILLING IN THE NAME",
+       "artista": "Rage Against the Machine",
+       "tune": "DROP D",
+       "dur": 314,
+       "comentario": ""
+      },
+      {
+       "seccion": "TOTAL DURACIÓN"
+      }
+     ],
+     "total": 5451,
+     "nTemas": 24
+    }
+   ]
+  },
+  {
+   "lugar": "Glam",
+   "fecha": "2026-05-02",
+   "fechaTexto": "2 de mayo de 2026",
+   "variantes": [
+    {
+     "nombre": "Set",
+     "temas": [
+      {
+       "seccion": "INTRO CAÑON"
+      },
+      {
+       "n": 1,
+       "titulo": "ROCK N ROLL STAR",
+       "artista": "Oasis",
+       "tune": "",
+       "dur": 226,
+       "comentario": ""
+      },
+      {
+       "n": 2,
+       "titulo": "ARE YOU GONNA GO MY WAY",
+       "artista": "Lenny Kravitz",
+       "tune": "",
+       "dur": 212,
+       "comentario": ""
+      },
+      {
+       "n": 3,
+       "titulo": "ROCKIN IN THE FREE WORLD",
+       "artista": "Neil Young",
+       "tune": "",
+       "dur": 247,
+       "comentario": ""
+      },
+      {
+       "n": 4,
+       "titulo": "LEARN TO FLY",
+       "artista": "Foo Fighters",
+       "tune": "",
+       "dur": 235,
+       "comentario": ""
+      },
+      {
+       "n": 5,
+       "titulo": "ENTER SANDMAN",
+       "artista": "Metallica",
+       "tune": "",
+       "dur": 307,
+       "comentario": ""
+      },
+      {
+       "n": 6,
+       "titulo": "WHEN I COME AROUND",
+       "artista": "Green Day",
+       "tune": "PITCH -1",
+       "dur": 178,
+       "comentario": ""
+      },
+      {
+       "n": 7,
+       "titulo": "ROCK N ROLL ALL NITE",
+       "artista": "Kiss",
+       "tune": "PITCH -1",
+       "dur": 217,
+       "comentario": ""
+      },
+      {
+       "n": 8,
+       "titulo": "WHAT A WONDERFUL WORLD",
+       "artista": "Joey Ramone",
+       "tune": "",
+       "dur": 143,
+       "comentario": ""
+      },
+      {
+       "seccion": "CLIMAX - MINI SPEECH (AGRADECIMIENTOS)"
+      },
+      {
+       "n": 9,
+       "titulo": "CRAZY LITTLE THING CALLED LOVE",
+       "artista": "Queen",
+       "tune": "",
+       "dur": 165,
+       "comentario": ""
+      },
+      {
+       "n": 10,
+       "titulo": "DON’T LOOK BACK IN ANGER",
+       "artista": "Oasis",
+       "tune": "",
+       "dur": 288,
+       "comentario": ""
+      },
+      {
+       "n": 11,
+       "titulo": "WHERE IS MY MIND",
+       "artista": "Pixies",
+       "tune": "",
+       "dur": 229,
+       "comentario": ""
+      },
+      {
+       "n": 12,
+       "titulo": "YELLOW",
+       "artista": "Coldplay",
+       "tune": "",
+       "dur": 269,
+       "comentario": ""
+      },
+      {
+       "n": 13,
+       "titulo": "SEVEN NATION ARMY",
+       "artista": "The White Stripes",
+       "tune": "",
+       "dur": 232,
+       "comentario": ""
+      },
+      {
+       "n": 14,
+       "titulo": "SUPERSONIC",
+       "artista": "Oasis",
+       "tune": "",
+       "dur": 284,
+       "comentario": ""
+      },
+      {
+       "seccion": "RECARGA DE ENERGIA - SPEECH (MOTIVATIONAL)"
+      },
+      {
+       "n": 15,
+       "titulo": "BURNING LOVE",
+       "artista": "Carburetors",
+       "tune": "",
+       "dur": 172,
+       "comentario": ""
+      },
+      {
+       "n": 16,
+       "titulo": "HEROES",
+       "artista": "Motörhead",
+       "tune": "",
+       "dur": 261,
+       "comentario": ""
+      },
+      {
+       "n": 17,
+       "titulo": "WICKED GAME",
+       "artista": "HIM",
+       "tune": "",
+       "dur": 246,
+       "comentario": ""
+      },
+      {
+       "n": 18,
+       "titulo": "LOLA MONTEZ",
+       "artista": "Volbeat",
+       "tune": "PITCH -1",
+       "dur": 269,
+       "comentario": ""
+      },
+      {
+       "n": 19,
+       "titulo": "BORN TO BE WILD",
+       "artista": "Steppenwolf",
+       "tune": "",
+       "dur": 211,
+       "comentario": ""
+      },
+      {
+       "n": 20,
+       "titulo": "MEDLEY HENDRIX-ZEPPELIN",
+       "artista": "Rockin'1000",
+       "tune": "",
+       "dur": 275,
+       "comentario": ""
+      },
+      {
+       "seccion": "MOMENTO CANALLA - CAMBIO GUITARRA FER"
+      },
+      {
+       "n": 21,
+       "titulo": "HIGHER",
+       "artista": "Creed",
+       "tune": "DROP D",
+       "dur": 317,
+       "comentario": ""
+      },
+      {
+       "n": 22,
+       "titulo": "MR. BRIGHTSIDE",
+       "artista": "The Killers",
+       "tune": "FER EB",
+       "dur": 222,
+       "comentario": ""
+      },
+      {
+       "n": 23,
+       "titulo": "HUSH",
+       "artista": "Kula Shaker",
+       "tune": "",
+       "dur": 175,
+       "comentario": ""
+      },
+      {
+       "n": 24,
+       "titulo": "LAST NITE",
+       "artista": "The Strokes",
+       "tune": "",
+       "dur": 194,
+       "comentario": ""
+      },
+      {
+       "n": 25,
+       "titulo": "SHOULD I STAY OR SHOULD I GO",
+       "artista": "The Clash",
+       "tune": "",
+       "dur": 188,
+       "comentario": ""
+      },
+      {
+       "n": 26,
+       "titulo": "BLITZKRIEG BOP",
+       "artista": "Ramones",
+       "tune": "",
+       "dur": 133,
+       "comentario": ""
+      },
+      {
+       "n": 27,
+       "titulo": "ALL THE SMALL THINGS",
+       "artista": "Blink-182",
+       "tune": "",
+       "dur": 167,
+       "comentario": ""
+      },
+      {
+       "n": 28,
+       "titulo": "MEDLEY GREEN DAY -",
+       "artista": "",
+       "tune": "",
+       "dur": null,
+       "comentario": ""
+      },
+      {
+       "seccion": "BISES"
+      },
+      {
+       "n": 29,
+       "titulo": "HYSTERIA",
+       "artista": "Muse",
+       "tune": "PITCH -1",
+       "dur": 227,
+       "comentario": ""
+      },
+      {
+       "seccion": "TOTAL DURACIÓN"
+      }
+     ],
+     "total": 6289,
+     "nTemas": 29
+    }
+   ]
+  },
+  {
+   "lugar": "Solomon",
+   "fecha": "2026-03-28",
+   "fechaTexto": "28 de marzo de 2026",
+   "variantes": [
+    {
+     "nombre": "Set",
+     "temas": [
+      {
+       "n": 1,
+       "titulo": "BURNING LOVE",
+       "artista": "",
+       "tune": "",
+       "dur": 172,
+       "comentario": ""
+      },
+      {
+       "n": 2,
+       "titulo": "ROCKIN IN THE FREE WORLD",
+       "artista": "",
+       "tune": "",
+       "dur": 282,
+       "comentario": ""
+      },
+      {
+       "n": 3,
+       "titulo": "ARE YOU GONNA GO MY WAY",
+       "artista": "",
+       "tune": "",
+       "dur": 232,
+       "comentario": ""
+      },
+      {
+       "n": 4,
+       "titulo": "LOLA MONTEZ",
+       "artista": "",
+       "tune": "PITCH -1",
+       "dur": 269,
+       "comentario": ""
+      },
+      {
+       "n": 5,
+       "titulo": "99 RED BALLOONS",
+       "artista": "(DROP-D)",
+       "tune": "DROP D",
+       "dur": 229,
+       "comentario": ""
+      },
+      {
+       "n": 6,
+       "titulo": "WHERE IS MY MIND",
+       "artista": "",
+       "tune": "",
+       "dur": 229,
+       "comentario": ""
+      },
+      {
+       "n": 7,
+       "titulo": "WHEN I COME AROUND (PITCH -1) ON",
+       "artista": "",
+       "tune": "",
+       "dur": 178,
+       "comentario": ""
+      },
+      {
+       "n": 8,
+       "titulo": "WICKED GAME",
+       "artista": "HIM",
+       "tune": "",
+       "dur": 246,
+       "comentario": ""
+      },
+      {
+       "n": 9,
+       "titulo": "HEROES",
+       "artista": "",
+       "tune": "",
+       "dur": 222,
+       "comentario": ""
+      },
+      {
+       "n": 10,
+       "titulo": "ROCK AND ROLL ALL NITE (PITCH -1) ON",
+       "artista": "",
+       "tune": "",
+       "dur": 168,
+       "comentario": ""
+      },
+      {
+       "n": 11,
+       "titulo": "WON'T GET FOOLED AGAIN",
+       "artista": "",
+       "tune": "",
+       "dur": 277,
+       "comentario": ""
+      },
+      {
+       "n": 12,
+       "titulo": "BORN TO BE WILD",
+       "artista": "",
+       "tune": "",
+       "dur": 211,
+       "comentario": ""
+      },
+      {
+       "n": 13,
+       "titulo": "QUEEN",
+       "artista": "CRAZY LITTLE THING CALLED LOVE",
+       "tune": "",
+       "dur": 168,
+       "comentario": ""
+      },
+      {
+       "n": 14,
+       "titulo": "DON’T LOOK BACK IN ANGER",
+       "artista": "",
+       "tune": "",
+       "dur": 288,
+       "comentario": ""
+      },
+      {
+       "n": 15,
+       "titulo": "MR. BRIGHTSIDE",
+       "artista": "",
+       "tune": "FER EB",
+       "dur": 222,
+       "comentario": ""
+      },
+      {
+       "n": 16,
+       "titulo": "SEVEN NATION ARMY",
+       "artista": "",
+       "tune": "",
+       "dur": 232,
+       "comentario": ""
+      },
+      {
+       "n": 17,
+       "titulo": "HUSH",
+       "artista": "",
+       "tune": "",
+       "dur": 175,
+       "comentario": ""
+      },
+      {
+       "n": 18,
+       "titulo": "LAST NITE",
+       "artista": "",
+       "tune": "",
+       "dur": 194,
+       "comentario": ""
+      },
+      {
+       "n": 19,
+       "titulo": "SHOULD I STAY OR SHOULD I GO",
+       "artista": "",
+       "tune": "",
+       "dur": 188,
+       "comentario": ""
+      },
+      {
+       "n": 20,
+       "titulo": "BLITZKRIEG BOP",
+       "artista": "",
+       "tune": "",
+       "dur": 133,
+       "comentario": ""
+      },
+      {
+       "n": 21,
+       "titulo": "ALL THE SMALL THINGS",
+       "artista": "",
+       "tune": "",
+       "dur": 167,
+       "comentario": ""
+      },
+      {
+       "n": 22,
+       "titulo": "HYSTERIA",
+       "artista": "",
+       "tune": "PITCH -1",
+       "dur": 368,
+       "comentario": ""
+      },
+      {
+       "n": 23,
+       "titulo": "KILLING IN THE NAME (DROP-D)",
+       "artista": "",
+       "tune": "",
+       "dur": 314,
+       "comentario": ""
+      },
+      {
+       "seccion": "TOTAL DURACIÓN"
+      }
+     ],
+     "total": 5164,
+     "nTemas": 23
+    }
+   ]
+  },
+  {
+   "lugar": "Blacknote",
+   "fecha": "2026-01-09",
+   "fechaTexto": "9 de enero de 2026",
+   "variantes": [
+    {
+     "nombre": "Set",
+     "temas": [
+      {
+       "n": 1,
+       "titulo": "BURNING LOVE",
+       "artista": "",
+       "tune": "",
+       "dur": 172,
+       "comentario": ""
+      },
+      {
+       "n": 2,
+       "titulo": "ARE YOU GONNA GO MY WAY",
+       "artista": "",
+       "tune": "",
+       "dur": 212,
+       "comentario": ""
+      },
+      {
+       "n": 3,
+       "titulo": "ROCKIN IN THE FREE WORLD",
+       "artista": "",
+       "tune": "",
+       "dur": 247,
+       "comentario": ""
+      },
+      {
+       "n": 4,
+       "titulo": "WICKED GAME",
+       "artista": "HIM",
+       "tune": "",
+       "dur": 246,
+       "comentario": ""
+      },
+      {
+       "n": 5,
+       "titulo": "LOLA MONTEZ",
+       "artista": "",
+       "tune": "PITCH -1",
+       "dur": 269,
+       "comentario": ""
+      },
+      {
+       "n": 6,
+       "titulo": "99 RED BALLOONS",
+       "artista": "(DROP-D)",
+       "tune": "DROP D",
+       "dur": 229,
+       "comentario": ""
+      },
+      {
+       "n": 7,
+       "titulo": "QUEEN",
+       "artista": "CRAZY LITTLE THING CALLED LOVE (STANDARD)",
+       "tune": "",
+       "dur": null,
+       "comentario": ""
+      },
+      {
+       "n": 8,
+       "titulo": "WHERE IS MY MIND",
+       "artista": "",
+       "tune": "",
+       "dur": 229,
+       "comentario": ""
+      },
+      {
+       "n": 9,
+       "titulo": "WON'T GET FOOLED AGAIN",
+       "artista": "",
+       "tune": "",
+       "dur": 276,
+       "comentario": ""
+      },
+      {
+       "n": 10,
+       "titulo": "BORN TO BE WILD",
+       "artista": "",
+       "tune": "",
+       "dur": 211,
+       "comentario": ""
+      },
+      {
+       "n": 11,
+       "titulo": "PARANOID (PITCH -1) ON",
+       "artista": "",
+       "tune": "",
+       "dur": null,
+       "comentario": ""
+      },
+      {
+       "n": 12,
+       "titulo": "ALL MY LIFE (PITCH -1) ON",
+       "artista": "",
+       "tune": "",
+       "dur": null,
+       "comentario": ""
+      },
+      {
+       "n": 13,
+       "titulo": "SUPERSONIC (PITCH OFF)",
+       "artista": "",
+       "tune": "",
+       "dur": null,
+       "comentario": ""
+      },
+      {
+       "n": 14,
+       "titulo": "HEROES",
+       "artista": "",
+       "tune": "",
+       "dur": 261,
+       "comentario": ""
+      },
+      {
+       "n": 15,
+       "titulo": "HUSH",
+       "artista": "",
+       "tune": "",
+       "dur": 175,
+       "comentario": ""
+      },
+      {
+       "n": 16,
+       "titulo": "SEVEN NATION ARMY",
+       "artista": "",
+       "tune": "",
+       "dur": 232,
+       "comentario": ""
+      },
+      {
+       "n": 17,
+       "titulo": "MR. BRIGHTSIDE",
+       "artista": "",
+       "tune": "FER EB",
+       "dur": 222,
+       "comentario": ""
+      },
+      {
+       "n": 18,
+       "titulo": "LAST NITE",
+       "artista": "",
+       "tune": "",
+       "dur": 194,
+       "comentario": ""
+      },
+      {
+       "n": 19,
+       "titulo": "SHOULD I STAY OR SHOULD I GO",
+       "artista": "",
+       "tune": "",
+       "dur": 188,
+       "comentario": ""
+      },
+      {
+       "n": 20,
+       "titulo": "BLITZKRIEG BOP",
+       "artista": "",
+       "tune": "",
+       "dur": 133,
+       "comentario": ""
+      },
+      {
+       "n": 21,
+       "titulo": "ALL THE SMALL THINGS",
+       "artista": "",
+       "tune": "",
+       "dur": 167,
+       "comentario": ""
+      },
+      {
+       "n": 22,
+       "titulo": "MEDLEY GREEN DAY",
+       "artista": "",
+       "tune": "",
+       "dur": 360,
+       "comentario": ""
+      },
+      {
+       "n": 23,
+       "titulo": "LEARN TO FLY",
+       "artista": "",
+       "tune": "",
+       "dur": 235,
+       "comentario": ""
+      },
+      {
+       "n": 24,
+       "titulo": "KILLING IN THE NAME (DROP-D)",
+       "artista": "",
+       "tune": "",
+       "dur": null,
+       "comentario": ""
+      }
+     ],
+     "total": 4258,
+     "nTemas": 24
+    }
+   ]
+  },
+  {
+   "lugar": "Solomon",
+   "fecha": "2025-02-01",
+   "fechaTexto": "1 de febrero de 2025",
+   "variantes": [
+    {
+     "nombre": "Set",
+     "temas": [
+      {
+       "n": 1,
+       "titulo": "ENTER SANDMAN",
+       "artista": "",
+       "tune": "",
+       "dur": 307,
+       "comentario": ""
+      },
+      {
+       "n": 2,
+       "titulo": "MY HERO",
+       "artista": "",
+       "tune": "",
+       "dur": 260,
+       "comentario": ""
+      },
+      {
+       "n": 3,
+       "titulo": "SMELLS LIKE TEEN SPIRIT",
+       "artista": "",
+       "tune": "",
+       "dur": 301,
+       "comentario": ""
+      },
+      {
+       "n": 4,
+       "titulo": "HEROES",
+       "artista": "MOTÖRHEAD",
+       "tune": "",
+       "dur": 261,
+       "comentario": ""
+      },
+      {
+       "n": 5,
+       "titulo": "ARE YOU GONNA GO MY WAY",
+       "artista": "",
+       "tune": "",
+       "dur": 212,
+       "comentario": ""
+      },
+      {
+       "n": 6,
+       "titulo": "99 RED BALLOONS",
+       "artista": "(OJO AFINACIÓN)",
+       "tune": "DROP D",
+       "dur": 229,
+       "comentario": ""
+      },
+      {
+       "n": 7,
+       "titulo": "POISON",
+       "artista": "",
+       "tune": "",
+       "dur": null,
+       "comentario": ""
+      },
+      {
+       "n": 8,
+       "titulo": "SEVEN NATION ARMY",
+       "artista": "",
+       "tune": "",
+       "dur": 232,
+       "comentario": ""
+      },
+      {
+       "n": 9,
+       "titulo": "LOLA MONTEZ",
+       "artista": "",
+       "tune": "PITCH -1",
+       "dur": 269,
+       "comentario": ""
+      },
+      {
+       "n": 10,
+       "titulo": "QUEEN",
+       "artista": "CRAZY LITTLE THING CALLED LOVE",
+       "tune": "",
+       "dur": null,
+       "comentario": ""
+      },
+      {
+       "n": 11,
+       "titulo": "DON´T LOOK BACK IN ANGER",
+       "artista": "",
+       "tune": "",
+       "dur": null,
+       "comentario": ""
+      },
+      {
+       "n": 12,
+       "titulo": "WON'T GET FOOLED AGAIN",
+       "artista": "",
+       "tune": "",
+       "dur": 276,
+       "comentario": ""
+      },
+      {
+       "n": 13,
+       "titulo": "ONE",
+       "artista": "",
+       "tune": "",
+       "dur": null,
+       "comentario": ""
+      },
+      {
+       "n": 14,
+       "titulo": "COME TOGETHER",
+       "artista": "",
+       "tune": "",
+       "dur": 260,
+       "comentario": ""
+      },
+      {
+       "n": 15,
+       "titulo": "WICKED GAME",
+       "artista": "HIM",
+       "tune": "",
+       "dur": 246,
+       "comentario": ""
+      },
+      {
+       "n": 16,
+       "titulo": "LEARN TO FLY",
+       "artista": "",
+       "tune": "",
+       "dur": 235,
+       "comentario": ""
+      },
+      {
+       "n": 17,
+       "titulo": "MEDLEY GREEN DAY",
+       "artista": "",
+       "tune": "",
+       "dur": 360,
+       "comentario": ""
+      },
+      {
+       "n": 18,
+       "titulo": "SONG 2",
+       "artista": "(CUERDA 5 TRASTE 9)",
+       "tune": "PITCH -1",
+       "dur": 121,
+       "comentario": ""
+      },
+      {
+       "n": 19,
+       "titulo": "SHOULD I STAY OR SHOULD I GO",
+       "artista": "",
+       "tune": "",
+       "dur": 188,
+       "comentario": ""
+      },
+      {
+       "n": 20,
+       "titulo": "ALL THE SMALL THINGS",
+       "artista": "",
+       "tune": "",
+       "dur": 167,
+       "comentario": ""
+      },
+      {
+       "n": 21,
+       "titulo": "BLITZKRIEG BOP",
+       "artista": "",
+       "tune": "",
+       "dur": 133,
+       "comentario": ""
+      },
+      {
+       "n": 22,
+       "titulo": "KNIGHTS OF CYDONIA",
+       "artista": "",
+       "tune": "",
+       "dur": 368,
+       "comentario": ""
+      },
+      {
+       "n": 23,
+       "titulo": "KILLING IN THE NAME",
+       "artista": "(OJO AFINACIÓN)",
+       "tune": "DROP D",
+       "dur": 314,
+       "comentario": ""
+      },
+      {
+       "n": 24,
+       "titulo": "ENTRE DOS TIERRAS",
+       "artista": "BIS",
+       "tune": "",
+       "dur": null,
+       "comentario": ""
+      },
+      {
+       "n": 25,
+       "titulo": "ROCK AND ROLL ALL NITE",
+       "artista": "BIS",
+       "tune": "",
+       "dur": null,
+       "comentario": ""
+      },
+      {
+       "n": 26,
+       "titulo": "TAGE WIE DIESE",
+       "artista": "",
+       "tune": "",
+       "dur": null,
+       "comentario": ""
+      }
+     ],
+     "total": 4739,
+     "nTemas": 26
+    }
+   ]
+  }
+ ]
+}
