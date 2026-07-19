@@ -1,1 +1,17 @@
-{"temas":[],"conciertos":[]}
+{
+ "temas": [
+  {
+   "nombre": "ENTRE DOS TIERRAS - Héroes del Silencio",
+   "titulo": "ENTRE DOS TIERRAS",
+   "artista": "Héroes del Silencio",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 368,
+   "album": "The Platinum Collection",
+   "anyo": "",
+   "apple": "https://www.deezer.com/track/3113250",
+   "artwork": "https://cdn-images.dzcdn.net/images/cover/808b93c7d18cb2f89eb6cf5af9ab843e/250x250-000000-80-0-0.jpg"
+  }
+ ],
+ "conciertos": []
+}
