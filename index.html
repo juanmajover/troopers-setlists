@@ -43,6 +43,7 @@
     display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap;
     border-bottom: 3px solid var(--rojo); padding-bottom: 1rem; margin-bottom: 2rem;
   }
+  .marca a { display: block; -webkit-tap-highlight-color: transparent; }
   .marca img { height: clamp(4rem, 14vw, 6.5rem); width: auto; display: block; }
   .marca .sub { color: var(--apagado); font-size: 1rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; }
   .marca .hueco { flex: 1; }
@@ -278,7 +279,7 @@
 
 <main id="portada">
   <header class="marca">
-    <img src="logo.png" alt="Rockin' Troopers">
+    <a href="presentacion.html" title="Sobre la app"><img src="logo.png" alt="Rockin' Troopers"></a>
     <span class="sub">Setlists</span>
     <span class="hueco"></span>
     <button id="btn-admin" aria-label="Modo administrador">&#9881;</button>
@@ -572,7 +573,7 @@ function pintarPortada() {
     b.onclick = () => abrirConcierto(i);
     cont.appendChild(b);
   });
-  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v11";
+  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v12";
 }
 
 /* ================= concierto ================= */
