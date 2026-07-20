@@ -567,7 +567,7 @@ function pintarPortada() {
     b.onclick = () => abrirConcierto(i);
     cont.appendChild(b);
   });
-  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v8";
+  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v9";
 }
 
 /* ================= concierto ================= */
@@ -1031,14 +1031,21 @@ function pintarCandidatas() {
         '<div class="titulo">' + esc(cand.titulo) + "</div>" +
         (cand.artista ? '<div class="artista">' + esc(cand.artista) +
           (cand.album ? " · " + esc(cand.album) : "") + (cand.anyo ? " · " + cand.anyo : "") + "</div>" : "") +
-        (cand.propuestaPor ? '<div class="propuesto">Propuesta de ' + esc(cand.propuestaPor) + "</div>" : "") +
+        '<div class="propuesto">' + (cand.propuestaPor ? "Propuesta de " + esc(cand.propuestaPor) : "Sin proponente — edítala con ✎") + "</div>" +
+        (cand.comentario ? '<div class="comentario">' + esc(cand.comentario) + "</div>" : "") +
         '<div class="acciones-fila"></div>' +
       "</div>" +
       '<div class="cola">' +
+        (cand.afinacion ? '<span class="badge ' + claseBadge(cand.afinacion) + '">' + esc(cand.afinacion) + "</span>" : "") +
         (cand.dur ? '<span class="dur">' + fmtDur(cand.dur) + "</span>" : "") +
       "</div>";
     const acc = fila.querySelector(".acciones-fila");
     acc.appendChild(botonPlay(cand));
+    const be = document.createElement("button");
+    be.className = "btn-mini";
+    be.textContent = "✎";
+    be.onclick = () => abrirEditorCandidata(fila, cand);
+    acc.appendChild(be);
     MIEMBROS.forEach(m => {
       const v = document.createElement("button");
       v.className = "voto" + (cand.votos[m] ? " si" : "");
@@ -1079,6 +1086,43 @@ function pintarCandidatas() {
     acc.appendChild(bx);
     cont.appendChild(fila);
   });
+}
+
+function abrirEditorCandidata(fila, cand) {
+  document.querySelectorAll(".editor.flotante").forEach(e => e.remove());
+  const ed = document.createElement("div");
+  ed.className = "editor flotante";
+  const estandar = ["", "DROP D", "PITCH -1", "PITCH -2"];
+  const esOtra = cand.afinacion && !estandar.includes(cand.afinacion);
+  ed.innerHTML =
+    '<div class="col-titulo">Quién la propone</div>' +
+    '<div class="fila-form"><input class="campo ed-prop" placeholder="JM, Fer, Edu, Fran&hellip;" value="' + esc(cand.propuestaPor || "") + '" style="max-width:14rem"></div>' +
+    '<div class="col-titulo">Afinación propuesta</div>' +
+    '<div class="chips-afinacion">' +
+    estandar.map(a =>
+      '<button class="chip' + ((cand.afinacion || "") === a && !esOtra ? " activa" : "") + '" data-a="' + a + '">' + (a || "Estándar") + "</button>").join("") +
+    '<input class="campo ed-otra" placeholder="otra&hellip;" style="max-width:8rem" value="' + (esOtra ? esc(cand.afinacion) : "") + '"></div>' +
+    '<textarea class="campo ed-coment" placeholder="Comentario" style="width:100%">' + esc(cand.comentario || "") + "</textarea>" +
+    '<div class="fila-form" style="margin-top:.7rem">' +
+    '<button class="btn principal ed-guardar">Guardar</button>' +
+    '<button class="btn ed-cancelar">Cancelar</button></div>';
+  fila.after(ed);
+  let afin = esOtra ? null : (cand.afinacion || "");
+  ed.querySelectorAll(".chips-afinacion .chip").forEach(ch => ch.onclick = () => {
+    ed.querySelectorAll(".chips-afinacion .chip").forEach(x => x.classList.remove("activa"));
+    ch.classList.add("activa");
+    afin = ch.dataset.a;
+    ed.querySelector(".ed-otra").value = "";
+  });
+  ed.querySelector(".ed-cancelar").onclick = () => ed.remove();
+  ed.querySelector(".ed-guardar").onclick = () => {
+    const antes = Object.assign({}, cand);
+    const otra = ed.querySelector(".ed-otra").value.trim().toUpperCase();
+    cand.propuestaPor = ed.querySelector(".ed-prop").value.trim();
+    cand.afinacion = otra || afin || "";
+    cand.comentario = ed.querySelector(".ed-coment").value.trim();
+    publicarConVuelta("Editada candidata: " + cand.titulo, () => Object.assign(cand, antes));
+  };
 }
 
 /* ================= ADMIN ================= */
