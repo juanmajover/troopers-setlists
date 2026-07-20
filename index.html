@@ -186,6 +186,18 @@
   .tema.rep { grid-template-columns: 1fr auto; }
   #rep-filtro { max-width: 18rem; }
 
+  /* ---------- CANDIDATAS ---------- */
+  #candidatas { display: none; }
+  .tarjeta.cand-card { border-left: 4px solid var(--ambar); }
+  #cand-lista { max-width: 68rem; margin: 0 auto; padding: 1rem 1.2rem 5rem; }
+  .voto {
+    border: 1px solid var(--linea); border-radius: 999px; background: var(--panel);
+    padding: .35rem .8rem; font-weight: 700; font-size: .9rem; color: var(--apagado);
+  }
+  .voto.si { color: var(--fondo); background: var(--verde); border-color: var(--verde); }
+  .acciones-fila { display: flex; gap: .45rem; flex-wrap: wrap; margin-top: .55rem; align-items: center; }
+  .propuesto { color: var(--apagado); font-size: .92rem; margin-top: .2rem; }
+
   /* ---------- ADMIN ---------- */
   #admin { display: none; max-width: 60rem; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
   .admin-cab { display: flex; align-items: baseline; gap: 1rem; border-bottom: 3px solid var(--ambar); padding-bottom: 1rem; margin-bottom: 1.8rem; flex-wrap: wrap; }
@@ -301,6 +313,17 @@
   <div id="rep-lista" style="max-width:68rem;margin:0 auto;padding:1rem 1.2rem 5rem"></div>
 </section>
 
+<section id="candidatas">
+  <div class="cabecera">
+    <button class="btn" id="cand-volver" aria-label="Volver a la lista">&#8592;</button>
+    <div class="cab-titulo">
+      <div class="lugar">Candidatas</div>
+      <div class="cuando" id="cand-resumen"></div>
+    </div>
+  </div>
+  <div id="cand-lista"></div>
+</section>
+
 <section id="admin">
   <div class="admin-cab">
     <h2>Modo administrador</h2>
@@ -373,6 +396,7 @@
 const REPO_OWNER = "juanmajover";
 const REPO_NOMBRE = "troopers-setlists";
 const RUTA_EXTRA = "extra.json";
+const MIEMBROS = ["JM", "Fer", "Edu", "Fran"];
 
 /* ================= estado ================= */
 const $ = id => document.getElementById(id);
@@ -440,6 +464,10 @@ async function cargar() {
     ]);
     DATOS = await rd.json();
     if (re.ok) EXTRA = await re.json();
+    EXTRA.temas = EXTRA.temas || [];
+    EXTRA.conciertos = EXTRA.conciertos || [];
+    EXTRA.candidatas = EXTRA.candidatas || [];
+    EXTRA.overrides = EXTRA.overrides || {};
   } catch (e) {
     $("cargando").textContent = "No se han podido cargar los datos. Comprueba la conexión y recarga.";
     return;
@@ -449,10 +477,19 @@ async function cargar() {
   pintarPortada();
 }
 
+function clavesDe(t) {
+  return normalizar(t.nombre || (t.titulo + (t.artista ? " - " + t.artista : "")));
+}
+
 function fusionar() {
-  // temas: base del Numbers + añadidos desde la app (sin duplicar)
+  const ov = EXTRA.overrides || {};
+  // temas: base del Numbers + añadidos desde la app (sin duplicar) + ediciones
   const vistos = new Set(DATOS.maestra.map(t => normalizar(t.nombre)));
   MAESTRA = DATOS.maestra.concat(EXTRA.temas.filter(t => !vistos.has(normalizar(t.nombre))));
+  MAESTRA = MAESTRA.map(t => {
+    const o = ov[clavesDe(t)];
+    return o ? Object.assign({}, t, o) : t;
+  });
   MAESTRA.sort((a, b) => normalizar(a.titulo) < normalizar(b.titulo) ? -1 : 1);
   // conciertos: fusionar por (lugar, fecha)
   const mapa = new Map();
@@ -464,6 +501,14 @@ function fusionar() {
   });
   CONCIERTOS = [...mapa.values()];
   CONCIERTOS.sort((a, b) => (b.fecha || "0000") < (a.fecha || "0000") ? -1 : 1);
+  // aplicar ediciones también a los temas dentro de los conciertos
+  CONCIERTOS.forEach(c => c.variantes.forEach(v => v.temas.forEach(t => {
+    if (t.seccion) return;
+    const o = ov[clavesDe(t)];
+    if (!o) return;
+    if (o.comentario !== undefined) t.comentario = o.comentario;
+    if (o.afinacion !== undefined && !t.tune) t.tune = o.afinacion;
+  })));
 }
 
 /* ================= escala ================= */
@@ -489,6 +534,15 @@ function pintarPortada() {
     '<div class="datos"><span>' + MAESTRA.length + " temas</span><span>" + fmtTotal(durTotal) + "</span></div>";
   rep.onclick = abrirRepertorio;
   cont.appendChild(rep);
+  const nCand = (EXTRA.candidatas || []).length;
+  const bc = document.createElement("button");
+  bc.className = "tarjeta cand-card";
+  bc.innerHTML =
+    '<div class="cuando">Propuestas pendientes de aprobar</div>' +
+    '<div class="lugar">Candidatas</div>' +
+    '<div class="datos"><span>' + nCand + (nCand === 1 ? " propuesta" : " propuestas") + "</span></div>";
+  bc.onclick = abrirCandidatas;
+  cont.appendChild(bc);
   CONCIERTOS.forEach((c, i) => {
     const v = c.variantes[0];
     const pasado = c.fecha && c.fecha < hoy;
@@ -502,7 +556,7 @@ function pintarPortada() {
     b.onclick = () => abrirConcierto(i);
     cont.appendChild(b);
   });
-  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v5";
+  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v6";
 }
 
 /* ================= concierto ================= */
@@ -651,6 +705,50 @@ document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible" && conciertoActual !== null) pedirWakeLock();
 });
 
+/* ================= previews en cualquier lista ================= */
+async function previewDe(t) {
+  if (t.preview) return t.preview;
+  const clave = "pv:" + clavesDe(t);
+  const cache = JSON.parse(localStorage.getItem("rt-previews") || "{}");
+  if (cache[clave] !== undefined) return cache[clave];
+  const q = (t.titulo + " " + (t.artista || "")).trim();
+  let url = null;
+  try {
+    const j = await jsonp("https://itunes.apple.com/search?media=music&limit=1&term=" + encodeURIComponent(q));
+    url = (j.results && j.results[0] && j.results[0].previewUrl) || null;
+  } catch (e) {
+    try {
+      const j = await jsonp("https://api.deezer.com/search?output=jsonp&limit=1&q=" + encodeURIComponent(q));
+      url = (j.data && j.data[0] && j.data[0].preview) || null;
+    } catch (e2) { return null; }
+  }
+  cache[clave] = url;
+  localStorage.setItem("rt-previews", JSON.stringify(cache));
+  return url;
+}
+
+function botonPlay(t) {
+  const b = document.createElement("button");
+  b.className = "btn-mini play";
+  b.textContent = "▶";
+  b.onclick = async ev => {
+    ev.stopPropagation();
+    if (botonSonando === b) { pararAudio(); return; }
+    pararAudio();
+    b.textContent = "…";
+    const url = await previewDe(t);
+    b.textContent = "▶";
+    if (!url) { toast("No hay preview para este tema", true); return; }
+    audioActual = new Audio(url);
+    audioActual.play();
+    audioActual.onended = pararAudio;
+    b.classList.add("sonando");
+    b.textContent = "■";
+    botonSonando = b;
+  };
+  return b;
+}
+
 /* ================= REPERTORIO ================= */
 function abrirRepertorio() {
   $("portada").style.display = "none";
@@ -667,6 +765,7 @@ $("rep-mas").onclick = () => { escala = Math.min(1.8, escala + 0.1); aplicarEsca
 $("rep-menos").onclick = () => { escala = Math.max(0.6, escala - 0.1); aplicarEscala(); };
 
 function pintarRepertorio() {
+  pararAudio();
   const filtro = normalizar($("rep-filtro").value);
   const cont = $("rep-lista");
   cont.innerHTML = "";
@@ -681,15 +780,161 @@ function pintarRepertorio() {
         '<div class="titulo">' + esc(t.titulo) + "</div>" +
         (t.artista ? '<div class="artista">' + esc(t.artista) + "</div>" : "") +
         (t.comentario ? '<div class="comentario">' + esc(t.comentario) + "</div>" : "") +
+        '<div class="acciones-fila"></div>' +
       "</div>" +
       '<div class="cola">' +
         (t.afinacion ? '<span class="badge ' + claseBadge(t.afinacion) + '">' + esc(t.afinacion) + "</span>" : "") +
         (t.dur ? '<span class="dur">' + fmtDur(t.dur) + "</span>" : "") +
       "</div>";
+    const acc = fila.querySelector(".acciones-fila");
+    acc.appendChild(botonPlay(t));
+    const be = document.createElement("button");
+    be.className = "btn-mini";
+    be.textContent = "✎ Editar";
+    be.onclick = () => abrirEditorEdicion(fila, t);
+    acc.appendChild(be);
     cont.appendChild(fila);
   });
   $("rep-resumen").textContent = vistos + " de " + MAESTRA.length + " temas";
   if (!vistos) cont.innerHTML = '<p class="pie">Ningún tema coincide con la búsqueda.</p>';
+}
+
+function abrirEditorEdicion(fila, t) {
+  document.querySelectorAll(".editor.flotante").forEach(e => e.remove());
+  const ed = document.createElement("div");
+  ed.className = "editor flotante";
+  const estandar = ["", "DROP D", "PITCH -1", "PITCH -2"];
+  const esOtra = t.afinacion && !estandar.includes(t.afinacion);
+  ed.innerHTML =
+    '<div class="col-titulo">Afinación</div>' +
+    '<div class="chips-afinacion">' +
+    estandar.map(a =>
+      '<button class="chip' + ((t.afinacion || "") === a ? " activa" : "") + '" data-a="' + a + '">' + (a || "Estándar") + "</button>").join("") +
+    '<input class="campo ed-otra" placeholder="otra&hellip;" style="max-width:8rem" value="' + (esOtra ? esc(t.afinacion) : "") + '"></div>' +
+    '<textarea class="campo ed-coment" placeholder="Comentario (se ve en el escenario)" style="width:100%">' + esc(t.comentario || "") + "</textarea>" +
+    '<div class="fila-form" style="margin-top:.7rem">' +
+    '<button class="btn principal ed-guardar">Guardar</button>' +
+    '<button class="btn ed-cancelar">Cancelar</button></div>';
+  fila.after(ed);
+  let afin = esOtra ? null : (t.afinacion || "");
+  ed.querySelectorAll(".chips-afinacion .chip").forEach(ch => ch.onclick = () => {
+    ed.querySelectorAll(".chips-afinacion .chip").forEach(x => x.classList.remove("activa"));
+    ch.classList.add("activa");
+    afin = ch.dataset.a;
+    ed.querySelector(".ed-otra").value = "";
+  });
+  ed.querySelector(".ed-cancelar").onclick = () => ed.remove();
+  ed.querySelector(".ed-guardar").onclick = async () => {
+    const otra = ed.querySelector(".ed-otra").value.trim().toUpperCase();
+    const cambios = {
+      afinacion: otra || afin || "",
+      comentario: ed.querySelector(".ed-coment").value.trim(),
+    };
+    const clave = clavesDe(t);
+    const enExtra = EXTRA.temas.find(x => normalizar(x.nombre) === clave);
+    const anteriorExtra = enExtra ? Object.assign({}, enExtra) : null;
+    const anteriorOv = EXTRA.overrides[clave];
+    if (enExtra) Object.assign(enExtra, cambios);
+    else EXTRA.overrides[clave] = Object.assign({}, EXTRA.overrides[clave], cambios);
+    ed.querySelector(".ed-guardar").disabled = true;
+    try {
+      await publicarExtra("Editado: " + t.titulo);
+      ed.remove();
+      pintarRepertorio();
+    } catch (e) {
+      if (enExtra) Object.assign(enExtra, anteriorExtra);
+      else if (anteriorOv === undefined) delete EXTRA.overrides[clave];
+      else EXTRA.overrides[clave] = anteriorOv;
+      ed.querySelector(".ed-guardar").disabled = false;
+    }
+  };
+}
+
+/* ================= CANDIDATAS ================= */
+function abrirCandidatas() {
+  $("portada").style.display = "none";
+  $("candidatas").style.display = "block";
+  window.scrollTo(0, 0);
+  pintarCandidatas();
+}
+$("cand-volver").onclick = () => {
+  pararAudio();
+  $("candidatas").style.display = "none";
+  $("portada").style.display = "block";
+  pintarPortada();
+};
+
+async function publicarConVuelta(mensaje, deshacer) {
+  try { await publicarExtra(mensaje); pintarCandidatas(); }
+  catch (e) { deshacer(); pintarCandidatas(); }
+}
+
+function pintarCandidatas() {
+  const cont = $("cand-lista");
+  const lista = EXTRA.candidatas || [];
+  $("cand-resumen").textContent = lista.length + (lista.length === 1 ? " propuesta" : " propuestas");
+  cont.innerHTML = "";
+  if (!lista.length) {
+    cont.innerHTML = '<p class="pie">No hay candidatas. Se proponen desde el modo administrador (⚙ → buscar tema → "A candidatas").</p>';
+    return;
+  }
+  lista.forEach((cand, i) => {
+    cand.votos = cand.votos || {};
+    const fila = document.createElement("div");
+    fila.className = "tema rep";
+    fila.innerHTML =
+      "<div>" +
+        '<div class="titulo">' + esc(cand.titulo) + "</div>" +
+        (cand.artista ? '<div class="artista">' + esc(cand.artista) +
+          (cand.album ? " · " + esc(cand.album) : "") + (cand.anyo ? " · " + cand.anyo : "") + "</div>" : "") +
+        (cand.propuestaPor ? '<div class="propuesto">Propuesta de ' + esc(cand.propuestaPor) + "</div>" : "") +
+        '<div class="acciones-fila"></div>' +
+      "</div>" +
+      '<div class="cola">' +
+        (cand.dur ? '<span class="dur">' + fmtDur(cand.dur) + "</span>" : "") +
+      "</div>";
+    const acc = fila.querySelector(".acciones-fila");
+    acc.appendChild(botonPlay(cand));
+    MIEMBROS.forEach(m => {
+      const v = document.createElement("button");
+      v.className = "voto" + (cand.votos[m] ? " si" : "");
+      v.textContent = (cand.votos[m] ? "✓ " : "") + m;
+      v.onclick = () => {
+        cand.votos[m] = !cand.votos[m];
+        publicarConVuelta("Voto de " + m + (cand.votos[m] ? " a favor de " : " retirado de ") + cand.titulo,
+          () => { cand.votos[m] = !cand.votos[m]; });
+      };
+      acc.appendChild(v);
+    });
+    const todos = MIEMBROS.every(m => cand.votos[m]);
+    const ba = document.createElement("button");
+    ba.className = "btn-mini" + (todos ? " principal" : "");
+    ba.textContent = todos ? "🤘 Al repertorio" : "Faltan votos";
+    ba.disabled = !todos;
+    ba.onclick = () => {
+      const quitada = EXTRA.candidatas.splice(i, 1)[0];
+      EXTRA.temas.push({
+        nombre: quitada.titulo + (quitada.artista ? " - " + quitada.artista : ""),
+        titulo: quitada.titulo, artista: quitada.artista,
+        afinacion: quitada.afinacion || "", comentario: quitada.comentario || "",
+        dur: quitada.dur || null, album: quitada.album || "", anyo: quitada.anyo || "",
+        apple: quitada.apple || "", artwork: quitada.artwork || "",
+      });
+      publicarConVuelta("Candidata aprobada: " + quitada.titulo,
+        () => { EXTRA.temas.pop(); EXTRA.candidatas.splice(i, 0, quitada); });
+    };
+    acc.appendChild(ba);
+    const bx = document.createElement("button");
+    bx.className = "btn-mini";
+    bx.textContent = "✕";
+    bx.onclick = () => {
+      const quitada = EXTRA.candidatas.splice(i, 1)[0];
+      publicarConVuelta("Candidata descartada: " + quitada.titulo,
+        () => { EXTRA.candidatas.splice(i, 0, quitada); });
+    };
+    acc.appendChild(bx);
+    cont.appendChild(fila);
+  });
 }
 
 /* ================= ADMIN ================= */
@@ -859,8 +1104,11 @@ function abrirEditorTema(base) {
       '<button class="chip' + (i === 0 ? " activa" : "") + '" data-a="' + a + '">' + (a || "Estándar") + "</button>").join("") +
     '<input class="campo" id="et-otra" placeholder="otra&hellip;" style="max-width:8rem"></div>' +
     '<textarea class="campo" id="et-coment" placeholder="Comentario (se ve en el escenario)" style="width:100%"></textarea>' +
-    '<div class="fila-form" style="margin-top:.7rem">' +
-    '<button class="btn principal" id="et-guardar">Guardar en la setlist base</button>' +
+    '<div class="fila-form" style="margin-top:.5rem">' +
+    '<input class="campo" id="et-proponente" placeholder="Quién la propone (para candidatas)" style="max-width:16rem"></div>' +
+    '<div class="fila-form" style="margin-top:.5rem">' +
+    '<button class="btn principal" id="et-guardar">A la setlist base</button>' +
+    '<button class="btn" id="et-candidata">A candidatas</button>' +
     '<button class="btn" id="et-cancelar">Cancelar</button></div>';
   ed.scrollIntoView({ behavior: "smooth", block: "center" });
   let afin = "";
@@ -871,10 +1119,11 @@ function abrirEditorTema(base) {
     $("et-otra").value = "";
   });
   $("et-cancelar").onclick = () => { ed.style.display = "none"; };
-  $("et-guardar").onclick = async () => {
+
+  function leerTema() {
     const titulo = $("et-titulo").value.trim().toUpperCase();
     const artista = $("et-artista").value.trim();
-    if (!titulo) { toast("Falta el título", true); return; }
+    if (!titulo) { toast("Falta el título", true); return null; }
     const otra = $("et-otra").value.trim().toUpperCase();
     const durTxt = $("et-dur").value.trim();
     let dur = null;
@@ -884,25 +1133,53 @@ function abrirEditorTema(base) {
     }
     const nombre = titulo + (artista ? " - " + artista : "");
     if (MAESTRA.some(t => normalizar(t.nombre) === normalizar(nombre))) {
-      toast("Ese tema ya está en la base", true); return;
+      toast("Ese tema ya está en la base", true); return null;
     }
-    const tema = {
+    return {
       nombre, titulo, artista,
       afinacion: otra || afin,
       comentario: $("et-coment").value.trim(),
       dur,
       album: base.album || "", anyo: base.anyo || "", apple: base.apple || "", artwork: base.artwork || "",
     };
+  }
+
+  $("et-guardar").onclick = async () => {
+    const tema = leerTema();
+    if (!tema) return;
     $("et-guardar").disabled = true;
     try {
       EXTRA.temas.push(tema);
-      await publicarExtra("Añadido tema: " + nombre);
+      await publicarExtra("Añadido tema: " + tema.nombre);
       ed.style.display = "none";
       pintarAdmin();
     } catch (e) {
       EXTRA.temas = EXTRA.temas.filter(t => t !== tema);
     }
     $("et-guardar").disabled = false;
+  };
+
+  $("et-candidata").onclick = async () => {
+    const tema = leerTema();
+    if (!tema) return;
+    if (EXTRA.candidatas.some(c => normalizar(c.titulo + " - " + c.artista) === normalizar(tema.nombre))) {
+      toast("Esa candidata ya está propuesta", true); return;
+    }
+    tema.propuestaPor = $("et-proponente").value.trim();
+    tema.votos = {};
+    const miembro = MIEMBROS.find(m => m.toUpperCase() === tema.propuestaPor.toUpperCase());
+    if (miembro) tema.votos[miembro] = true;
+    $("et-candidata").disabled = true;
+    try {
+      EXTRA.candidatas.push(tema);
+      await publicarExtra("Nueva candidata: " + tema.nombre);
+      ed.style.display = "none";
+      pintarAdmin();
+      toast("Candidata publicada — se vota en la tarjeta Candidatas");
+    } catch (e) {
+      EXTRA.candidatas = EXTRA.candidatas.filter(t => t !== tema);
+    }
+    $("et-candidata").disabled = false;
   };
 }
 
