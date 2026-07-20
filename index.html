@@ -186,6 +186,15 @@
   .tema.rep { grid-template-columns: 1fr auto; }
   #rep-filtro { max-width: 18rem; }
 
+  /* ---------- SEMÁFORO DE ESTADO ---------- */
+  .dot {
+    display: inline-block; width: .5em; height: .5em; border-radius: 50%;
+    margin-right: .4em; vertical-align: .12em; flex-shrink: 0;
+  }
+  .dot.activa { background: var(--verde); }
+  .dot.nevera { background: var(--ambar); }
+  .dot.borrar { background: var(--rojo); }
+
   /* ---------- CANDIDATAS ---------- */
   #candidatas { display: none; }
   .tarjeta.cand-card { border-left: 4px solid var(--ambar); }
@@ -284,6 +293,7 @@
     </div>
     <div class="variantes" id="variantes"></div>
     <button class="btn" id="modo">Directo</button>
+    <button class="btn" id="spotify" title="Crear playlist de ensayo en Spotify">&#9835; Spotify</button>
     <div class="zoom">
       <button class="btn" id="menos" aria-label="Texto más pequeño">A&#8722;</button>
       <button class="btn" id="mas" aria-label="Texto más grande">A+</button>
@@ -305,6 +315,7 @@
       <div class="cuando" id="rep-resumen"></div>
     </div>
     <input class="campo" id="rep-filtro" placeholder="Buscar tema o artista&hellip;" autocomplete="off">
+    <div class="variantes" id="rep-estados"></div>
     <div class="zoom">
       <button class="btn" id="rep-menos" aria-label="Texto más pequeño">A&#8722;</button>
       <button class="btn" id="rep-mas" aria-label="Texto más grande">A+</button>
@@ -556,7 +567,7 @@ function pintarPortada() {
     b.onclick = () => abrirConcierto(i);
     cont.appendChild(b);
   });
-  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v6";
+  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v7";
 }
 
 /* ================= concierto ================= */
@@ -696,6 +707,114 @@ document.addEventListener("keydown", e => {
   if (e.key === "ArrowLeft" || e.key === "ArrowUp") { focoIdx--; pintarFoco(); }
 });
 
+/* ================= SPOTIFY (playlist de ensayo) ================= */
+const SPOTIFY_CLIENT_ID = ""; // pendiente: Client ID de la app de Spotify de Juanma
+const SPOTIFY_REDIRECT = location.origin + location.pathname;
+
+function spSesion() {
+  try { return JSON.parse(localStorage.getItem("rt-spotify") || "null"); } catch (e) { return null; }
+}
+
+async function spAsegurarSesion() {
+  let s = spSesion();
+  if (s && Date.now() < s.caduca - 30000) return s.access;
+  if (s && s.refresh) {
+    const r = await fetch("https://accounts.spotify.com/api/token", {
+      method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ grant_type: "refresh_token", refresh_token: s.refresh, client_id: SPOTIFY_CLIENT_ID }),
+    });
+    if (r.ok) {
+      const j = await r.json();
+      s = { access: j.access_token, refresh: j.refresh_token || s.refresh, caduca: Date.now() + j.expires_in * 1000 };
+      localStorage.setItem("rt-spotify", JSON.stringify(s));
+      return s.access;
+    }
+  }
+  return null;
+}
+
+async function spConectar() {
+  const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const verifier = [...crypto.getRandomValues(new Uint8Array(48))].map(b => abc[b % abc.length]).join("");
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(verifier));
+  const challenge = btoa(String.fromCharCode(...new Uint8Array(digest)))
+    .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  localStorage.setItem("rt-sp-verifier", verifier);
+  localStorage.setItem("rt-sp-pendiente", String(conciertoActual));
+  location.href = "https://accounts.spotify.com/authorize?" + new URLSearchParams({
+    client_id: SPOTIFY_CLIENT_ID, response_type: "code", redirect_uri: SPOTIFY_REDIRECT,
+    scope: "playlist-modify-private", code_challenge_method: "S256", code_challenge: challenge,
+  });
+}
+
+async function spProcesarVuelta() {
+  const code = new URLSearchParams(location.search).get("code");
+  const verifier = localStorage.getItem("rt-sp-verifier");
+  if (!code || !verifier) return;
+  history.replaceState(null, "", location.pathname);
+  const r = await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "authorization_code", code, redirect_uri: SPOTIFY_REDIRECT,
+      client_id: SPOTIFY_CLIENT_ID, code_verifier: verifier,
+    }),
+  });
+  localStorage.removeItem("rt-sp-verifier");
+  if (!r.ok) { toast("No se ha podido conectar con Spotify", true); return; }
+  const j = await r.json();
+  localStorage.setItem("rt-spotify", JSON.stringify({
+    access: j.access_token, refresh: j.refresh_token, caduca: Date.now() + j.expires_in * 1000,
+  }));
+  toast("Spotify conectado ✓");
+  const pend = localStorage.getItem("rt-sp-pendiente");
+  localStorage.removeItem("rt-sp-pendiente");
+  if (pend !== null && CONCIERTOS[+pend]) { abrirConcierto(+pend); crearPlaylist(); }
+}
+
+async function crearPlaylist() {
+  if (!SPOTIFY_CLIENT_ID) { toast("Spotify aún no está configurado", true); return; }
+  const acceso = await spAsegurarSesion();
+  if (!acceso) { spConectar(); return; }
+  const c = CONCIERTOS[conciertoActual];
+  const v = c.variantes[varianteActual];
+  const canciones = v.temas.filter(t => !t.seccion);
+  $("spotify").disabled = true;
+  toast("Creando playlist en Spotify…");
+  try {
+    const cab = { Authorization: "Bearer " + acceso, "Content-Type": "application/json" };
+    const yo = await (await fetch("https://api.spotify.com/v1/me", { headers: cab })).json();
+    const uris = [], noEncontradas = [];
+    for (const t of canciones) {
+      const q = encodeURIComponent(t.titulo + " " + (t.artista || ""));
+      const j = await (await fetch("https://api.spotify.com/v1/search?type=track&limit=1&q=" + q, { headers: cab })).json();
+      const tr = j.tracks && j.tracks.items && j.tracks.items[0];
+      if (tr) uris.push(tr.uri); else noEncontradas.push(t.titulo);
+    }
+    const pl = await (await fetch("https://api.spotify.com/v1/users/" + yo.id + "/playlists", {
+      method: "POST", headers: cab,
+      body: JSON.stringify({
+        name: "R'T · " + c.lugar + (c.fechaTexto ? " · " + c.fechaTexto : "") + " · " + v.nombre,
+        public: false,
+        description: "Setlist de ensayo Rockin' Troopers, creada desde la app",
+      }),
+    })).json();
+    for (let i = 0; i < uris.length; i += 100) {
+      await fetch("https://api.spotify.com/v1/playlists/" + pl.id + "/tracks", {
+        method: "POST", headers: cab, body: JSON.stringify({ uris: uris.slice(i, i + 100) }),
+      });
+    }
+    toast("Playlist creada: " + uris.length + " de " + canciones.length + " temas ✓");
+    if (noEncontradas.length) {
+      setTimeout(() => toast("No encontrados en Spotify: " + noEncontradas.join(", "), true), 3800);
+    }
+    if (pl.external_urls && pl.external_urls.spotify) window.open(pl.external_urls.spotify, "_blank");
+  } catch (e) {
+    toast("Error creando la playlist", true);
+  }
+  $("spotify").disabled = false;
+}
+$("spotify").onclick = crearPlaylist;
+
 /* ================= pantalla siempre encendida ================= */
 let wakeLock = null;
 async function pedirWakeLock() {
@@ -764,20 +883,36 @@ $("rep-filtro").addEventListener("input", pintarRepertorio);
 $("rep-mas").onclick = () => { escala = Math.min(1.8, escala + 0.1); aplicarEscala(); };
 $("rep-menos").onclick = () => { escala = Math.max(0.6, escala - 0.1); aplicarEscala(); };
 
+let repEstado = "";
+const ESTADOS = [["activa", "Activa"], ["nevera", "Nevera"], ["borrar", "A borrar"]];
+function estadoDe(t) {
+  return t.estado === "nevera" || t.estado === "borrar" ? t.estado : "activa";
+}
+
 function pintarRepertorio() {
   pararAudio();
   const filtro = normalizar($("rep-filtro").value);
+  const chips = $("rep-estados");
+  chips.innerHTML = "";
+  [["", "Todas"]].concat(ESTADOS).forEach(([val, etiq]) => {
+    const ch = document.createElement("button");
+    ch.className = "chip" + (repEstado === val ? " activa" : "");
+    ch.innerHTML = (val ? '<span class="dot ' + val + '"></span>' : "") + etiq;
+    ch.onclick = () => { repEstado = val; pintarRepertorio(); };
+    chips.appendChild(ch);
+  });
   const cont = $("rep-lista");
   cont.innerHTML = "";
   let vistos = 0;
   MAESTRA.forEach(t => {
     if (filtro && !normalizar(t.titulo + " " + t.artista).includes(filtro)) return;
+    if (repEstado && estadoDe(t) !== repEstado) return;
     vistos += 1;
     const fila = document.createElement("div");
     fila.className = "tema rep";
     fila.innerHTML =
       "<div>" +
-        '<div class="titulo">' + esc(t.titulo) + "</div>" +
+        '<div class="titulo"><span class="dot ' + estadoDe(t) + '"></span>' + esc(t.titulo) + "</div>" +
         (t.artista ? '<div class="artista">' + esc(t.artista) + "</div>" : "") +
         (t.comentario ? '<div class="comentario">' + esc(t.comentario) + "</div>" : "") +
         '<div class="acciones-fila"></div>' +
@@ -812,14 +947,22 @@ function abrirEditorEdicion(fila, t) {
       '<button class="chip' + ((t.afinacion || "") === a ? " activa" : "") + '" data-a="' + a + '">' + (a || "Estándar") + "</button>").join("") +
     '<input class="campo ed-otra" placeholder="otra&hellip;" style="max-width:8rem" value="' + (esOtra ? esc(t.afinacion) : "") + '"></div>' +
     '<textarea class="campo ed-coment" placeholder="Comentario (se ve en el escenario)" style="width:100%">' + esc(t.comentario || "") + "</textarea>" +
+    '<div class="col-titulo" style="margin-top:.6rem">Estado</div>' +
+    '<div class="chips-afinacion ed-estados">' +
+    ESTADOS.map(([val, etiq]) =>
+      '<button class="chip' + (estadoDe(t) === val ? " activa" : "") + '" data-e="' + val + '">' +
+      '<span class="dot ' + val + '"></span>' + etiq + "</button>").join("") + "</div>" +
     '<div class="fila-form" style="margin-top:.7rem">' +
     '<button class="btn principal ed-guardar">Guardar</button>' +
     '<button class="btn ed-cancelar">Cancelar</button></div>';
   fila.after(ed);
   let afin = esOtra ? null : (t.afinacion || "");
+  let estado = estadoDe(t);
   ed.querySelectorAll(".chips-afinacion .chip").forEach(ch => ch.onclick = () => {
-    ed.querySelectorAll(".chips-afinacion .chip").forEach(x => x.classList.remove("activa"));
+    const grupo = ch.parentElement;
+    grupo.querySelectorAll(".chip").forEach(x => x.classList.remove("activa"));
     ch.classList.add("activa");
+    if (ch.dataset.e !== undefined) { estado = ch.dataset.e; return; }
     afin = ch.dataset.a;
     ed.querySelector(".ed-otra").value = "";
   });
@@ -829,6 +972,7 @@ function abrirEditorEdicion(fila, t) {
     const cambios = {
       afinacion: otra || afin || "",
       comentario: ed.querySelector(".ed-coment").value.trim(),
+      estado,
     };
     const clave = clavesDe(t);
     const enExtra = EXTRA.temas.find(x => normalizar(x.nombre) === clave);
@@ -1192,7 +1336,8 @@ function pintarBanco() {
     if (filtro && !normalizar(t.titulo + " " + t.artista).includes(filtro)) return;
     const b = document.createElement("button");
     b.className = "banco-item";
-    b.innerHTML = '<span class="bt">' + esc(t.titulo) + '</span><span class="ba">' + esc(t.artista) +
+    b.innerHTML = '<span class="bt"><span class="dot ' + estadoDe(t) + '"></span>' + esc(t.titulo) +
+      '</span><span class="ba">' + esc(t.artista) +
       (t.afinacion ? " · " + esc(t.afinacion) : "") + "</span><span>&#65291;</span>";
     b.onclick = () => { cItems.push({ tema: t }); pintarElegidos(); };
     cont.appendChild(b);
@@ -1295,7 +1440,7 @@ function pintarExtras() {
   });
 }
 
-cargar();
+cargar().then(spProcesarVuelta);
 </script>
 </body>
 </html>
