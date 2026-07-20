@@ -407,7 +407,7 @@
 const REPO_OWNER = "juanmajover";
 const REPO_NOMBRE = "troopers-setlists";
 const RUTA_EXTRA = "extra.json";
-const MIEMBROS = ["JM", "Fer", "Edu", "Fran"];
+const MIEMBROS = ["JM", "Edu", "Fer", "Fran", "Rafeta"];
 
 /* ================= estado ================= */
 const $ = id => document.getElementById(id);
@@ -567,7 +567,7 @@ function pintarPortada() {
     b.onclick = () => abrirConcierto(i);
     cont.appendChild(b);
   });
-  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v9";
+  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v10";
 }
 
 /* ================= concierto ================= */
@@ -1096,7 +1096,9 @@ function abrirEditorCandidata(fila, cand) {
   const esOtra = cand.afinacion && !estandar.includes(cand.afinacion);
   ed.innerHTML =
     '<div class="col-titulo">Quién la propone</div>' +
-    '<div class="fila-form"><input class="campo ed-prop" placeholder="JM, Fer, Edu, Fran&hellip;" value="' + esc(cand.propuestaPor || "") + '" style="max-width:14rem"></div>' +
+    '<div class="chips-afinacion ed-props">' +
+    MIEMBROS.map(m =>
+      '<button class="chip' + (cand.propuestaPor === m ? " activa" : "") + '" data-m="' + m + '">' + m + "</button>").join("") + "</div>" +
     '<div class="col-titulo">Afinación propuesta</div>' +
     '<div class="chips-afinacion">' +
     estandar.map(a =>
@@ -1108,8 +1110,17 @@ function abrirEditorCandidata(fila, cand) {
     '<button class="btn ed-cancelar">Cancelar</button></div>';
   fila.after(ed);
   let afin = esOtra ? null : (cand.afinacion || "");
+  let prop = cand.propuestaPor || "";
   ed.querySelectorAll(".chips-afinacion .chip").forEach(ch => ch.onclick = () => {
-    ed.querySelectorAll(".chips-afinacion .chip").forEach(x => x.classList.remove("activa"));
+    const grupo = ch.parentElement;
+    if (ch.dataset.m !== undefined) {
+      const estaba = ch.classList.contains("activa");
+      grupo.querySelectorAll(".chip").forEach(x => x.classList.remove("activa"));
+      prop = estaba ? "" : ch.dataset.m;
+      if (!estaba) ch.classList.add("activa");
+      return;
+    }
+    grupo.querySelectorAll(".chip").forEach(x => x.classList.remove("activa"));
     ch.classList.add("activa");
     afin = ch.dataset.a;
     ed.querySelector(".ed-otra").value = "";
@@ -1118,7 +1129,7 @@ function abrirEditorCandidata(fila, cand) {
   ed.querySelector(".ed-guardar").onclick = () => {
     const antes = Object.assign({}, cand);
     const otra = ed.querySelector(".ed-otra").value.trim().toUpperCase();
-    cand.propuestaPor = ed.querySelector(".ed-prop").value.trim();
+    cand.propuestaPor = prop;
     cand.afinacion = otra || afin || "";
     cand.comentario = ed.querySelector(".ed-coment").value.trim();
     publicarConVuelta("Editada candidata: " + cand.titulo, () => Object.assign(cand, antes));
@@ -1292,19 +1303,27 @@ function abrirEditorTema(base) {
       '<button class="chip' + (i === 0 ? " activa" : "") + '" data-a="' + a + '">' + (a || "Estándar") + "</button>").join("") +
     '<input class="campo" id="et-otra" placeholder="otra&hellip;" style="max-width:8rem"></div>' +
     '<textarea class="campo" id="et-coment" placeholder="Comentario (se ve en el escenario)" style="width:100%"></textarea>' +
-    '<div class="fila-form" style="margin-top:.5rem">' +
-    '<input class="campo" id="et-proponente" placeholder="Quién la propone (para candidatas)" style="max-width:16rem"></div>' +
+    '<div class="col-titulo" style="margin-top:.5rem">Quién la propone (para candidatas)</div>' +
+    '<div class="chips-afinacion" id="et-proponentes">' +
+    MIEMBROS.map(m => '<button class="chip" data-m="' + m + '">' + m + "</button>").join("") + "</div>" +
     '<div class="fila-form" style="margin-top:.5rem">' +
     '<button class="btn principal" id="et-guardar">A la setlist base</button>' +
     '<button class="btn" id="et-candidata">A candidatas</button>' +
     '<button class="btn" id="et-cancelar">Cancelar</button></div>';
   ed.scrollIntoView({ behavior: "smooth", block: "center" });
   let afin = "";
+  let proponente = "";
   ed.querySelectorAll("#et-chips .chip").forEach(ch => ch.onclick = () => {
     ed.querySelectorAll("#et-chips .chip").forEach(x => x.classList.remove("activa"));
     ch.classList.add("activa");
     afin = ch.dataset.a;
     $("et-otra").value = "";
+  });
+  ed.querySelectorAll("#et-proponentes .chip").forEach(ch => ch.onclick = () => {
+    const estaba = ch.classList.contains("activa");
+    ed.querySelectorAll("#et-proponentes .chip").forEach(x => x.classList.remove("activa"));
+    proponente = estaba ? "" : ch.dataset.m;
+    if (!estaba) ch.classList.add("activa");
   });
   $("et-cancelar").onclick = () => { ed.style.display = "none"; };
 
@@ -1353,10 +1372,9 @@ function abrirEditorTema(base) {
     if (EXTRA.candidatas.some(c => normalizar(c.titulo + " - " + c.artista) === normalizar(tema.nombre))) {
       toast("Esa candidata ya está propuesta", true); return;
     }
-    tema.propuestaPor = $("et-proponente").value.trim();
+    tema.propuestaPor = proponente;
     tema.votos = {};
-    const miembro = MIEMBROS.find(m => m.toUpperCase() === tema.propuestaPor.toUpperCase());
-    if (miembro) tema.votos[miembro] = true;
+    if (proponente) tema.votos[proponente] = true;
     $("et-candidata").disabled = true;
     try {
       EXTRA.candidatas.push(tema);
