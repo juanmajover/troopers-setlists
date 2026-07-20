@@ -30,5 +30,11 @@
    "votos": {}
   }
  ],
- "overrides": {}
+ "overrides": {
+  "CELEBRITY SKIN - HOLE": {
+   "afinacion": "",
+   "comentario": "Prueba",
+   "estado": "activa"
+  }
+ }
 }
