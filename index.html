@@ -204,6 +204,10 @@
     padding: .35rem .8rem; font-weight: 700; font-size: .9rem; color: var(--apagado);
   }
   .voto.si { color: var(--fondo); background: var(--verde); border-color: var(--verde); }
+  .voto small, .chip small {
+    display: block; font-size: .68rem; font-weight: 600; opacity: .72;
+    letter-spacing: .02em; text-transform: none; text-align: center;
+  }
   .acciones-fila { display: flex; gap: .45rem; flex-wrap: wrap; margin-top: .55rem; align-items: center; }
   .propuesto { color: var(--apagado); font-size: .92rem; margin-top: .2rem; }
 
@@ -408,6 +412,7 @@ const REPO_OWNER = "juanmajover";
 const REPO_NOMBRE = "troopers-setlists";
 const RUTA_EXTRA = "extra.json";
 const MIEMBROS = ["JM", "Edu", "Fer", "Fran", "Rafeta"];
+const INSTRUMENTOS = { JM: "Bajo", Edu: "G. rítmica", Fer: "G. solista", Fran: "Batería", Rafeta: "Voz" };
 
 /* ================= estado ================= */
 const $ = id => document.getElementById(id);
@@ -567,7 +572,7 @@ function pintarPortada() {
     b.onclick = () => abrirConcierto(i);
     cont.appendChild(b);
   });
-  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v10";
+  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v11";
 }
 
 /* ================= concierto ================= */
@@ -1049,7 +1054,7 @@ function pintarCandidatas() {
     MIEMBROS.forEach(m => {
       const v = document.createElement("button");
       v.className = "voto" + (cand.votos[m] ? " si" : "");
-      v.textContent = (cand.votos[m] ? "✓ " : "") + m;
+      v.innerHTML = (cand.votos[m] ? "✓ " : "") + m + "<small>" + INSTRUMENTOS[m] + "</small>";
       v.onclick = () => {
         cand.votos[m] = !cand.votos[m];
         publicarConVuelta("Voto de " + m + (cand.votos[m] ? " a favor de " : " retirado de ") + cand.titulo,
@@ -1098,7 +1103,7 @@ function abrirEditorCandidata(fila, cand) {
     '<div class="col-titulo">Quién la propone</div>' +
     '<div class="chips-afinacion ed-props">' +
     MIEMBROS.map(m =>
-      '<button class="chip' + (cand.propuestaPor === m ? " activa" : "") + '" data-m="' + m + '">' + m + "</button>").join("") + "</div>" +
+      '<button class="chip' + (cand.propuestaPor === m ? " activa" : "") + '" data-m="' + m + '">' + m + "<small>" + INSTRUMENTOS[m] + "</small></button>").join("") + "</div>" +
     '<div class="col-titulo">Afinación propuesta</div>' +
     '<div class="chips-afinacion">' +
     estandar.map(a =>
@@ -1305,7 +1310,7 @@ function abrirEditorTema(base) {
     '<textarea class="campo" id="et-coment" placeholder="Comentario (se ve en el escenario)" style="width:100%"></textarea>' +
     '<div class="col-titulo" style="margin-top:.5rem">Quién la propone (para candidatas)</div>' +
     '<div class="chips-afinacion" id="et-proponentes">' +
-    MIEMBROS.map(m => '<button class="chip" data-m="' + m + '">' + m + "</button>").join("") + "</div>" +
+    MIEMBROS.map(m => '<button class="chip" data-m="' + m + '">' + m + "<small>" + INSTRUMENTOS[m] + "</small></button>").join("") + "</div>" +
     '<div class="fila-form" style="margin-top:.5rem">' +
     '<button class="btn principal" id="et-guardar">A la setlist base</button>' +
     '<button class="btn" id="et-candidata">A candidatas</button>' +
