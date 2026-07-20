@@ -297,6 +297,7 @@
       <div class="cuando" id="cab-fecha"></div>
     </div>
     <div class="variantes" id="variantes"></div>
+    <button class="btn" id="editar-concierto" title="Editar esta setlist (propuesta hasta el día del bolo)">✎</button>
     <button class="btn" id="modo">Directo</button>
     <button class="btn" id="spotify" title="Crear playlist de ensayo en Spotify">&#9835; Spotify</button>
     <div class="zoom">
@@ -513,8 +514,8 @@ function fusionar() {
   DATOS.conciertos.forEach(c => mapa.set(c.lugar + "|" + c.fecha, JSON.parse(JSON.stringify(c))));
   (EXTRA.conciertos || []).forEach(c => {
     const k = c.lugar + "|" + c.fecha;
-    if (mapa.has(k)) mapa.get(k).variantes.push(...c.variantes);
-    else mapa.set(k, JSON.parse(JSON.stringify(c)));
+    if (c.reemplaza || !mapa.has(k)) mapa.set(k, JSON.parse(JSON.stringify(c)));
+    else mapa.get(k).variantes.push(...c.variantes);
   });
   CONCIERTOS = [...mapa.values()];
   CONCIERTOS.sort((a, b) => (b.fecha || "0000") < (a.fecha || "0000") ? -1 : 1);
@@ -573,7 +574,7 @@ function pintarPortada() {
     b.onclick = () => abrirConcierto(i);
     cont.appendChild(b);
   });
-  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v12";
+  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v13";
 }
 
 /* ================= concierto ================= */
@@ -596,6 +597,8 @@ function pintarConcierto() {
   const c = CONCIERTOS[conciertoActual];
   $("cab-lugar").textContent = c.lugar;
   $("cab-fecha").textContent = c.fechaTexto || "";
+  const hoy = new Date().toISOString().slice(0, 10);
+  $("editar-concierto").style.display = c.fecha && c.fecha >= hoy ? "" : "none";
 
   const vs = $("variantes");
   vs.innerHTML = "";
@@ -712,6 +715,29 @@ document.addEventListener("keydown", e => {
   if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === " ") { focoIdx++; pintarFoco(); }
   if (e.key === "ArrowLeft" || e.key === "ArrowUp") { focoIdx--; pintarFoco(); }
 });
+
+/* ================= editar setlist de un bolo futuro ================= */
+$("editar-concierto").onclick = () => {
+  const c = CONCIERTOS[conciertoActual];
+  const v = c.variantes[varianteActual];
+  cItems = v.temas.map(t => {
+    if (t.seccion) return { seccion: t.seccion };
+    const base = MAESTRA.find(x => clavesDe(x) === clavesDe(t));
+    return { tema: base || {
+      nombre: t.titulo + (t.artista ? " - " + t.artista : ""),
+      titulo: t.titulo, artista: t.artista || "",
+      afinacion: t.tune || "", dur: t.dur || null, comentario: t.comentario || "",
+    } };
+  });
+  $("c-lugar").value = c.lugar;
+  $("c-fecha").value = c.fecha;
+  pararAudio();
+  $("concierto").style.display = "none";
+  $("admin").style.display = "block";
+  pintarAdmin();
+  $("c-lugar").scrollIntoView({ block: "start" });
+  toast("Editando la setlist de " + c.lugar + " — guarda para publicar la nueva versión");
+};
 
 /* ================= SPOTIFY (playlist de ensayo) ================= */
 const SPOTIFY_CLIENT_ID = "90d040b640524f00ba55d8bf5f4b2881"; // app "Rockin Troopers Setlists" de Juanma
@@ -1457,18 +1483,22 @@ $("c-guardar").onclick = async () => {
   });
   const concierto = {
     lugar, fecha, fechaTexto: fechaTexto(fecha),
+    reemplaza: true,
     variantes: [{ nombre: "Set", temas, total, nTemas: n }],
   };
   $("c-guardar").disabled = true;
+  const antes = (EXTRA.conciertos || []).slice();
+  const yaExistia = antes.some(x => x.lugar === lugar && x.fecha === fecha) ||
+    DATOS.conciertos.some(x => x.lugar === lugar && x.fecha === fecha);
   try {
-    EXTRA.conciertos = EXTRA.conciertos || [];
+    EXTRA.conciertos = (EXTRA.conciertos || []).filter(x => !(x.lugar === lugar && x.fecha === fecha));
     EXTRA.conciertos.push(concierto);
-    await publicarExtra("Nuevo concierto: " + lugar + " " + fecha);
+    await publicarExtra((yaExistia ? "Setlist actualizada: " : "Nuevo concierto: ") + lugar + " " + fecha);
     cItems = [];
     $("c-lugar").value = ""; $("c-fecha").value = "";
     pintarAdmin();
   } catch (e) {
-    EXTRA.conciertos = EXTRA.conciertos.filter(c => c !== concierto);
+    EXTRA.conciertos = antes;
   }
   $("c-guardar").disabled = false;
 };
