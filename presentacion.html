@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Troopers Setlists — la app de la banda</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0B0B0E">
+<link rel="icon" type="image/png" href="icon-180.png">
+<style>
+  :root {
+    --fondo: #0B0B0E; --panel: #141419; --linea: #232329;
+    --tinta: #F5F2EC; --apagado: #8B8894;
+    --rojo: #E23B2E; --verde: #3FD68F; --ambar: #FFB43A; --naranja: #FF6B4A; --azul: #6FB7FF;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--fondo); color: var(--tinta);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 46rem; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  .cabecera { text-align: center; padding-bottom: 1.6rem; border-bottom: 3px solid var(--rojo); }
+  .cabecera img.logo { width: min(60vw, 15rem); }
+  .cabecera h1 {
+    font-size: clamp(1.6rem, 5vw, 2.3rem); font-weight: 900;
+    text-transform: uppercase; letter-spacing: .04em; margin-top: .8rem;
+  }
+  .cabecera h1 span { color: var(--rojo); }
+  .cabecera p { color: var(--apagado); font-size: 1.1rem; margin-top: .5rem; line-height: 1.5; }
+  .seccion {
+    color: var(--rojo); font-weight: 800; letter-spacing: .28em; text-transform: uppercase;
+    font-size: .95rem; display: flex; align-items: center; gap: 1rem; margin: 2.2rem 0 1rem;
+  }
+  .seccion::after { content: ""; flex: 1; height: 1px; background: var(--linea); }
+  .fichas { display: grid; gap: .8rem; }
+  .ficha {
+    background: var(--panel); border: 1px solid var(--linea); border-radius: 4px;
+    padding: 1rem 1.2rem; display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start;
+  }
+  .ficha .icono { font-size: 1.6rem; line-height: 1.2; }
+  .ficha b { display: block; font-size: 1.08rem; margin-bottom: .2rem; }
+  .ficha p { color: var(--apagado); line-height: 1.45; font-size: .98rem; }
+  .ficha .verde { color: var(--verde); } .ficha .ambar { color: var(--ambar); }
+  .ficha .rojo { color: var(--rojo); } .ficha .naranja { color: var(--naranja); }
+  .instalar ol { margin-left: 1.3rem; color: var(--apagado); line-height: 1.7; }
+  .instalar ol b { color: var(--tinta); display: inline; }
+  .qr-caja {
+    display: flex; gap: 1.6rem; align-items: center; flex-wrap: wrap; justify-content: center;
+    background: var(--panel); border: 1px solid var(--linea); border-radius: 4px; padding: 1.4rem;
+  }
+  .qr-caja img { width: 11rem; height: 11rem; }
+  .qr-caja .url { text-align: center; }
+  .qr-caja .url a { color: var(--azul); font-weight: 700; font-size: 1.05rem; word-break: break-all; }
+  .qr-caja .url p { color: var(--apagado); margin-top: .4rem; }
+  footer { text-align: center; color: var(--apagado); margin-top: 3rem; font-size: .9rem; }
+  @media print { body { background: #fff; } }
+</style>
+</head>
+<body>
+<main>
+  <header class="cabecera">
+    <img class="logo" src="logo.png" alt="Rockin' Troopers">
+    <h1>Troopers <span>Setlists</span></h1>
+    <p>La app de la banda: las setlists de los conciertos en el iPad del escenario,
+    todo el repertorio con sus afinaciones, y las canciones nuevas votadas entre los cinco.
+    Sin cuentas, sin contraseñas: abres el enlace y a tocar.</p>
+  </header>
+
+  <div class="seccion">Qué hace</div>
+  <div class="fichas">
+    <div class="ficha"><div class="icono">🎸</div><div>
+      <b>Setlists de concierto, en grande</b>
+      <p>Cada bolo con sus temas en orden, secciones (arranque, caña, valle…) y la
+      afinación de cada tema en un badge de color: <span class="verde">DROP D</span>,
+      <span class="ambar">PITCH −1</span>, <span class="naranja">PITCH −2</span>.
+      Letra gigante pensada para verla desde la batería.</p>
+    </div></div>
+    <div class="ficha"><div class="icono">🎯</div><div>
+      <b>Modo directo</b>
+      <p>El tema actual en el centro de la pantalla, el anterior arriba y el siguiente abajo
+      con su afinación — un toque y avanza. La pantalla no se apaga durante el bolo.</p>
+    </div></div>
+    <div class="ficha"><div class="icono">📚</div><div>
+      <b>Todo el repertorio</b>
+      <p>Los 50 y pico temas de la banda con buscador, comentarios y semáforo:
+      <span class="verde">●</span> activa, <span class="ambar">●</span> en nevera,
+      <span class="rojo">●</span> candidata a borrar. Cada tema se puede escuchar
+      (preview de 30 segundos) ahí mismo.</p>
+    </div></div>
+    <div class="ficha"><div class="icono">🗳️</div><div>
+      <b>Candidatas: las nuevas se votan</b>
+      <p>Cualquiera propone un tema (se busca en el catálogo de iTunes, con su preview),
+      y cuando los cinco damos el visto bueno, pasa al repertorio. Cada voto con nombre
+      e instrumento.</p>
+    </div></div>
+    <div class="ficha"><div class="icono">🎧</div><div>
+      <b>Playlist de ensayo en Spotify</b>
+      <p>Un botón crea la playlist del concierto en tu Spotify para ensayar
+      con las canciones originales, en el mismo orden del bolo.</p>
+    </div></div>
+  </div>
+
+  <div class="seccion">Instálatela (10 segundos)</div>
+  <div class="fichas instalar">
+    <div class="ficha"><div class="icono">📱</div><div>
+      <b>iPhone / iPad</b>
+      <ol>
+        <li>Abre el enlace en <b>Safari</b></li>
+        <li>Botón de <b>compartir</b> → <b>"Añadir a pantalla de inicio"</b></li>
+      </ol>
+    </div></div>
+    <div class="ficha"><div class="icono">🤖</div><div>
+      <b>Android</b>
+      <ol>
+        <li>Abre el enlace en <b>Chrome</b></li>
+        <li>Menú <b>⋮</b> → <b>"Añadir a pantalla de inicio"</b> (o "Instalar app")</li>
+      </ol>
+    </div></div>
+  </div>
+
+  <div class="seccion">El enlace</div>
+  <div class="qr-caja">
+    <img src="qr.svg" alt="Código QR de la app">
+    <div class="url">
+      <a href="https://juanmajover.github.io/troopers-setlists/">juanmajover.github.io/troopers-setlists</a>
+      <p>Escanea el QR con la cámara<br>o toca el enlace</p>
+    </div>
+  </div>
+
+  <footer>Rockin' Troopers · hecha por Juanma (con ayuda de una IA con buen gusto musical) · 2026</footer>
+</main>
+</body>
+</html>
