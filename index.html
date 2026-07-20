@@ -567,7 +567,7 @@ function pintarPortada() {
     b.onclick = () => abrirConcierto(i);
     cont.appendChild(b);
   });
-  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v7";
+  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v8";
 }
 
 /* ================= concierto ================= */
@@ -708,7 +708,7 @@ document.addEventListener("keydown", e => {
 });
 
 /* ================= SPOTIFY (playlist de ensayo) ================= */
-const SPOTIFY_CLIENT_ID = ""; // pendiente: Client ID de la app de Spotify de Juanma
+const SPOTIFY_CLIENT_ID = "90d040b640524f00ba55d8bf5f4b2881"; // app "Rockin Troopers Setlists" de Juanma
 const SPOTIFY_REDIRECT = location.origin + location.pathname;
 
 function spSesion() {
