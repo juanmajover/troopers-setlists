@@ -594,15 +594,6 @@
        "tune": "",
        "dur": 260,
        "comentario": ""
-      },
-      {
-       "seccion": "TOTAL DURACIÓN"
-      },
-      {
-       "seccion": "TOTAL DISTINTAS DEL ULTIMO GLAM"
-      },
-      {
-       "seccion": "TEMAS NUEVOS RESPECTO A 9/1/26 (1:30:50)"
       }
      ],
      "total": 4822,
@@ -817,15 +808,6 @@
        "tune": "",
        "dur": 275,
        "comentario": ""
-      },
-      {
-       "seccion": "TOTAL DURACIÓN"
-      },
-      {
-       "seccion": "TOTAL DISTINTAS DEL ULTIMO BLACKNOTE"
-      },
-      {
-       "seccion": "TEMAS NUEVOS RESPECTO A 9/1/26 (1:30:50)"
       }
      ],
      "total": 5288,
@@ -1051,15 +1033,6 @@
        "tune": "",
        "dur": 143,
        "comentario": ""
-      },
-      {
-       "seccion": "TOTAL DURACIÓN"
-      },
-      {
-       "seccion": "TOTAL DISTINTAS DEL ULTIMO BLACKNOTE"
-      },
-      {
-       "seccion": "TEMAS NUEVOS RESPECTO A 9/1/26 (1:30:50)"
       }
      ],
      "total": 5512,
@@ -1297,12 +1270,6 @@
        "tune": "",
        "dur": 275,
        "comentario": ""
-      },
-      {
-       "seccion": "TOTAL DURACIÓN"
-      },
-      {
-       "seccion": "TEMAS NUEVOS RESPECTO A 9/1/26 (1:30:50)"
       }
      ],
      "total": 5789,
@@ -1564,9 +1531,6 @@
        "tune": "PITCH -1",
        "dur": 227,
        "comentario": ""
-      },
-      {
-       "seccion": "TOTAL DURACIÓN"
       }
      ],
      "total": 6289,
@@ -1765,9 +1729,6 @@
        "tune": "",
        "dur": 314,
        "comentario": ""
-      },
-      {
-       "seccion": "TOTAL DURACIÓN"
       }
      ],
      "total": 5164,
