@@ -14,24 +14,7 @@
   }
  ],
  "conciertos": [],
- "candidatas": [
-  {
-   "nombre": "TAKE A LOOK AROUND - Limp Bizkit",
-   "titulo": "TAKE A LOOK AROUND",
-   "artista": "Limp Bizkit",
-   "afinacion": "",
-   "comentario": "",
-   "dur": 321,
-   "album": "Chocolate Starfish And The Hot Dog Flavored Water",
-   "anyo": "2000",
-   "apple": "https://music.apple.com/us/album/take-a-look-around/1440842682?i=1440843451&uo=4",
-   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/b2/70/c8/b270c885-3e28-3dfa-3bd3-faa6e5fa8540/15UMGIM36851.rgb.jpg/100x100bb.jpg",
-   "propuestaPor": "JM",
-   "votos": {
-    "JM": false
-   }
-  }
- ],
+ "candidatas": [],
  "overrides": {
   "CELEBRITY SKIN - HOLE": {
    "afinacion": "",
