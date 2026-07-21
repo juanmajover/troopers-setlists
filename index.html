@@ -282,9 +282,19 @@
     .tema .comentario { font-size: calc(1.1rem * var(--escala)); }
   }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  #pull-indicator {
+    position: fixed; top: 0; left: 0; right: 0; height: 3rem; margin-top: -3rem;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--apagado); font-size: .82rem; font-weight: 700;
+    letter-spacing: .04em; z-index: 70; pointer-events: none;
+  }
+  #pull-indicator.lista { color: var(--rojo); }
+  body.pull-activa { transition: margin-top .25s; }
 </style>
 </head>
 <body>
+
+<div id="pull-indicator">&#8595; Desliza para actualizar</div>
 
 <div id="banner-actualizar">
   Hay una versión nueva de la app
@@ -460,7 +470,7 @@ const REPO_NOMBRE = "troopers-setlists";
 const RUTA_EXTRA = "extra.json";
 const MIEMBROS = ["JM", "Edu", "Fer", "Fran", "Rafeta"];
 const INSTRUMENTOS = { JM: "Bajo", Edu: "G. rítmica", Fer: "G. solista", Fran: "Batería", Rafeta: "Voz" };
-const APP_VERSION = 16;
+const APP_VERSION = 17;
 
 /* ================= estado ================= */
 const $ = id => document.getElementById(id);
@@ -1892,6 +1902,13 @@ function pintarExtras() {
 
 cargar().then(spProcesarVuelta);
 
+/* recarga saltándose la caché del todo (ni Cache-Control ni el modo
+   standalone de iOS pueden servir una versión vieja a una URL que no han
+   visto nunca) */
+function recargarDeVerdad() {
+  location.href = location.pathname + "?r=" + Date.now();
+}
+
 /* ---------- avisar si hay una versión nueva publicada ---------- */
 let comprobandoVersion = false;
 function comprobarActualizacion() {
@@ -1906,10 +1923,56 @@ function comprobarActualizacion() {
     .catch(() => {})
     .finally(() => { comprobandoVersion = false; });
 }
-$("banner-actualizar-btn").onclick = () => location.reload();
+$("banner-actualizar-btn").onclick = recargarDeVerdad;
 document.addEventListener("visibilitychange", () => { if (!document.hidden) comprobarActualizacion(); });
 window.addEventListener("pageshow", comprobarActualizacion);
 comprobarActualizacion();
+
+/* ---------- deslizar hacia abajo desde arriba del todo, para actualizar ---------- */
+(function () {
+  const UMBRAL = 70;
+  const indic = $("pull-indicator");
+  let inicioY = null, tirando = false, actualizando = false;
+
+  document.addEventListener("touchstart", e => {
+    if (actualizando || window.scrollY > 0) { inicioY = null; return; }
+    inicioY = e.touches[0].clientY;
+    tirando = false;
+  }, { passive: true });
+
+  document.addEventListener("touchmove", e => {
+    if (inicioY == null || actualizando) return;
+    const delta = e.touches[0].clientY - inicioY;
+    if (delta <= 0) { return; }
+    if (window.scrollY > 0) { inicioY = null; return; }
+    tirando = true;
+    e.preventDefault();
+    const pull = Math.min(delta * 0.45, 110);
+    document.body.style.marginTop = pull + "px";
+    indic.style.marginTop = (pull - 48) + "px";
+    indic.classList.toggle("lista", pull >= UMBRAL);
+    indic.textContent = pull >= UMBRAL ? "↑ Suelta para actualizar" : "↓ Desliza para actualizar";
+  }, { passive: false });
+
+  document.addEventListener("touchend", () => {
+    if (!tirando) { inicioY = null; return; }
+    const pull = parseFloat(document.body.style.marginTop) || 0;
+    document.body.classList.add("pull-activa");
+    if (pull >= UMBRAL && !actualizando) {
+      actualizando = true;
+      indic.textContent = "Actualizando…";
+      indic.classList.add("lista");
+      document.body.style.marginTop = "3rem";
+      indic.style.marginTop = "0";
+      setTimeout(recargarDeVerdad, 250);
+    } else {
+      document.body.style.marginTop = "0";
+      indic.style.marginTop = "-3rem";
+    }
+    inicioY = null;
+    tirando = false;
+  });
+})();
 </script>
 </body>
 </html>
