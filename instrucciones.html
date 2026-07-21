@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Troopers Setlists — cómo usarla</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0B0B0E">
+<link rel="icon" type="image/png" href="icon-180.png">
+<style>
+  :root {
+    --fondo: #0B0B0E; --panel: #141419; --linea: #232329;
+    --tinta: #F5F2EC; --apagado: #8B8894;
+    --rojo: #E23B2E; --verde: #3FD68F; --ambar: #FFB43A; --naranja: #FF6B4A; --azul: #6FB7FF;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--fondo); color: var(--tinta);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 42rem; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  .cabecera { padding-bottom: 1.6rem; border-bottom: 3px solid var(--rojo); }
+  .volver {
+    color: var(--apagado); text-decoration: none; font-size: .95rem; font-weight: 600;
+    display: inline-block; margin-bottom: 1.2rem;
+  }
+  .volver:hover { color: var(--tinta); }
+  .cabecera h1 {
+    font-size: clamp(1.6rem, 5vw, 2.1rem); font-weight: 900;
+    text-transform: uppercase; letter-spacing: .03em;
+  }
+  .cabecera h1 span { color: var(--rojo); }
+  .cabecera p { color: var(--apagado); font-size: 1.05rem; margin-top: .6rem; line-height: 1.55; max-width: 34rem; }
+  .seccion {
+    color: var(--rojo); font-weight: 800; letter-spacing: .24em; text-transform: uppercase;
+    font-size: .9rem; display: flex; align-items: center; gap: 1rem; margin: 2.4rem 0 1rem;
+  }
+  .seccion::after { content: ""; flex: 1; height: 1px; background: var(--linea); }
+  .fichas { display: grid; gap: .8rem; }
+  .ficha {
+    background: var(--panel); border: 1px solid var(--linea); border-radius: 4px;
+    padding: 1.1rem 1.3rem; display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start;
+  }
+  .ficha .icono { font-size: 1.7rem; line-height: 1.2; }
+  .ficha b { display: block; font-size: 1.08rem; margin-bottom: .35rem; }
+  .ficha p { color: var(--apagado); line-height: 1.5; font-size: .98rem; }
+  .ficha p + p { margin-top: .5rem; }
+  .ficha .verde { color: var(--verde); font-weight: 700; }
+  .ficha .ambar { color: var(--ambar); font-weight: 700; }
+  .ficha .rojo { color: var(--rojo); font-weight: 700; }
+  .ficha .naranja { color: var(--naranja); font-weight: 700; }
+  .ficha .tinta-fuerte { color: var(--tinta); font-weight: 700; }
+  footer { text-align: center; color: var(--apagado); margin-top: 3rem; font-size: .9rem; }
+  @media print { body { background: #fff; } }
+</style>
+</head>
+<body>
+<main>
+  <a class="volver" href="presentacion.html">&#8592; Sobre la app</a>
+  <header class="cabecera">
+    <h1>Cómo usar <span>Troopers Setlists</span></h1>
+    <p>Lo justo para tirar del móvil o el iPad y usarla sin pensar. No hace falta cuenta ni contraseña.</p>
+  </header>
+
+  <div class="seccion">En el escenario</div>
+  <div class="fichas">
+    <div class="ficha"><div class="icono">🎤</div><div>
+      <b>Abre el concierto</b>
+      <p>En la portada, toca el bolo de hoy. Salen los temas en orden, con secciones
+      (arranque, caña, valle&hellip;) y el color de afinación al lado de cada uno:
+      <span class="verde">DROP D</span>, <span class="ambar">PITCH −1</span>,
+      <span class="naranja">PITCH −2</span>.</p>
+    </div></div>
+    <div class="ficha"><div class="icono">🎯</div><div>
+      <b>Modo directo, para verlo desde lejos</b>
+      <p>Botón <span class="tinta-fuerte">"Directo"</span> arriba: el tema que toca ahora
+      ocupa toda la pantalla, con el anterior y el siguiente asomando arriba y abajo.
+      Un toque en la pantalla y avanza. No se apaga sola durante el bolo.</p>
+    </div></div>
+  </div>
+
+  <div class="seccion">Antes de un ensayo</div>
+  <div class="fichas">
+    <div class="ficha"><div class="icono">📚</div><div>
+      <b>Repertorio</b>
+      <p>Desde la portada, tarjeta <span class="tinta-fuerte">"Repertorio"</span>: todos
+      los temas de la banda, con buscador arriba. Toca <span class="tinta-fuerte">▶</span>
+      en cualquiera para oír 30 segundos y refrescar la memoria.</p>
+    </div></div>
+    <div class="ficha"><div class="icono">🎧</div><div>
+      <b>Playlist de ensayo en Spotify</b>
+      <p>Dentro de un concierto, botón <span class="tinta-fuerte">"♫ Spotify"</span>:
+      te crea una playlist privada con las canciones del bolo, en orden, en tu propia cuenta.</p>
+    </div></div>
+  </div>
+
+  <div class="seccion">Temas nuevos</div>
+  <div class="fichas">
+    <div class="ficha"><div class="icono">🗳️</div><div>
+      <b>Proponer y votar</b>
+      <p>Tarjeta <span class="tinta-fuerte">"Candidatas"</span> en la portada. Ahí puedes
+      buscar y proponer un tema, y votar los que hayan propuesto los demás tocando tu
+      nombre. Con 4 de los 5 votos, el tema pasa solo al repertorio.</p>
+      <p>La primera vez te pedirá una clave — Juanma te la pasa una sola vez y
+      se queda guardada en tu móvil, no hay que repetirlo.</p>
+    </div></div>
+  </div>
+
+  <footer>Rockin' Troopers · Troopers Setlists</footer>
+</main>
+</body>
+</html>

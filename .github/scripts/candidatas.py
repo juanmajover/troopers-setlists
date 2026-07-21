@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Aplica una acción (proponer/votar) sobre extra.json['candidatas'].
+"""Aplica una acción (proponer/votar/votar_nevera) sobre extra.json.
 Ejecutado por el workflow "Candidatas" — es el único código que escribe
 en extra.json a partir de lo que dispara cualquiera de los 5 miembros.
 """
@@ -35,6 +35,7 @@ def main():
         extra = json.load(f)
     extra.setdefault("candidatas", [])
     extra.setdefault("temas", [])
+    extra.setdefault("overrides", {})
 
     if accion == "proponer":
         titulo = (payload.get("titulo") or "").strip().upper()
@@ -74,6 +75,22 @@ def main():
         cand.setdefault("votos", {})
         cand["votos"][miembro] = bool(payload.get("valor"))
         print(f"Voto de {miembro} en {nombre_candidata(cand)}: {cand['votos'][miembro]}")
+
+    elif accion == "votar_nevera":
+        # "tema" ya viene normalizado por la app (mismo formato que usa como
+        # clave de EXTRA.overrides) — no se re-normaliza, o dejaría de
+        # coincidir con la entrada que lee/escribe el propio index.html.
+        tema = payload.get("tema") or ""
+        if not tema:
+            sys.exit("Falta el tema")
+        entry = extra["overrides"].setdefault(tema, {})
+        votos = entry.setdefault("votosNevera", {})
+        votos[miembro] = bool(payload.get("valor"))
+        n_favor = sum(1 for v in votos.values() if v)
+        if n_favor >= 4:
+            entry["estado"] = "nevera"
+            entry["votosNevera"] = {}
+        print(f"Voto nevera de {miembro} en {tema}: {n_favor} a favor" + (" -> NEVERA" if n_favor >= 4 else ""))
 
     else:
         sys.exit(f"Acción desconocida: {accion!r}")

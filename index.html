@@ -986,6 +986,7 @@ function pintarRepertorio() {
     be.textContent = "✎ Editar";
     be.onclick = () => abrirEditorEdicion(fila, t);
     acc.appendChild(be);
+    if (estadoDe(t) === "activa") acc.appendChild(botonNevera(t));
     cont.appendChild(fila);
   });
   $("rep-resumen").textContent = vistos + " de " + MAESTRA.length + " temas";
@@ -1050,6 +1051,66 @@ function abrirEditorEdicion(fila, t) {
       ed.querySelector(".ed-guardar").disabled = false;
     }
   };
+}
+
+/* ---------- votar pasar un tema a nevera (cualquiera de los 5) ---------- */
+function botonNevera(t) {
+  const clave = clavesDe(t);
+  const votos = (EXTRA.overrides[clave] || {}).votosNevera || {};
+  const n = MIEMBROS.filter(m => votos[m]).length;
+  const b = document.createElement("button");
+  b.className = "btn-mini";
+  b.textContent = n ? "❄ " + n + "/4" : "❄ Nevera";
+  b.onclick = () => abrirVotoNevera(b, t);
+  return b;
+}
+
+function abrirVotoNevera(anchorBtn, t) {
+  document.querySelectorAll(".editor.flotante").forEach(e => e.remove());
+  const clave = clavesDe(t);
+  const ed = document.createElement("div");
+  ed.className = "editor flotante";
+
+  function votosActuales() { return (EXTRA.overrides[clave] || {}).votosNevera || {}; }
+
+  function pintar() {
+    const votos = votosActuales();
+    const n = MIEMBROS.filter(m => votos[m]).length;
+    ed.innerHTML =
+      '<div class="col-titulo">Votar pasar a nevera — ' + n + '/4</div>' +
+      '<div class="chips-afinacion">' +
+      MIEMBROS.map(m => '<button class="chip' + (votos[m] ? " activa" : "") + '" data-m="' + m + '">' +
+        m + "<small>" + INSTRUMENTOS[m] + "</small></button>").join("") + "</div>" +
+      '<p class="ayuda" style="margin-top:.5rem">Con 4 de 5 votos el tema pasa solo a nevera.</p>' +
+      '<div class="fila-form" style="margin-top:.5rem"><button class="btn ed-cerrar">Cerrar</button></div>';
+    ed.querySelectorAll(".chip").forEach(ch => ch.onclick = () => votar(ch.dataset.m));
+    ed.querySelector(".ed-cerrar").onclick = () => ed.remove();
+    anchorBtn.textContent = n ? "❄ " + n + "/4" : "❄ Nevera";
+  }
+
+  function votar(m) {
+    const votos = Object.assign({}, votosActuales());
+    votos[m] = !votos[m];
+    const favor = votos[m];
+    const nFavor = MIEMBROS.filter(mm => votos[mm]).length;
+    const pasaANevera = nFavor >= 4;
+    const anteriorOv = EXTRA.overrides[clave];
+    const nuevoOv = Object.assign({}, EXTRA.overrides[clave], { votosNevera: votos });
+    if (pasaANevera) { nuevoOv.estado = "nevera"; nuevoOv.votosNevera = {}; }
+    EXTRA.overrides[clave] = nuevoOv;
+    pintar();
+    const mensaje = pasaANevera ? t.titulo + " pasa a nevera (4/4 votos)"
+      : "Voto " + (favor ? "a favor" : "retirado") + " de " + m + " en " + t.titulo;
+    const deshacer = () => { EXTRA.overrides[clave] = anteriorOv; pintar(); };
+    const publicar = token ? publicarExtra(mensaje) : dispararCandidata("votar_nevera", { tema: clave, miembro: m, valor: favor });
+    publicar.then(() => {
+      toast(token ? mensaje : mensaje + (pasaANevera ? "" : " — tarda unos segundos en verse para todos"));
+      if (pasaANevera) { ed.remove(); pintarRepertorio(); }
+    }).catch(() => deshacer());
+  }
+
+  pintar();
+  anchorBtn.after(ed);
 }
 
 /* ================= CANDIDATAS ================= */
@@ -1165,11 +1226,12 @@ function pintarCandidatas() {
       };
       acc.appendChild(v);
     });
-    const todos = MIEMBROS.every(m => cand.votos[m]);
+    const nFavor = MIEMBROS.filter(m => cand.votos[m]).length;
+    const lista = nFavor >= 4;
     const ba = document.createElement("button");
-    ba.className = "btn-mini" + (todos ? " principal" : "");
-    ba.textContent = todos ? "🤘 Al repertorio" : "Faltan votos";
-    ba.disabled = !todos;
+    ba.className = "btn-mini" + (lista ? " principal" : "");
+    ba.textContent = lista ? "🤘 Al repertorio" : "Faltan votos (" + nFavor + "/4)";
+    ba.disabled = !lista;
     ba.onclick = () => {
       const quitada = EXTRA.candidatas.splice(i, 1)[0];
       EXTRA.temas.push({
