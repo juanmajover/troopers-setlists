@@ -390,6 +390,9 @@
     <button class="btn" id="admin-salir">Salir</button>
   </div>
 
+  <p class="ayuda" id="cambiar-clave" style="display:none">
+    <button class="btn-mini" id="cambiar-clave-btn">Cambiar clave</button>
+  </p>
   <div class="bloque" id="bloque-token" style="display:none">
     <h3>Clave de publicación</h3>
     <p class="ayuda">Pega aquí tu token de GitHub (se guarda solo en este dispositivo).
@@ -457,7 +460,7 @@ const REPO_NOMBRE = "troopers-setlists";
 const RUTA_EXTRA = "extra.json";
 const MIEMBROS = ["JM", "Edu", "Fer", "Fran", "Rafeta"];
 const INSTRUMENTOS = { JM: "Bajo", Edu: "G. rítmica", Fer: "G. solista", Fran: "Batería", Rafeta: "Voz" };
-const APP_VERSION = 15;
+const APP_VERSION = 16;
 
 /* ================= estado ================= */
 const $ = id => document.getElementById(id);
@@ -1512,12 +1515,20 @@ $("admin-salir").onclick = () => {
   pintarPortada();
 };
 
-function pintarAdmin() {
+function pintarBloqueTokenAdmin() {
   $("bloque-token").style.display = token ? "none" : "block";
+  $("cambiar-clave").style.display = token ? "block" : "none";
+}
+function pintarAdmin() {
+  pintarBloqueTokenAdmin();
   pintarBanco();
   pintarElegidos();
   pintarExtras();
 }
+$("cambiar-clave-btn").onclick = () => {
+  $("bloque-token").style.display = "block";
+  $("cambiar-clave").style.display = "none";
+};
 
 $("token-guardar").onclick = () => {
   const t = $("token-input").value.trim();
@@ -1534,7 +1545,12 @@ function b64(str) {
   return btoa(String.fromCharCode(...new TextEncoder().encode(str)));
 }
 async function publicarExtra(mensaje) {
-  if (!token) { toast("Falta la clave de publicación (arriba)", true); throw new Error("sin token"); }
+  if (!token) {
+    $("bloque-token").style.display = "block";
+    $("cambiar-clave").style.display = "none";
+    toast("Falta la clave de publicación (arriba)", true);
+    throw new Error("sin token");
+  }
   const url = "https://api.github.com/repos/" + REPO_OWNER + "/" + REPO_NOMBRE + "/contents/" + RUTA_EXTRA;
   const cab = { Authorization: "Bearer " + token, Accept: "application/vnd.github+json" };
   // sha actual (puede haber cambiado desde la carga)
@@ -1545,6 +1561,12 @@ async function publicarExtra(mensaje) {
   const r = await fetch(url, { method: "PUT", headers: cab, body: JSON.stringify(cuerpo) });
   if (!r.ok) {
     const e = await r.json().catch(() => ({}));
+    if (r.status === 401 || r.status === 403) {
+      $("bloque-token").style.display = "block";
+      $("cambiar-clave").style.display = "none";
+      toast("Tu clave no funciona — pégala de nuevo (arriba)", true);
+      throw new Error("token inválido");
+    }
     toast("Error al publicar: " + (e.message || r.status), true);
     throw new Error("publicar");
   }
