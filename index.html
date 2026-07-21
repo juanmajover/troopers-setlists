@@ -338,6 +338,31 @@
       <div class="cuando" id="cand-resumen"></div>
     </div>
   </div>
+
+  <div class="bloque" id="cand-bloque-token" style="display:none">
+    <h3>Tu clave para proponer y votar</h3>
+    <p class="ayuda">Pega aquí tu clave personal (se guarda solo en este dispositivo, pídesela a
+    Juanma si no la tienes). Solo sirve para proponer temas y votar candidatas, nada más.</p>
+    <div class="fila-form">
+      <input class="campo" type="password" id="cand-token-input" placeholder="github_pat_...">
+      <button class="btn principal" id="cand-token-guardar">Guardar</button>
+    </div>
+  </div>
+
+  <div class="bloque">
+    <h3>Proponer un tema</h3>
+    <div class="fila-form">
+      <input class="campo" id="cand-busqueda" placeholder="Tema y artista, p. ej. Lola Montez Volbeat"
+             autocomplete="off" enterkeyhint="search">
+      <button class="btn principal" id="cand-buscar">Buscar</button>
+    </div>
+    <div id="cand-resultados"></div>
+    <p class="ayuda" style="margin-top:.8rem">
+      <button class="btn-mini" id="cand-alta-mano">&#65291; Proponer a mano (medleys, versiones propias&hellip;)</button>
+    </p>
+    <div id="cand-editor-nueva" style="display:none"></div>
+  </div>
+
   <div id="cand-lista"></div>
 </section>
 
@@ -427,6 +452,7 @@ let escala = parseFloat(localStorage.getItem("rt-escala") || "1");
 let conciertoActual = null, varianteActual = 0;
 let modoFoco = localStorage.getItem("rt-modo") === "foco";
 let focoIdx = 0;
+let tokenCand = localStorage.getItem("rt-token-cand") || "";
 let token = localStorage.getItem("rt-token") || "";
 let cItems = [];           // constructor de concierto
 let audioActual = null, botonSonando = null;
@@ -1031,6 +1057,7 @@ function abrirCandidatas() {
   $("portada").style.display = "none";
   $("candidatas").style.display = "block";
   window.scrollTo(0, 0);
+  $("cand-bloque-token").style.display = tokenCand ? "none" : "block";
   pintarCandidatas();
 }
 $("cand-volver").onclick = () => {
@@ -1040,9 +1067,52 @@ $("cand-volver").onclick = () => {
   pintarPortada();
 };
 
+$("cand-token-guardar").onclick = () => {
+  const t = $("cand-token-input").value.trim();
+  if (!t) return;
+  tokenCand = t;
+  localStorage.setItem("rt-token-cand", t);
+  $("cand-token-input").value = "";
+  $("cand-bloque-token").style.display = "none";
+  toast("Clave guardada en este dispositivo");
+};
+
 async function publicarConVuelta(mensaje, deshacer) {
   try { await publicarExtra(mensaje); pintarCandidatas(); }
   catch (e) { deshacer(); pintarCandidatas(); }
+}
+
+/* dispara el workflow "Candidatas" (proponer/votar) con la clave personal
+   de cada miembro — esa clave solo puede disparar este workflow concreto,
+   nunca escribir archivos directamente */
+async function dispararCandidata(accion, datos) {
+  if (!tokenCand) {
+    $("cand-bloque-token").style.display = "block";
+    toast("Pega tu clave para proponer/votar (arriba)", true);
+    throw new Error("sin token");
+  }
+  const url = "https://api.github.com/repos/" + REPO_OWNER + "/" + REPO_NOMBRE +
+    "/actions/workflows/candidatas.yml/dispatches";
+  const r = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + tokenCand,
+      Accept: "application/vnd.github+json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ ref: "main", inputs: { payload: JSON.stringify(Object.assign({ accion }, datos)) } }),
+  });
+  if (!r.ok) {
+    const e = await r.json().catch(() => ({}));
+    toast("Error al enviar (" + (e.message || r.status) + ")", true);
+    throw new Error("dispatch");
+  }
+}
+async function dispararConVuelta(accion, datos, mensaje, deshacer) {
+  try {
+    await dispararCandidata(accion, datos);
+    toast(mensaje + " — tarda unos segundos en verse para todos");
+  } catch (e) { deshacer(); pintarCandidatas(); }
 }
 
 function pintarCandidatas() {
@@ -1051,7 +1121,7 @@ function pintarCandidatas() {
   $("cand-resumen").textContent = lista.length + (lista.length === 1 ? " propuesta" : " propuestas");
   cont.innerHTML = "";
   if (!lista.length) {
-    cont.innerHTML = '<p class="pie">No hay candidatas. Se proponen desde el modo administrador (⚙ → buscar tema → "A candidatas").</p>';
+    cont.innerHTML = '<p class="pie">No hay candidatas todavía. Proponed una arriba.</p>';
     return;
   }
   lista.forEach((cand, i) => {
@@ -1084,8 +1154,12 @@ function pintarCandidatas() {
       v.innerHTML = (cand.votos[m] ? "✓ " : "") + m + "<small>" + INSTRUMENTOS[m] + "</small>";
       v.onclick = () => {
         cand.votos[m] = !cand.votos[m];
-        publicarConVuelta("Voto de " + m + (cand.votos[m] ? " a favor de " : " retirado de ") + cand.titulo,
-          () => { cand.votos[m] = !cand.votos[m]; });
+        const favor = cand.votos[m];
+        pintarCandidatas();
+        dispararConVuelta("votar",
+          { candidato: cand.titulo + (cand.artista ? " - " + cand.artista : ""), miembro: m, valor: favor },
+          "Voto " + (favor ? "a favor" : "retirado") + " de " + cand.titulo,
+          () => { cand.votos[m] = !favor; });
       };
       acc.appendChild(v);
     });
@@ -1165,6 +1239,159 @@ function abrirEditorCandidata(fila, cand) {
     cand.afinacion = otra || afin || "";
     cand.comentario = ed.querySelector(".ed-coment").value.trim();
     publicarConVuelta("Editada candidata: " + cand.titulo, () => Object.assign(cand, antes));
+  };
+}
+
+/* ---------- proponer un tema nuevo (cualquiera de los 5) ---------- */
+$("cand-buscar").onclick = buscarCandidataItunes;
+$("cand-busqueda").addEventListener("keydown", e => { if (e.key === "Enter") buscarCandidataItunes(); });
+$("cand-alta-mano").onclick = () => abrirFormularioCandidata({ titulo: "", artista: "", dur: null });
+
+async function buscarCandidataItunes() {
+  const q = $("cand-busqueda").value.trim();
+  if (!q) return;
+  pararAudio();
+  $("cand-resultados").innerHTML = '<p class="ayuda">Buscando&hellip;</p>';
+  let res = null;
+  try {
+    const j = await jsonp("https://itunes.apple.com/search?media=music&limit=8&term=" + encodeURIComponent(q));
+    res = (j.results || []).map(r => ({
+      titulo: r.trackName || "", artista: r.artistName || "",
+      album: r.collectionName || "", anyo: r.releaseDate ? r.releaseDate.slice(0, 4) : "",
+      durS: Math.round((r.trackTimeMillis || 0) / 1000), preview: r.previewUrl || "",
+      tienda: "Apple Music", tiendaUrl: r.trackViewUrl || "", artwork: r.artworkUrl100 || "",
+    }));
+  } catch (e) {
+    try {
+      const j = await jsonp("https://api.deezer.com/search?output=jsonp&limit=8&q=" + encodeURIComponent(q));
+      res = (j.data || []).map(r => ({
+        titulo: r.title || "", artista: r.artist ? r.artist.name : "",
+        album: r.album ? r.album.title : "", anyo: "",
+        durS: r.duration || 0, preview: r.preview || "",
+        tienda: "Deezer", tiendaUrl: r.link || "", artwork: r.album ? r.album.cover_medium : "",
+      }));
+    } catch (e2) {
+      $("cand-resultados").innerHTML = '<p class="ayuda">Sin conexión con iTunes ni con Deezer. ' +
+        'Puede ser un bloqueador de contenido o la red. Prueba con otra conexión o proponla a mano.</p>';
+      return;
+    }
+  }
+  pintarResultadosCandidata(res);
+}
+
+function pintarResultadosCandidata(res) {
+  const cont = $("cand-resultados");
+  cont.innerHTML = res.length ? "" : '<p class="ayuda">Sin resultados. Prueba con menos palabras o proponla a mano.</p>';
+  res.forEach(r => {
+    const div = document.createElement("div");
+    div.className = "resultado";
+    div.innerHTML =
+      '<img src="' + esc(r.artwork) + '" alt="">' +
+      "<div><div class=\"rtit\">" + esc(r.titulo) + "</div>" +
+      '<div class="rsub">' + esc(r.artista) + " · " + esc(r.album) +
+      (r.anyo ? " · " + r.anyo : "") + " · " + fmtDur(r.durS) + "</div></div>" +
+      '<div class="acciones">' +
+      (r.preview ? '<button class="btn-mini play">▶</button>' : "") +
+      '<button class="btn-mini principal-add">Proponer</button></div>';
+    const bPlay = div.querySelector(".play");
+    if (bPlay) bPlay.onclick = () => {
+      if (botonSonando === bPlay) { pararAudio(); return; }
+      pararAudio();
+      audioActual = new Audio(r.preview);
+      audioActual.play();
+      audioActual.onended = pararAudio;
+      bPlay.classList.add("sonando"); bPlay.textContent = "■";
+      botonSonando = bPlay;
+    };
+    div.querySelector(".principal-add").onclick = () => abrirFormularioCandidata({
+      titulo: r.titulo.toUpperCase(),
+      artista: r.artista,
+      dur: r.durS,
+      album: r.album,
+      anyo: r.anyo,
+      apple: r.tiendaUrl,
+      artwork: r.artwork,
+    });
+    cont.appendChild(div);
+  });
+}
+
+function abrirFormularioCandidata(base) {
+  const ed = $("cand-editor-nueva");
+  ed.style.display = "block";
+  ed.className = "editor";
+  ed.innerHTML =
+    '<div class="fila-form"><input class="campo" id="cn-titulo" placeholder="TÍTULO" value="' + esc(base.titulo) + '">' +
+    '<input class="campo" id="cn-artista" placeholder="Artista" value="' + esc(base.artista) + '">' +
+    '<input class="campo" id="cn-dur" placeholder="Duración (m:ss)" value="' + (base.dur ? fmtDur(base.dur) : "") + '" style="max-width:9rem"></div>' +
+    '<div class="col-titulo">Afinación propuesta</div>' +
+    '<div class="chips-afinacion" id="cn-chips">' +
+    ["", "DROP D", "PITCH -1", "PITCH -2"].map((a, i) =>
+      '<button class="chip' + (i === 0 ? " activa" : "") + '" data-a="' + a + '">' + (a || "Estándar") + "</button>").join("") +
+    '<input class="campo" id="cn-otra" placeholder="otra&hellip;" style="max-width:8rem"></div>' +
+    '<textarea class="campo" id="cn-coment" placeholder="Comentario" style="width:100%"></textarea>' +
+    '<div class="col-titulo" style="margin-top:.5rem">Quién la propone</div>' +
+    '<div class="chips-afinacion" id="cn-proponentes">' +
+    MIEMBROS.map(m => '<button class="chip" data-m="' + m + '">' + m + "<small>" + INSTRUMENTOS[m] + "</small></button>").join("") + "</div>" +
+    '<div class="fila-form" style="margin-top:.5rem">' +
+    '<button class="btn principal" id="cn-proponer">Proponer</button>' +
+    '<button class="btn" id="cn-cancelar">Cancelar</button></div>';
+  ed.scrollIntoView({ behavior: "smooth", block: "center" });
+  let afin = "";
+  let proponente = "";
+  ed.querySelectorAll("#cn-chips .chip").forEach(ch => ch.onclick = () => {
+    ed.querySelectorAll("#cn-chips .chip").forEach(x => x.classList.remove("activa"));
+    ch.classList.add("activa");
+    afin = ch.dataset.a;
+    $("cn-otra").value = "";
+  });
+  ed.querySelectorAll("#cn-proponentes .chip").forEach(ch => ch.onclick = () => {
+    const estaba = ch.classList.contains("activa");
+    ed.querySelectorAll("#cn-proponentes .chip").forEach(x => x.classList.remove("activa"));
+    proponente = estaba ? "" : ch.dataset.m;
+    if (!estaba) ch.classList.add("activa");
+  });
+  $("cn-cancelar").onclick = () => { ed.style.display = "none"; };
+
+  $("cn-proponer").onclick = async () => {
+    const titulo = $("cn-titulo").value.trim().toUpperCase();
+    const artista = $("cn-artista").value.trim();
+    if (!titulo) { toast("Falta el título", true); return; }
+    if (!proponente) { toast("Falta quién la propone", true); return; }
+    const nombre = titulo + (artista ? " - " + artista : "");
+    if (MAESTRA.some(t => normalizar(t.nombre) === normalizar(nombre)) ||
+        (EXTRA.candidatas || []).some(c => normalizar(c.titulo + (c.artista ? " - " + c.artista : "")) === normalizar(nombre))) {
+      toast("Ese tema ya está en la base o ya propuesto", true); return;
+    }
+    const otra = $("cn-otra").value.trim().toUpperCase();
+    const durTxt = $("cn-dur").value.trim();
+    let dur = null;
+    if (/^\d+:\d{1,2}$/.test(durTxt)) {
+      const [m, s] = durTxt.split(":").map(Number);
+      dur = m * 60 + s;
+    }
+    const datos = {
+      titulo, artista, proponente,
+      afinacion: otra || afin,
+      comentario: $("cn-coment").value.trim(),
+      dur, album: base.album || "", anyo: base.anyo || "", apple: base.apple || "", artwork: base.artwork || "",
+    };
+    $("cn-proponer").disabled = true;
+    try {
+      await dispararCandidata("proponer", datos);
+      EXTRA.candidatas = EXTRA.candidatas || [];
+      EXTRA.candidatas.push({
+        nombre, titulo, artista, afinacion: datos.afinacion, comentario: datos.comentario, dur,
+        album: datos.album, anyo: datos.anyo, apple: datos.apple, artwork: datos.artwork,
+        propuestaPor: proponente, votos: { [proponente]: true },
+      });
+      ed.style.display = "none";
+      $("cand-busqueda").value = "";
+      $("cand-resultados").innerHTML = "";
+      pintarCandidatas();
+      toast("Propuesta enviada — tarda unos segundos en verse para todos");
+    } catch (e) { /* dispararCandidata ya avisó con el toast */ }
+    $("cn-proponer").disabled = false;
   };
 }
 

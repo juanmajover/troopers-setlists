@@ -1,0 +1,45 @@
+name: Candidatas
+
+# Cada miembro de la banda dispara este workflow desde la app con su propia
+# clave de GitHub, que solo tiene permiso "Actions: escritura" sobre este
+# repo (no puede tocar archivos directamente). El script de Python valida
+# la acción y es el único que escribe en extra.json.
+
+on:
+  workflow_dispatch:
+    inputs:
+      payload:
+        description: "JSON con la acción (proponer/votar) y sus datos"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  aplicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Aplicar acción sobre candidatas
+        env:
+          PAYLOAD: ${{ github.event.inputs.payload }}
+        run: python3 .github/scripts/candidatas.py "$PAYLOAD"
+
+      - name: Publicar si hay cambios
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add extra.json
+          if git diff --cached --quiet; then
+            echo "sin cambios"
+          else
+            git commit -m "Candidatas: acción desde la app"
+            git pull --rebase
+            git push
+          fi
