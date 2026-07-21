@@ -495,7 +495,7 @@ const REPO_NOMBRE = "troopers-setlists";
 const RUTA_EXTRA = "extra.json";
 const MIEMBROS = ["JM", "Edu", "Fer", "Fran", "Rafeta"];
 const INSTRUMENTOS = { JM: "Bajo", Edu: "G. rítmica", Fer: "G. solista", Fran: "Batería", Rafeta: "Voz" };
-const APP_VERSION = 22;
+const APP_VERSION = 23;
 /* huella SHA-256 de cada clave personal -> de quién es. Al generar o
    rotar la clave de alguien, hay que añadir aquí su huella nueva (y
    quitar la vieja). La clave en sí nunca se guarda aquí, solo su huella. */
@@ -1304,7 +1304,10 @@ function pintarCandidatas() {
     ba.textContent = lista ? "🤘 Al repertorio" : "Faltan votos (" + nFavor + "/4)";
     ba.disabled = !lista;
     ba.onclick = () => {
+      if (ba.disabled) return;
+      ba.disabled = true;
       const quitada = EXTRA.candidatas.splice(i, 1)[0];
+      if (!quitada) return;
       EXTRA.temas.push({
         nombre: quitada.titulo + (quitada.artista ? " - " + quitada.artista : ""),
         titulo: quitada.titulo, artista: quitada.artista,
@@ -1320,7 +1323,10 @@ function pintarCandidatas() {
     bx.className = "btn-mini";
     bx.textContent = "✕";
     bx.onclick = () => {
+      if (bx.disabled) return;
+      bx.disabled = true;
       const quitada = EXTRA.candidatas.splice(i, 1)[0];
+      if (!quitada) { bx.disabled = false; return; }
       publicarConVuelta("Candidata descartada: " + quitada.titulo,
         () => { EXTRA.candidatas.splice(i, 0, quitada); });
     };
@@ -1953,10 +1959,14 @@ function pintarExtras() {
     d.innerHTML = '<span class="nombre">' + esc(t.titulo) + '</span><span class="detalle">' +
       esc(t.artista) + (t.afinacion ? " · " + esc(t.afinacion) : "") + "</span>" +
       '<button class="btn-mini">✕</button>';
-    d.querySelector("button").onclick = async () => {
+    const bx = d.querySelector("button");
+    bx.onclick = async () => {
+      if (bx.disabled) return;
+      bx.disabled = true;
       const quitado = EXTRA.temas.splice(i, 1)[0];
+      if (!quitado) return;
       try { await publicarExtra("Borrado tema: " + quitado.nombre); pintarAdmin(); }
-      catch (e) { EXTRA.temas.splice(i, 0, quitado); }
+      catch (e) { EXTRA.temas.splice(i, 0, quitado); bx.disabled = false; }
     };
     ct.appendChild(d);
   });
@@ -1969,10 +1979,14 @@ function pintarExtras() {
     d.innerHTML = '<span class="nombre">' + esc(c.lugar) + '</span><span class="detalle">' +
       esc(c.fechaTexto) + " · " + c.variantes[0].nTemas + " temas</span>" +
       '<button class="btn-mini">✕</button>';
-    d.querySelector("button").onclick = async () => {
+    const bc = d.querySelector("button");
+    bc.onclick = async () => {
+      if (bc.disabled) return;
+      bc.disabled = true;
       const quitado = EXTRA.conciertos.splice(i, 1)[0];
+      if (!quitado) return;
       try { await publicarExtra("Borrado concierto: " + quitado.lugar + " " + quitado.fecha); pintarAdmin(); }
-      catch (e) { EXTRA.conciertos.splice(i, 0, quitado); }
+      catch (e) { EXTRA.conciertos.splice(i, 0, quitado); bc.disabled = false; }
     };
     cc.appendChild(d);
   });
