@@ -90,6 +90,7 @@
     padding: .45rem 1rem; font-weight: 700; font-size: .95rem; color: var(--apagado);
   }
   .chip.activa { color: var(--fondo); background: var(--rojo); border-color: var(--rojo); }
+  .chip:disabled { opacity: .45; }
   .zoom { display: flex; gap: .5rem; }
 
   #temas { max-width: 68rem; margin: 0 auto; padding: 1rem 1.2rem 5rem; }
@@ -208,6 +209,7 @@
     padding: .35rem .8rem; font-weight: 700; font-size: .9rem; color: var(--apagado);
   }
   .voto.si { color: var(--fondo); background: var(--verde); border-color: var(--verde); }
+  .voto:disabled { opacity: .45; }
   .voto small, .chip small {
     display: block; font-size: .68rem; font-weight: 600; opacity: .72;
     letter-spacing: .02em; text-transform: none; text-align: center;
@@ -366,7 +368,7 @@
   </div>
 
   <p class="ayuda" id="ajustes-clave-estado" style="display:none">
-    Clave guardada en este dispositivo.
+    <span id="ajustes-clave-quien"></span>
     <button class="btn-mini" id="ajustes-cambiar-clave-btn">Cambiar</button>
     <button class="btn-mini" id="ajustes-quitar-clave-btn">Quitar</button>
   </p>
@@ -493,7 +495,17 @@ const REPO_NOMBRE = "troopers-setlists";
 const RUTA_EXTRA = "extra.json";
 const MIEMBROS = ["JM", "Edu", "Fer", "Fran", "Rafeta"];
 const INSTRUMENTOS = { JM: "Bajo", Edu: "G. rítmica", Fer: "G. solista", Fran: "Batería", Rafeta: "Voz" };
-const APP_VERSION = 19;
+const APP_VERSION = 20;
+/* huella SHA-256 de cada clave personal -> de quién es. Al generar o
+   rotar la clave de alguien, hay que añadir aquí su huella nueva (y
+   quitar la vieja). La clave en sí nunca se guarda aquí, solo su huella. */
+const CLAVES_CONOCIDAS = {
+  "5de8c8610a03d82876459356e5fe87c3f70fa583ecfabfcf48f87935682b1d75": "Edu",
+};
+async function huellaClave(clave) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(clave));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
 
 /* ================= estado ================= */
 const $ = id => document.getElementById(id);
@@ -507,6 +519,7 @@ let conciertoActual = null, varianteActual = 0;
 let modoFoco = localStorage.getItem("rt-modo") === "foco";
 let focoIdx = 0;
 let tokenCand = localStorage.getItem("rt-token-cand") || "";
+let quienSoy = localStorage.getItem("rt-quien-soy") || "";
 let token = localStorage.getItem("rt-token") || "";
 let cItems = [];           // constructor de concierto
 let audioActual = null, botonSonando = null;
@@ -1133,7 +1146,8 @@ function abrirVotoNevera(anchorBtn, t) {
     ed.innerHTML =
       '<div class="col-titulo">Votar pasar a nevera — ' + n + '/4</div>' +
       '<div class="chips-afinacion">' +
-      MIEMBROS.map(m => '<button class="chip' + (votos[m] ? " activa" : "") + '" data-m="' + m + '">' +
+      MIEMBROS.map(m => '<button class="chip' + (votos[m] ? " activa" : "") + '"' +
+        (token || m === quienSoy ? "" : " disabled") + ' data-m="' + m + '">' +
         m + "<small>" + INSTRUMENTOS[m] + "</small></button>").join("") + "</div>" +
       '<p class="ayuda" style="margin-top:.5rem">Con 4 de 5 votos el tema pasa solo a nevera.</p>' +
       '<div class="fila-form" style="margin-top:.5rem"><button class="btn ed-cerrar">Cerrar</button></div>';
@@ -1143,6 +1157,7 @@ function abrirVotoNevera(anchorBtn, t) {
   }
 
   function votar(m) {
+    if (!token && m !== quienSoy) { toast("Solo puedes votar por ti mismo", true); return; }
     const votos = Object.assign({}, votosActuales());
     votos[m] = !votos[m];
     const favor = votos[m];
@@ -1264,7 +1279,9 @@ function pintarCandidatas() {
       const v = document.createElement("button");
       v.className = "voto" + (cand.votos[m] ? " si" : "");
       v.innerHTML = (cand.votos[m] ? "✓ " : "") + m + "<small>" + INSTRUMENTOS[m] + "</small>";
+      v.disabled = !(token || m === quienSoy);
       v.onclick = () => {
+        if (!token && m !== quienSoy) { toast("Solo puedes votar por ti mismo", true); return; }
         cand.votos[m] = !cand.votos[m];
         const favor = cand.votos[m];
         pintarCandidatas();
@@ -1447,13 +1464,14 @@ function abrirFormularioCandidata(base) {
     '<textarea class="campo" id="cn-coment" placeholder="Comentario" style="width:100%"></textarea>' +
     '<div class="col-titulo" style="margin-top:.5rem">Quién la propone</div>' +
     '<div class="chips-afinacion" id="cn-proponentes">' +
-    MIEMBROS.map(m => '<button class="chip" data-m="' + m + '">' + m + "<small>" + INSTRUMENTOS[m] + "</small></button>").join("") + "</div>" +
+    MIEMBROS.map(m => '<button class="chip' + (!token && m === quienSoy ? " activa" : "") + '"' +
+      (token || m === quienSoy ? "" : " disabled") + ' data-m="' + m + '">' + m + "<small>" + INSTRUMENTOS[m] + "</small></button>").join("") + "</div>" +
     '<div class="fila-form" style="margin-top:.5rem">' +
     '<button class="btn principal" id="cn-proponer">Proponer</button>' +
     '<button class="btn" id="cn-cancelar">Cancelar</button></div>';
   ed.scrollIntoView({ behavior: "smooth", block: "center" });
   let afin = "";
-  let proponente = "";
+  let proponente = token ? "" : quienSoy;
   ed.querySelectorAll("#cn-chips .chip").forEach(ch => ch.onclick = () => {
     ed.querySelectorAll("#cn-chips .chip").forEach(x => x.classList.remove("activa"));
     ch.classList.add("activa");
@@ -1530,6 +1548,7 @@ $("ajustes-volver").onclick = () => {
 function pintarAjustes() {
   $("ajustes-bloque-clave").style.display = tokenCand ? "none" : "block";
   $("ajustes-clave-estado").style.display = tokenCand ? "block" : "none";
+  $("ajustes-clave-quien").textContent = quienSoy ? "Eres " + quienSoy + "." : "Clave guardada en este dispositivo.";
 }
 $("ajustes-cambiar-clave-btn").onclick = () => {
   $("ajustes-bloque-clave").style.display = "block";
@@ -1537,18 +1556,28 @@ $("ajustes-cambiar-clave-btn").onclick = () => {
 };
 $("ajustes-quitar-clave-btn").onclick = () => {
   tokenCand = "";
+  quienSoy = "";
   localStorage.removeItem("rt-token-cand");
+  localStorage.removeItem("rt-quien-soy");
   pintarAjustes();
   toast("Clave eliminada de este dispositivo");
 };
-$("ajustes-clave-guardar").onclick = () => {
+$("ajustes-clave-guardar").onclick = async () => {
   const t = $("ajustes-clave-input").value.trim();
   if (!t) return;
+  const huella = await huellaClave(t);
+  const quien = CLAVES_CONOCIDAS[huella];
+  if (!quien) {
+    toast("Esta clave no la reconozco — pídesela a Juanma", true);
+    return;
+  }
   tokenCand = t;
+  quienSoy = quien;
   localStorage.setItem("rt-token-cand", t);
+  localStorage.setItem("rt-quien-soy", quien);
   $("ajustes-clave-input").value = "";
   pintarAjustes();
-  toast("Clave guardada en este dispositivo");
+  toast("Clave guardada — hola, " + quien);
 };
 $("ajustes-admin-link").onclick = () => {
   $("ajustes").style.display = "none";
