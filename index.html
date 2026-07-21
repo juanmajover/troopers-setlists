@@ -470,7 +470,7 @@ const REPO_NOMBRE = "troopers-setlists";
 const RUTA_EXTRA = "extra.json";
 const MIEMBROS = ["JM", "Edu", "Fer", "Fran", "Rafeta"];
 const INSTRUMENTOS = { JM: "Bajo", Edu: "G. rítmica", Fer: "G. solista", Fran: "Batería", Rafeta: "Voz" };
-const APP_VERSION = 17;
+const APP_VERSION = 18;
 
 /* ================= estado ================= */
 const $ = id => document.getElementById(id);
@@ -1209,7 +1209,7 @@ async function dispararCandidata(accion, datos) {
     if (r.status === 401 || r.status === 403) {
       $("cand-bloque-token").style.display = "block";
       $("cand-cambiar-clave").style.display = "none";
-      toast("Tu clave no funciona — pégala de nuevo (arriba)", true);
+      toast("Tu clave no funciona (" + (e.message || r.status) + ") — pégala de nuevo (arriba)", true);
       throw new Error("token inválido");
     }
     toast("Error al enviar (" + (e.message || r.status) + ")", true);
