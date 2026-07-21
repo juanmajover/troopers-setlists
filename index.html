@@ -339,6 +339,9 @@
     </div>
   </div>
 
+  <p class="ayuda" id="cand-cambiar-clave" style="display:none">
+    <button class="btn-mini" id="cand-cambiar-clave-btn">Cambiar clave</button>
+  </p>
   <div class="bloque" id="cand-bloque-token" style="display:none">
     <h3>Tu clave para proponer y votar</h3>
     <p class="ayuda">Pega aquí tu clave personal (se guarda solo en este dispositivo, pídesela a
@@ -1114,13 +1117,22 @@ function abrirVotoNevera(anchorBtn, t) {
 }
 
 /* ================= CANDIDATAS ================= */
+function pintarBloqueToken() {
+  const hayClave = tokenCand || token;
+  $("cand-bloque-token").style.display = hayClave ? "none" : "block";
+  $("cand-cambiar-clave").style.display = hayClave ? "block" : "none";
+}
 function abrirCandidatas() {
   $("portada").style.display = "none";
   $("candidatas").style.display = "block";
   window.scrollTo(0, 0);
-  $("cand-bloque-token").style.display = (tokenCand || token) ? "none" : "block";
+  pintarBloqueToken();
   pintarCandidatas();
 }
+$("cand-cambiar-clave-btn").onclick = () => {
+  $("cand-bloque-token").style.display = "block";
+  $("cand-cambiar-clave").style.display = "none";
+};
 $("cand-volver").onclick = () => {
   pararAudio();
   $("candidatas").style.display = "none";
@@ -1134,7 +1146,7 @@ $("cand-token-guardar").onclick = () => {
   tokenCand = t;
   localStorage.setItem("rt-token-cand", t);
   $("cand-token-input").value = "";
-  $("cand-bloque-token").style.display = "none";
+  pintarBloqueToken();
   toast("Clave guardada en este dispositivo");
 };
 
@@ -1149,6 +1161,7 @@ async function publicarConVuelta(mensaje, deshacer) {
 async function dispararCandidata(accion, datos) {
   if (!tokenCand) {
     $("cand-bloque-token").style.display = "block";
+    $("cand-cambiar-clave").style.display = "none";
     toast("Pega tu clave para proponer/votar (arriba)", true);
     throw new Error("sin token");
   }
@@ -1165,6 +1178,12 @@ async function dispararCandidata(accion, datos) {
   });
   if (!r.ok) {
     const e = await r.json().catch(() => ({}));
+    if (r.status === 401 || r.status === 403) {
+      $("cand-bloque-token").style.display = "block";
+      $("cand-cambiar-clave").style.display = "none";
+      toast("Tu clave no funciona — pégala de nuevo (arriba)", true);
+      throw new Error("token inválido");
+    }
     toast("Error al enviar (" + (e.message || r.status) + ")", true);
     throw new Error("dispatch");
   }
