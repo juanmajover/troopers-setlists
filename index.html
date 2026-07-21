@@ -1057,7 +1057,7 @@ function abrirCandidatas() {
   $("portada").style.display = "none";
   $("candidatas").style.display = "block";
   window.scrollTo(0, 0);
-  $("cand-bloque-token").style.display = tokenCand ? "none" : "block";
+  $("cand-bloque-token").style.display = (tokenCand || token) ? "none" : "block";
   pintarCandidatas();
 }
 $("cand-volver").onclick = () => {
@@ -1156,10 +1156,12 @@ function pintarCandidatas() {
         cand.votos[m] = !cand.votos[m];
         const favor = cand.votos[m];
         pintarCandidatas();
-        dispararConVuelta("votar",
+        const mensaje = "Voto " + (favor ? "a favor" : "retirado") + " de " + cand.titulo;
+        const deshacer = () => { cand.votos[m] = !favor; };
+        if (token) publicarConVuelta(mensaje, deshacer);
+        else dispararConVuelta("votar",
           { candidato: cand.titulo + (cand.artista ? " - " + cand.artista : ""), miembro: m, valor: favor },
-          "Voto " + (favor ? "a favor" : "retirado") + " de " + cand.titulo,
-          () => { cand.votos[m] = !favor; });
+          mensaje, deshacer);
       };
       acc.appendChild(v);
     });
@@ -1376,21 +1378,26 @@ function abrirFormularioCandidata(base) {
       comentario: $("cn-coment").value.trim(),
       dur, album: base.album || "", anyo: base.anyo || "", apple: base.apple || "", artwork: base.artwork || "",
     };
+    const nueva = {
+      nombre, titulo, artista, afinacion: datos.afinacion, comentario: datos.comentario, dur,
+      album: datos.album, anyo: datos.anyo, apple: datos.apple, artwork: datos.artwork,
+      propuestaPor: proponente, votos: { [proponente]: true },
+    };
     $("cn-proponer").disabled = true;
     try {
-      await dispararCandidata("proponer", datos);
       EXTRA.candidatas = EXTRA.candidatas || [];
-      EXTRA.candidatas.push({
-        nombre, titulo, artista, afinacion: datos.afinacion, comentario: datos.comentario, dur,
-        album: datos.album, anyo: datos.anyo, apple: datos.apple, artwork: datos.artwork,
-        propuestaPor: proponente, votos: { [proponente]: true },
-      });
+      EXTRA.candidatas.push(nueva);
+      if (token) await publicarExtra("Nueva candidata: " + nombre);
+      else await dispararCandidata("proponer", datos);
       ed.style.display = "none";
       $("cand-busqueda").value = "";
       $("cand-resultados").innerHTML = "";
       pintarCandidatas();
-      toast("Propuesta enviada — tarda unos segundos en verse para todos");
-    } catch (e) { /* dispararCandidata ya avisó con el toast */ }
+      toast(token ? "Candidata publicada" : "Propuesta enviada — tarda unos segundos en verse para todos");
+    } catch (e) {
+      EXTRA.candidatas = EXTRA.candidatas.filter(c => c !== nueva);
+      pintarCandidatas();
+    }
     $("cn-proponer").disabled = false;
   };
 }
