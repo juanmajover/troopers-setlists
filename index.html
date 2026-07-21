@@ -495,12 +495,12 @@ const REPO_NOMBRE = "troopers-setlists";
 const RUTA_EXTRA = "extra.json";
 const MIEMBROS = ["JM", "Edu", "Fer", "Fran", "Rafeta"];
 const INSTRUMENTOS = { JM: "Bajo", Edu: "G. rítmica", Fer: "G. solista", Fran: "Batería", Rafeta: "Voz" };
-const APP_VERSION = 20;
+const APP_VERSION = 21;
 /* huella SHA-256 de cada clave personal -> de quién es. Al generar o
    rotar la clave de alguien, hay que añadir aquí su huella nueva (y
    quitar la vieja). La clave en sí nunca se guarda aquí, solo su huella. */
 const CLAVES_CONOCIDAS = {
-  "5de8c8610a03d82876459356e5fe87c3f70fa583ecfabfcf48f87935682b1d75": "Edu",
+  "a104c1886e4ea0daa7182f27b242b6aa38fb1fa19d59474838fb178eaf45265c": "Edu",
 };
 async function huellaClave(clave) {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(clave));
