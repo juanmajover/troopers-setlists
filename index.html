@@ -268,6 +268,15 @@
     max-width: 90vw; text-align: center;
   }
   .toast.error { border-color: var(--naranja); color: var(--naranja); }
+  #banner-actualizar {
+    display: none; position: sticky; top: 0; z-index: 60;
+    background: var(--rojo); color: #fff; font-weight: 700; font-size: .95rem;
+    padding: .6rem 1rem; align-items: center; justify-content: center; gap: .8rem; text-align: center;
+  }
+  #banner-actualizar button {
+    background: #fff; color: var(--rojo); border: none; border-radius: 4px;
+    padding: .4rem .9rem; font-weight: 800; font-size: .9rem;
+  }
   @media (max-width: 600px) {
     .tema .titulo { font-size: calc(1.5rem * var(--escala)); }
     .tema .comentario { font-size: calc(1.1rem * var(--escala)); }
@@ -276,6 +285,11 @@
 </style>
 </head>
 <body>
+
+<div id="banner-actualizar">
+  Hay una versión nueva de la app
+  <button id="banner-actualizar-btn">Actualizar</button>
+</div>
 
 <main id="portada">
   <header class="marca">
@@ -443,6 +457,7 @@ const REPO_NOMBRE = "troopers-setlists";
 const RUTA_EXTRA = "extra.json";
 const MIEMBROS = ["JM", "Edu", "Fer", "Fran", "Rafeta"];
 const INSTRUMENTOS = { JM: "Bajo", Edu: "G. rítmica", Fer: "G. solista", Fran: "Batería", Rafeta: "Voz" };
+const APP_VERSION = 15;
 
 /* ================= estado ================= */
 const $ = id => document.getElementById(id);
@@ -603,7 +618,7 @@ function pintarPortada() {
     b.onclick = () => abrirConcierto(i);
     cont.appendChild(b);
   });
-  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v14";
+  $("generado").textContent = "Datos de la hoja: " + (DATOS.generado || "") + " · app v" + APP_VERSION;
 }
 
 /* ================= concierto ================= */
@@ -1854,6 +1869,25 @@ function pintarExtras() {
 }
 
 cargar().then(spProcesarVuelta);
+
+/* ---------- avisar si hay una versión nueva publicada ---------- */
+let comprobandoVersion = false;
+function comprobarActualizacion() {
+  if (comprobandoVersion) return;
+  comprobandoVersion = true;
+  fetch("index.html?v=" + Date.now(), { cache: "no-store" })
+    .then(r => r.text())
+    .then(html => {
+      const m = html.match(/const APP_VERSION = (\d+);/);
+      if (m && Number(m[1]) > APP_VERSION) $("banner-actualizar").style.display = "flex";
+    })
+    .catch(() => {})
+    .finally(() => { comprobandoVersion = false; });
+}
+$("banner-actualizar-btn").onclick = () => location.reload();
+document.addEventListener("visibilitychange", () => { if (!document.hidden) comprobarActualizacion(); });
+window.addEventListener("pageshow", comprobarActualizacion);
+comprobarActualizacion();
 </script>
 </body>
 </html>
