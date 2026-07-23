@@ -1,7 +1,24 @@
 {
  "temas": [],
  "conciertos": [],
- "candidatas": [],
+ "candidatas": [
+  {
+   "nombre": "EVER FALLEN IN LOVE (WITH SOMEONE YOU SHOULDN'T'VE?) [1996 REMASTERED VERSION] - Buzzcocks",
+   "titulo": "EVER FALLEN IN LOVE (WITH SOMEONE YOU SHOULDN'T'VE?) [1996 REMASTERED VERSION]",
+   "artista": "Buzzcocks",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 164,
+   "album": "Love Bites (Special Edition)",
+   "anyo": "1978",
+   "apple": "https://music.apple.com/us/album/ever-fallen-in-love-with-someone-you-shouldntve-1996/1282094695?i=1282094705&uo=4",
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/3d/47/9c/3d479c29-d3cf-1391-f638-afb379113c88/887830012799.png/100x100bb.jpg",
+   "propuestaPor": "Fer",
+   "votos": {
+    "Fer": true
+   }
+  }
+ ],
  "overrides": {
   "CELEBRITY SKIN - HOLE": {
    "afinacion": "",
