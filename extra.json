@@ -33,6 +33,22 @@
    "votos": {
     "JM": true
    }
+  },
+  {
+   "nombre": "SHINE - Collective Soul",
+   "titulo": "SHINE",
+   "artista": "Collective Soul",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 306,
+   "album": "Hints, Allegations & Things Left Unsaid",
+   "anyo": "",
+   "apple": "https://www.deezer.com/track/1444387612",
+   "artwork": "https://cdn-images.dzcdn.net/images/cover/a93ca04f1acda7f4e8f712fe2d6ce964/250x250-000000-80-0-0.jpg",
+   "propuestaPor": "JM",
+   "votos": {
+    "JM": true
+   }
   }
  ],
  "overrides": {
