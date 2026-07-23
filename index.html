@@ -496,7 +496,7 @@ const REPO_NOMBRE = "troopers-setlists";
 const RUTA_EXTRA = "extra.json";
 const MIEMBROS = ["JM", "Edu", "Fer", "Fran", "Rafeta"];
 const INSTRUMENTOS = { JM: "Bajo", Edu: "G. rítmica", Fer: "G. solista", Fran: "Batería", Rafeta: "Voz" };
-const APP_VERSION = 26;
+const APP_VERSION = 27;
 /* huella SHA-256 de cada clave personal -> de quién es. Al generar o
    rotar la clave de alguien, hay que añadir aquí su huella nueva (y
    quitar la vieja). La clave en sí nunca se guarda aquí, solo su huella. */
@@ -1292,6 +1292,7 @@ function pintarCandidatas() {
     const be = document.createElement("button");
     be.className = "btn-mini";
     be.textContent = "✎";
+    be.disabled = !(token || cand.propuestaPor === quienSoy);
     be.onclick = () => abrirEditorCandidata(fila, cand);
     acc.appendChild(be);
     MIEMBROS.forEach(m => {
@@ -1366,7 +1367,8 @@ function abrirEditorCandidata(fila, cand) {
     '<div class="col-titulo">Quién la propone</div>' +
     '<div class="chips-afinacion ed-props">' +
     MIEMBROS.map(m =>
-      '<button class="chip' + (cand.propuestaPor === m ? " activa" : "") + '" data-m="' + m + '">' + m + "<small>" + INSTRUMENTOS[m] + "</small></button>").join("") + "</div>" +
+      '<button class="chip' + (cand.propuestaPor === m ? " activa" : "") + '"' +
+      (token || m === quienSoy ? "" : " disabled") + ' data-m="' + m + '">' + m + "<small>" + INSTRUMENTOS[m] + "</small></button>").join("") + "</div>" +
     '<div class="col-titulo">Afinación propuesta</div>' +
     '<div class="chips-afinacion">' +
     estandar.map(a =>
@@ -1397,10 +1399,17 @@ function abrirEditorCandidata(fila, cand) {
   ed.querySelector(".ed-guardar").onclick = () => {
     const antes = Object.assign({}, cand);
     const otra = ed.querySelector(".ed-otra").value.trim().toUpperCase();
-    cand.propuestaPor = prop;
+    if (token) cand.propuestaPor = prop;
     cand.afinacion = otra || afin || "";
     cand.comentario = ed.querySelector(".ed-coment").value.trim();
-    publicarConVuelta("Editada candidata: " + cand.titulo, () => Object.assign(cand, antes));
+    const mensaje = "Editada candidata: " + cand.titulo;
+    const deshacer = () => Object.assign(cand, antes);
+    pintarCandidatas();
+    if (token) publicarConVuelta(mensaje, deshacer);
+    else dispararConVuelta("editar",
+      { candidato: antes.titulo + (antes.artista ? " - " + antes.artista : ""),
+        miembro: quienSoy, afinacion: cand.afinacion, comentario: cand.comentario },
+      mensaje, deshacer);
   };
 }
 
