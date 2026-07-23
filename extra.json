@@ -17,6 +17,22 @@
    "votos": {
     "Fer": true
    }
+  },
+  {
+   "nombre": "ROCK 'N' ROLL (LIVE) - Lou Reed",
+   "titulo": "ROCK 'N' ROLL (LIVE)",
+   "artista": "Lou Reed",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 617,
+   "album": "Rock 'n' Roll Animal (Live)",
+   "anyo": "",
+   "apple": "https://www.deezer.com/track/97081792",
+   "artwork": "https://cdn-images.dzcdn.net/images/cover/d3c8f3ce98e78250a73eb30687a8b092/250x250-000000-80-0-0.jpg",
+   "propuestaPor": "JM",
+   "votos": {
+    "JM": true
+   }
   }
  ],
  "overrides": {
