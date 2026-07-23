@@ -194,8 +194,8 @@
     margin-right: .4em; vertical-align: .12em; flex-shrink: 0;
   }
   .dot.activa { background: var(--verde); }
-  .dot.nevera { background: var(--ambar); }
-  .dot.borrar { background: var(--rojo); }
+  .dot.votada { background: var(--ambar); }
+  .dot.nevera { background: var(--rojo); }
 
   /* ---------- AJUSTES ---------- */
   #ajustes { display: none; }
@@ -495,7 +495,7 @@ const REPO_NOMBRE = "troopers-setlists";
 const RUTA_EXTRA = "extra.json";
 const MIEMBROS = ["JM", "Edu", "Fer", "Fran", "Rafeta"];
 const INSTRUMENTOS = { JM: "Bajo", Edu: "G. rítmica", Fer: "G. solista", Fran: "Batería", Rafeta: "Voz" };
-const APP_VERSION = 24;
+const APP_VERSION = 25;
 /* huella SHA-256 de cada clave personal -> de quién es. Al generar o
    rotar la clave de alguien, hay que añadir aquí su huella nueva (y
    quitar la vieja). La clave en sí nunca se guarda aquí, solo su huella. */
@@ -1021,9 +1021,15 @@ $("rep-mas").onclick = () => { escala = Math.min(1.8, escala + 0.1); aplicarEsca
 $("rep-menos").onclick = () => { escala = Math.max(0.6, escala - 0.1); aplicarEscala(); };
 
 let repEstado = "";
-const ESTADOS = [["activa", "Activa"], ["nevera", "Nevera"], ["borrar", "A borrar"]];
+const ESTADOS_EDITABLES = [["activa", "Activa"], ["nevera", "Nevera"]];
+const COLORES = [["activa", "Activa"], ["votada", "Con votos para nevera"], ["nevera", "Nevera"]];
 function estadoDe(t) {
-  return t.estado === "nevera" || t.estado === "borrar" ? t.estado : "activa";
+  return t.estado === "nevera" ? "nevera" : "activa";
+}
+function colorDe(t) {
+  if (t.estado === "nevera") return "nevera";
+  const votos = t.votosNevera || {};
+  return Object.values(votos).some(Boolean) ? "votada" : "activa";
 }
 
 function pintarRepertorio() {
@@ -1031,7 +1037,7 @@ function pintarRepertorio() {
   const filtro = normalizar($("rep-filtro").value);
   const chips = $("rep-estados");
   chips.innerHTML = "";
-  [["", "Todas"]].concat(ESTADOS).forEach(([val, etiq]) => {
+  [["", "Todas"]].concat(COLORES).forEach(([val, etiq]) => {
     const ch = document.createElement("button");
     ch.className = "chip" + (repEstado === val ? " activa" : "");
     ch.innerHTML = (val ? '<span class="dot ' + val + '"></span>' : "") + etiq;
@@ -1043,13 +1049,13 @@ function pintarRepertorio() {
   let vistos = 0;
   MAESTRA.forEach(t => {
     if (filtro && !normalizar(t.titulo + " " + t.artista).includes(filtro)) return;
-    if (repEstado && estadoDe(t) !== repEstado) return;
+    if (repEstado && colorDe(t) !== repEstado) return;
     vistos += 1;
     const fila = document.createElement("div");
     fila.className = "tema rep";
     fila.innerHTML =
       "<div>" +
-        '<div class="titulo"><span class="dot ' + estadoDe(t) + '"></span>' + esc(t.titulo) + "</div>" +
+        '<div class="titulo"><span class="dot ' + colorDe(t) + '"></span>' + esc(t.titulo) + "</div>" +
         (t.artista ? '<div class="artista">' + esc(t.artista) + "</div>" : "") +
         (t.comentario ? '<div class="comentario">' + esc(t.comentario) + "</div>" : "") +
         '<div class="acciones-fila"></div>' +
@@ -1087,7 +1093,7 @@ function abrirEditorEdicion(fila, t) {
     '<textarea class="campo ed-coment" placeholder="Comentario (se ve en el escenario)" style="width:100%">' + esc(t.comentario || "") + "</textarea>" +
     '<div class="col-titulo" style="margin-top:.6rem">Estado</div>' +
     '<div class="chips-afinacion ed-estados">' +
-    ESTADOS.map(([val, etiq]) =>
+    ESTADOS_EDITABLES.map(([val, etiq]) =>
       '<button class="chip' + (estadoDe(t) === val ? " activa" : "") + '" data-e="' + val + '">' +
       '<span class="dot ' + val + '"></span>' + etiq + "</button>").join("") + "</div>" +
     '<div class="fila-form" style="margin-top:.7rem">' +
@@ -1885,7 +1891,7 @@ function pintarBanco() {
     if (filtro && !normalizar(t.titulo + " " + t.artista).includes(filtro)) return;
     const b = document.createElement("button");
     b.className = "banco-item";
-    b.innerHTML = '<span class="bt"><span class="dot ' + estadoDe(t) + '"></span>' + esc(t.titulo) +
+    b.innerHTML = '<span class="bt"><span class="dot ' + colorDe(t) + '"></span>' + esc(t.titulo) +
       '</span><span class="ba">' + esc(t.artista) +
       (t.afinacion ? " · " + esc(t.afinacion) : "") + "</span><span>&#65291;</span>";
     b.onclick = () => { cItems.push({ tema: t }); pintarElegidos(); };
