@@ -1,6 +1,166 @@
 {
  "temas": [],
- "conciertos": [],
+ "conciertos": [
+  {
+   "lugar": "Glam",
+   "fecha": "2026-10-17",
+   "fechaTexto": "17 de octubre de 2026",
+   "reemplaza": true,
+   "variantes": [
+    {
+     "nombre": "Set",
+     "temas": [
+      {
+       "n": 1,
+       "titulo": "DON’T SAY IT’S OVER",
+       "artista": "Gun",
+       "tune": "",
+       "dur": 250,
+       "comentario": ""
+      },
+      {
+       "n": 2,
+       "titulo": "WANT YOU BAD",
+       "artista": "The Offspring",
+       "tune": "PITCH -2",
+       "dur": 203,
+       "comentario": ""
+      },
+      {
+       "n": 3,
+       "titulo": "HASH PIPE",
+       "artista": "Weezer",
+       "tune": "",
+       "dur": 187,
+       "comentario": ""
+      },
+      {
+       "n": 4,
+       "titulo": "USE SOMEBODY",
+       "artista": "Kings of Leon",
+       "tune": "",
+       "dur": 231,
+       "comentario": ""
+      },
+      {
+       "n": 5,
+       "titulo": "DANCE MACABRE",
+       "artista": "Ghost",
+       "tune": "PITCH -2",
+       "dur": 220,
+       "comentario": ""
+      },
+      {
+       "n": 6,
+       "titulo": "CELEBRITY SKIN",
+       "artista": "Hole",
+       "tune": "",
+       "dur": 163,
+       "comentario": ""
+      },
+      {
+       "n": 7,
+       "titulo": "GOLD ON THE CEILING",
+       "artista": "The Black Keys",
+       "tune": "",
+       "dur": 224,
+       "comentario": ""
+      },
+      {
+       "n": 8,
+       "titulo": "SONG 2",
+       "artista": "Blur",
+       "tune": "PITCH -1",
+       "dur": 121,
+       "comentario": ""
+      },
+      {
+       "n": 9,
+       "titulo": "KILLING IN THE NAME",
+       "artista": "Rage Against the Machine",
+       "tune": "DROP D",
+       "dur": 314,
+       "comentario": ""
+      },
+      {
+       "n": 10,
+       "titulo": "WON’T GET FOOLED AGAIN",
+       "artista": "The Who",
+       "tune": "",
+       "dur": 276,
+       "comentario": ""
+      },
+      {
+       "n": 11,
+       "titulo": "MEDLEY BLACK SABATH",
+       "artista": "R1K",
+       "tune": "PITCH -1",
+       "dur": 262,
+       "comentario": ""
+      },
+      {
+       "n": 12,
+       "titulo": "KNIGHTS OF CYDONIA",
+       "artista": "Muse",
+       "tune": "",
+       "dur": 368,
+       "comentario": ""
+      },
+      {
+       "n": 13,
+       "titulo": "MEDLEY GREEN DAY",
+       "artista": "Green Day",
+       "tune": "",
+       "dur": 360,
+       "comentario": ""
+      },
+      {
+       "n": 14,
+       "titulo": "FOR WHOM THE BELL…",
+       "artista": "Metallica",
+       "tune": "",
+       "dur": 310,
+       "comentario": ""
+      },
+      {
+       "n": 15,
+       "titulo": "MAMA I’M COMING HOME",
+       "artista": "Ozzy Osbourne",
+       "tune": "",
+       "dur": 252,
+       "comentario": ""
+      },
+      {
+       "n": 16,
+       "titulo": "SYMPHONY OF DESTRUCTION",
+       "artista": "Megadeth",
+       "tune": "",
+       "dur": 247,
+       "comentario": ""
+      },
+      {
+       "n": 17,
+       "titulo": "MY HERO",
+       "artista": "Foo Fighters",
+       "tune": "",
+       "dur": 260,
+       "comentario": ""
+      },
+      {
+       "n": 18,
+       "titulo": "COME TOGETHER",
+       "artista": "The Beatles",
+       "tune": "",
+       "dur": 260,
+       "comentario": ""
+      }
+     ],
+     "total": 4508,
+     "nTemas": 18
+    }
+   ]
+  }
+ ],
  "candidatas": [
   {
    "nombre": "ROCK 'N' ROLL (LIVE) - Lou Reed",
