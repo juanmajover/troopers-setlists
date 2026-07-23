@@ -81,6 +81,22 @@
    "votos": {
     "Fer": true
    }
+  },
+  {
+   "nombre": "LIFE IS A HIGHWAY - Rascal Flatts",
+   "titulo": "LIFE IS A HIGHWAY",
+   "artista": "Rascal Flatts",
+   "afinacion": "PITCH -2",
+   "comentario": "Original en MI, la bajamos tomo entero y se toca igual",
+   "dur": 276,
+   "album": "Cars (Original Motion Picture Soundtrack)",
+   "anyo": "2006",
+   "apple": "https://music.apple.com/us/album/life-is-a-highway/1440667439?i=1440667482&uo=4",
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/eb/f3/00/ebf300a7-22ab-9f61-29ef-9c86acc889b3/16DMGIM07683.rgb.jpg/100x100bb.jpg",
+   "propuestaPor": "Fer",
+   "votos": {
+    "Fer": true
+   }
   }
  ],
  "overrides": {
