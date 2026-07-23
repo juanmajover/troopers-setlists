@@ -92,6 +92,16 @@ def main():
             entry["votosNevera"] = {}
         print(f"Voto nevera de {miembro} en {tema}: {n_favor} a favor" + (" -> NEVERA" if n_favor >= 4 else ""))
 
+    elif accion == "descartar":
+        clave = normalizar(payload.get("candidato") or "")
+        cand = next((c for c in extra["candidatas"] if normalizar(nombre_candidata(c)) == clave), None)
+        if cand is None:
+            sys.exit(f"Candidata no encontrada: {payload.get('candidato')!r}")
+        if cand.get("propuestaPor") != miembro:
+            sys.exit(f"{miembro} no puede descartar una propuesta de {cand.get('propuestaPor')!r}")
+        extra["candidatas"].remove(cand)
+        print(f"Descartada: {nombre_candidata(cand)} (por {miembro})")
+
     else:
         sys.exit(f"Acción desconocida: {accion!r}")
 

@@ -245,6 +245,7 @@
     padding: .45rem .7rem; font-weight: 700; font-size: .95rem; white-space: nowrap;
   }
   .btn-mini.play { min-width: 2.6rem; }
+  .btn-mini:disabled { opacity: .4; }
   .btn-mini.sonando { border-color: var(--verde); color: var(--verde); }
   .editor { background: var(--fondo); border: 1px dashed var(--ambar); border-radius: 4px; padding: 1rem; margin-top: .8rem; }
   .chips-afinacion { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .7rem; }
@@ -495,7 +496,7 @@ const REPO_NOMBRE = "troopers-setlists";
 const RUTA_EXTRA = "extra.json";
 const MIEMBROS = ["JM", "Edu", "Fer", "Fran", "Rafeta"];
 const INSTRUMENTOS = { JM: "Bajo", Edu: "G. rítmica", Fer: "G. solista", Fran: "Batería", Rafeta: "Voz" };
-const APP_VERSION = 25;
+const APP_VERSION = 26;
 /* huella SHA-256 de cada clave personal -> de quién es. Al generar o
    rotar la clave de alguien, hay que añadir aquí su huella nueva (y
    quitar la vieja). La clave en sí nunca se guarda aquí, solo su huella. */
@@ -1337,13 +1338,18 @@ function pintarCandidatas() {
     const bx = document.createElement("button");
     bx.className = "btn-mini";
     bx.textContent = "✕";
+    bx.disabled = !(token || cand.propuestaPor === quienSoy);
     bx.onclick = () => {
       if (bx.disabled) return;
       bx.disabled = true;
       const quitada = EXTRA.candidatas.splice(i, 1)[0];
       if (!quitada) { bx.disabled = false; return; }
-      publicarConVuelta("Candidata descartada: " + quitada.titulo,
-        () => { EXTRA.candidatas.splice(i, 0, quitada); });
+      const mensaje = "Candidata descartada: " + quitada.titulo;
+      const deshacer = () => { EXTRA.candidatas.splice(i, 0, quitada); };
+      if (token) publicarConVuelta(mensaje, deshacer);
+      else dispararConVuelta("descartar",
+        { candidato: quitada.titulo + (quitada.artista ? " - " + quitada.artista : ""), miembro: quienSoy },
+        mensaje, deshacer);
     };
     acc.appendChild(bx);
     cont.appendChild(fila);
