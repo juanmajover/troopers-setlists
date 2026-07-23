@@ -495,7 +495,7 @@ const REPO_NOMBRE = "troopers-setlists";
 const RUTA_EXTRA = "extra.json";
 const MIEMBROS = ["JM", "Edu", "Fer", "Fran", "Rafeta"];
 const INSTRUMENTOS = { JM: "Bajo", Edu: "G. rítmica", Fer: "G. solista", Fran: "Batería", Rafeta: "Voz" };
-const APP_VERSION = 23;
+const APP_VERSION = 24;
 /* huella SHA-256 de cada clave personal -> de quién es. Al generar o
    rotar la clave de alguien, hay que añadir aquí su huella nueva (y
    quitar la vieja). La clave en sí nunca se guarda aquí, solo su huella. */
@@ -526,6 +526,15 @@ let quienSoy = localStorage.getItem("rt-quien-soy") || "";
 let token = localStorage.getItem("rt-token") || "";
 let cItems = [];           // constructor de concierto
 let audioActual = null, botonSonando = null;
+
+/* claves guardadas antes de que existiera la identidad por huella (v20):
+   se resuelve sola en cuanto carga la app, sin que haga falta repegarla */
+if (tokenCand && !quienSoy) {
+  huellaClave(tokenCand).then(h => {
+    const quien = CLAVES_CONOCIDAS[h];
+    if (quien) { quienSoy = quien; localStorage.setItem("rt-quien-soy", quien); }
+  });
+}
 
 /* ================= utilidades ================= */
 function fmtDur(s) {
