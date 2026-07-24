@@ -21,25 +21,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          ref: main
+          fetch-depth: 0
 
-      - name: Aplicar acción sobre candidatas
+      - name: Aplicar y publicar con reintentos
         env:
           PAYLOAD: ${{ github.event.inputs.payload }}
-        run: python3 .github/scripts/candidatas.py "$PAYLOAD"
-
-      - name: Publicar si hay cambios
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add extra.json
-          if git diff --cached --quiet; then
-            echo "sin cambios"
-          else
+          for intento in $(seq 1 12); do
+            echo "Intento $intento"
+            git fetch origin main
+            git reset --hard origin/main
+            if ! python3 .github/scripts/candidatas.py "$PAYLOAD"; then
+              if [ "$intento" -eq 12 ]; then exit 1; fi
+              sleep $((1 + RANDOM % 3))
+              continue
+            fi
+            git add extra.json
+            if git diff --cached --quiet; then
+              echo "sin cambios"
+              exit 0
+            fi
             git commit -m "Candidatas: acción desde la app"
-            git pull --rebase
-            git push
-          fi
+            if git push origin HEAD:main; then exit 0; fi
+            sleep $((1 + RANDOM % 3))
+          done
+          exit 1

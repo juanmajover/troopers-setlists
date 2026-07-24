@@ -7,6 +7,7 @@ import json
 import re
 import sys
 import unicodedata
+from urllib.parse import urlparse
 
 MIEMBROS = ["JM", "Edu", "Fer", "Fran", "Rafeta"]
 RUTA_EXTRA = "extra.json"
@@ -20,6 +21,15 @@ def normalizar(s):
 
 def nombre_candidata(c):
     return c.get("titulo", "") + (" - " + c["artista"] if c.get("artista") else "")
+
+
+def texto(payload, campo, limite):
+    return str(payload.get(campo) or "").strip()[:limite]
+
+
+def url_https(payload, campo):
+    valor = texto(payload, campo, 1000)
+    return valor if urlparse(valor).scheme == "https" else ""
 
 
 def main():
@@ -38,8 +48,8 @@ def main():
     extra.setdefault("overrides", {})
 
     if accion == "proponer":
-        titulo = (payload.get("titulo") or "").strip().upper()
-        artista = (payload.get("artista") or "").strip()
+        titulo = texto(payload, "titulo", 200).upper()
+        artista = texto(payload, "artista", 200)
         if not titulo:
             sys.exit("Falta el título")
         nombre = titulo + (" - " + artista if artista else "")
@@ -55,13 +65,13 @@ def main():
             "nombre": nombre,
             "titulo": titulo,
             "artista": artista,
-            "afinacion": (payload.get("afinacion") or "").strip().upper(),
-            "comentario": (payload.get("comentario") or "").strip(),
+            "afinacion": texto(payload, "afinacion", 40).upper(),
+            "comentario": texto(payload, "comentario", 500),
             "dur": int(dur) if isinstance(dur, (int, float)) else None,
-            "album": payload.get("album") or "",
-            "anyo": payload.get("anyo") or "",
-            "apple": payload.get("apple") or "",
-            "artwork": payload.get("artwork") or "",
+            "album": texto(payload, "album", 200),
+            "anyo": texto(payload, "anyo", 4) if re.fullmatch(r"\d{4}", texto(payload, "anyo", 4)) else "",
+            "apple": url_https(payload, "apple"),
+            "artwork": url_https(payload, "artwork"),
             "propuestaPor": miembro,
             "votos": {miembro: True},
         })
@@ -80,7 +90,7 @@ def main():
         # "tema" ya viene normalizado por la app (mismo formato que usa como
         # clave de EXTRA.overrides) — no se re-normaliza, o dejaría de
         # coincidir con la entrada que lee/escribe el propio index.html.
-        tema = payload.get("tema") or ""
+        tema = texto(payload, "tema", 300)
         if not tema:
             sys.exit("Falta el tema")
         entry = extra["overrides"].setdefault(tema, {})
@@ -109,8 +119,8 @@ def main():
             sys.exit(f"Candidata no encontrada: {payload.get('candidato')!r}")
         if cand.get("propuestaPor") != miembro:
             sys.exit(f"{miembro} no puede editar una propuesta de {cand.get('propuestaPor')!r}")
-        cand["afinacion"] = (payload.get("afinacion") or "").strip().upper()
-        cand["comentario"] = (payload.get("comentario") or "").strip()
+        cand["afinacion"] = texto(payload, "afinacion", 40).upper()
+        cand["comentario"] = texto(payload, "comentario", 500)
         print(f"Editada: {nombre_candidata(cand)} (por {miembro})")
 
     else:

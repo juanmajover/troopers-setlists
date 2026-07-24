@@ -494,9 +494,10 @@
 const REPO_OWNER = "juanmajover";
 const REPO_NOMBRE = "troopers-setlists";
 const RUTA_EXTRA = "extra.json";
+const RUTA_EXTRA_DIRECTA = "https://raw.githubusercontent.com/" + REPO_OWNER + "/" + REPO_NOMBRE + "/main/" + RUTA_EXTRA;
 const MIEMBROS = ["JM", "Edu", "Fer", "Fran", "Rafeta"];
 const INSTRUMENTOS = { JM: "Bajo", Edu: "G. rítmica", Fer: "G. solista", Fran: "Batería", Rafeta: "Voz" };
-const APP_VERSION = 27;
+const APP_VERSION = 28;
 /* huella SHA-256 de cada clave personal -> de quién es. Al generar o
    rotar la clave de alguien, hay que añadir aquí su huella nueva (y
    quitar la vieja). La clave en sí nunca se guarda aquí, solo su huella. */
@@ -516,6 +517,7 @@ const $ = id => document.getElementById(id);
 let DATOS = null;          // data.json (del Numbers)
 let EXTRA = { temas: [], conciertos: [] };  // extra.json (añadido desde la app)
 let extraSha = null;       // sha del extra.json en GitHub (para publicar cambios)
+let extraServidor = "";    // última versión confirmada en main
 let CONCIERTOS = [];       // fusión, ordenada
 let MAESTRA = [];          // fusión de temas base
 let escala = parseFloat(localStorage.getItem("rt-escala") || "1");
@@ -562,6 +564,14 @@ function esc(t) {
   return String(t == null ? "" : t).replace(/&/g, "&amp;").replace(/</g, "&lt;")
     .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
+function urlWeb(t) {
+  try {
+    const url = new URL(String(t || ""), location.href);
+    return url.protocol === "https:" ? url.href : "";
+  } catch (e) {
+    return "";
+  }
+}
 function fechaTexto(iso) {
   if (!iso) return "";
   const d = new Date(iso + "T12:00:00");
@@ -579,19 +589,37 @@ function toast(msg, esError) {
 }
 
 /* ================= carga de datos ================= */
+function prepararExtra(extra) {
+  extra = extra || {};
+  extra.temas = extra.temas || [];
+  extra.conciertos = extra.conciertos || [];
+  extra.candidatas = extra.candidatas || [];
+  extra.overrides = extra.overrides || {};
+  return extra;
+}
+
+async function pedirExtra() {
+  const t = Date.now();
+  try {
+    const directa = await fetch(RUTA_EXTRA_DIRECTA + "?t=" + t, { cache: "no-store" });
+    if (directa.ok) return prepararExtra(await directa.json());
+  } catch (e) {}
+  const local = await fetch(RUTA_EXTRA + "?t=" + t, { cache: "no-store" });
+  if (!local.ok) throw new Error("extra.json");
+  return prepararExtra(await local.json());
+}
+
 async function cargar() {
   try {
     const t = Date.now();
-    const [rd, re] = await Promise.all([
+    const [rd, extra] = await Promise.all([
       fetch("data.json?t=" + t),
-      fetch(RUTA_EXTRA + "?t=" + t),
+      pedirExtra(),
     ]);
+    if (!rd.ok) throw new Error("data.json");
     DATOS = await rd.json();
-    if (re.ok) EXTRA = await re.json();
-    EXTRA.temas = EXTRA.temas || [];
-    EXTRA.conciertos = EXTRA.conciertos || [];
-    EXTRA.candidatas = EXTRA.candidatas || [];
-    EXTRA.overrides = EXTRA.overrides || {};
+    EXTRA = extra;
+    extraServidor = JSON.stringify(EXTRA);
   } catch (e) {
     $("cargando").textContent = "No se han podido cargar los datos. Comprueba la conexión y recarga.";
     return;
@@ -599,6 +627,41 @@ async function cargar() {
   fusionar();
   $("cargando").style.display = "none";
   pintarPortada();
+}
+
+function refrescarVistas() {
+  fusionar();
+  pintarPortada();
+  if (getComputedStyle($("concierto")).display !== "none") pintarConcierto();
+  if (getComputedStyle($("repertorio")).display !== "none") pintarRepertorio();
+  if (getComputedStyle($("candidatas")).display !== "none") pintarCandidatas();
+  if (getComputedStyle($("admin")).display !== "none") pintarAdmin();
+}
+
+async function actualizarExtraRemota() {
+  if (!DATOS) return false;
+  try {
+    const nueva = await pedirExtra();
+    const firma = JSON.stringify(nueva);
+    if (firma === extraServidor) return false;
+    EXTRA = nueva;
+    extraServidor = firma;
+    refrescarVistas();
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+let timersSincronizacion = [];
+function esperarPublicacion() {
+  timersSincronizacion.forEach(clearTimeout);
+  timersSincronizacion = [3000, 7000, 12000, 20000, 35000].map(ms => setTimeout(async () => {
+    if (!await actualizarExtraRemota()) return;
+    timersSincronizacion.forEach(clearTimeout);
+    timersSincronizacion = [];
+    toast("Sincronizado para todos ✓");
+  }, ms));
 }
 
 function clavesDe(t) {
@@ -675,8 +738,8 @@ function pintarPortada() {
     b.innerHTML =
       '<div class="cuando">' + esc(c.fechaTexto || "") + (pasado ? " · ya tocado" : "") + "</div>" +
       '<div class="lugar">' + esc(c.lugar) + "</div>" +
-      '<div class="datos"><span>' + v.nTemas + " temas</span><span>" + fmtTotal(v.total) + "</span>" +
-      (c.variantes.length > 1 ? "<span>" + c.variantes.length + " versiones</span>" : "") + "</div>";
+      '<div class="datos"><span>' + esc(v.nTemas) + " temas</span><span>" + fmtTotal(v.total) + "</span>" +
+      (c.variantes.length > 1 ? "<span>" + esc(c.variantes.length) + " versiones</span>" : "") + "</div>";
     b.onclick = () => abrirConcierto(i);
     cont.appendChild(b);
   });
@@ -737,7 +800,7 @@ function pintarConcierto() {
     const fila = document.createElement("button");
     fila.className = "tema";
     fila.innerHTML =
-      '<div class="num">' + t.n + "</div>" +
+      '<div class="num">' + esc(t.n) + "</div>" +
       "<div>" +
         '<div class="titulo">' + esc(t.titulo) + "</div>" +
         (t.artista ? '<div class="artista">' + esc(t.artista) + "</div>" : "") +
@@ -779,7 +842,7 @@ function htmlOtro(etiqueta, t) {
   const clase = claseBadge(t.tune || "");
   const color = { drop: "verde", p1: "ambar", p2: "naranja", otro: "azul" }[clase];
   return '<div class="etiqueta">' + etiqueta + "</div>" +
-    '<div class="linea">' + t.n + ". " + esc(t.titulo) +
+    '<div class="linea">' + esc(t.n) + ". " + esc(t.titulo) +
     (t.tune ? '<span class="mini-badge" style="color:var(--' + color + ')">' + esc(t.tune) + "</span>" : "") +
     "</div>";
 }
@@ -801,7 +864,7 @@ function pintarFoco() {
     (t.artista ? '<div class="artista">' + esc(t.artista) + (t.dur ? " · " + fmtDur(t.dur) : "") + "</div>" : "") +
     (t.tune ? '<span class="badge ' + claseBadge(t.tune) + '">' + esc(t.tune) + "</span>" : "") +
     (t.comentario ? '<div class="comentario">' + esc(t.comentario) + "</div>" : "") +
-    '<div class="posicion">' + t.n + " / " + canciones.length + "</div>";
+    '<div class="posicion">' + esc(t.n) + " / " + esc(canciones.length) + "</div>";
 
   const bNext = $("foco-next");
   if (next) {
@@ -993,7 +1056,7 @@ function botonPlay(t) {
     if (botonSonando === b) { pararAudio(); return; }
     pararAudio();
     b.textContent = "…";
-    const url = await previewDe(t);
+    const url = urlWeb(await previewDe(t));
     b.textContent = "▶";
     if (!url) { toast("No hay preview para este tema", true); return; }
     audioActual = new Audio(url);
@@ -1253,11 +1316,12 @@ async function dispararCandidata(accion, datos) {
     toast("Error al enviar (" + (e.message || r.status) + ")", true);
     throw new Error("dispatch");
   }
+  esperarPublicacion();
 }
 async function dispararConVuelta(accion, datos, mensaje, deshacer) {
   try {
     await dispararCandidata(accion, datos);
-    toast(mensaje + " — tarda unos segundos en verse para todos");
+    toast(mensaje + " — sincronizando…");
   } catch (e) { deshacer(); pintarCandidatas(); }
 }
 
@@ -1278,7 +1342,7 @@ function pintarCandidatas() {
       "<div>" +
         '<div class="titulo">' + esc(cand.titulo) + "</div>" +
         (cand.artista ? '<div class="artista">' + esc(cand.artista) +
-          (cand.album ? " · " + esc(cand.album) : "") + (cand.anyo ? " · " + cand.anyo : "") + "</div>" : "") +
+          (cand.album ? " · " + esc(cand.album) : "") + (cand.anyo ? " · " + esc(cand.anyo) : "") + "</div>" : "") +
         '<div class="propuesto">' + (cand.propuestaPor ? "Propuesta de " + esc(cand.propuestaPor) : "Sin proponente — edítala con ✎") + "</div>" +
         (cand.comentario ? '<div class="comentario">' + esc(cand.comentario) + "</div>" : "") +
         '<div class="acciones-fila"></div>' +
@@ -1457,10 +1521,10 @@ function pintarResultadosCandidata(res) {
     const div = document.createElement("div");
     div.className = "resultado";
     div.innerHTML =
-      '<img src="' + esc(r.artwork) + '" alt="">' +
+      '<img src="' + esc(urlWeb(r.artwork)) + '" alt="">' +
       "<div><div class=\"rtit\">" + esc(r.titulo) + "</div>" +
       '<div class="rsub">' + esc(r.artista) + " · " + esc(r.album) +
-      (r.anyo ? " · " + r.anyo : "") + " · " + fmtDur(r.durS) + "</div></div>" +
+      (r.anyo ? " · " + esc(r.anyo) : "") + " · " + fmtDur(r.durS) + "</div></div>" +
       '<div class="acciones">' +
       (r.preview ? '<button class="btn-mini play">▶</button>' : "") +
       '<button class="btn-mini principal-add">Proponer</button></div>';
@@ -1468,7 +1532,7 @@ function pintarResultadosCandidata(res) {
     if (bPlay) bPlay.onclick = () => {
       if (botonSonando === bPlay) { pararAudio(); return; }
       pararAudio();
-      audioActual = new Audio(r.preview);
+      audioActual = new Audio(urlWeb(r.preview));
       audioActual.play();
       audioActual.onended = pararAudio;
       bPlay.classList.add("sonando"); bPlay.textContent = "■";
@@ -1668,6 +1732,10 @@ $("token-guardar").onclick = () => {
 function b64(str) {
   return btoa(String.fromCharCode(...new TextEncoder().encode(str)));
 }
+function desdeB64(str) {
+  const bytes = Uint8Array.from(atob(str.replace(/\s/g, "")), c => c.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
 async function publicarExtra(mensaje) {
   if (!token) {
     $("bloque-token").style.display = "block";
@@ -1677,9 +1745,18 @@ async function publicarExtra(mensaje) {
   }
   const url = "https://api.github.com/repos/" + REPO_OWNER + "/" + REPO_NOMBRE + "/contents/" + RUTA_EXTRA;
   const cab = { Authorization: "Bearer " + token, Accept: "application/vnd.github+json" };
-  // sha actual (puede haber cambiado desde la carga)
-  const r0 = await fetch(url + "?t=" + Date.now(), { headers: cab });
-  if (r0.ok) extraSha = (await r0.json()).sha;
+  // Comprobar que nadie haya publicado desde que se cargó esta copia.
+  const r0 = await fetch(url + "?t=" + Date.now(), { headers: cab, cache: "no-store" });
+  if (!r0.ok) throw new Error("no se pudo comprobar la versión actual");
+  const actual = await r0.json();
+  const extraActual = prepararExtra(JSON.parse(desdeB64(actual.content)));
+  const firmaActual = JSON.stringify(extraActual);
+  if (extraServidor && firmaActual !== extraServidor) {
+    toast("Había cambios de otro usuario. Ya están cargados; repite tu acción.", true);
+    setTimeout(actualizarExtraRemota, 0);
+    throw new Error("conflicto");
+  }
+  extraSha = actual.sha;
   const cuerpo = { message: mensaje, content: b64(JSON.stringify(EXTRA, null, 1)) };
   if (extraSha) cuerpo.sha = extraSha;
   const r = await fetch(url, { method: "PUT", headers: cab, body: JSON.stringify(cuerpo) });
@@ -1695,6 +1772,7 @@ async function publicarExtra(mensaje) {
     throw new Error("publicar");
   }
   extraSha = (await r.json()).content.sha;
+  extraServidor = JSON.stringify(EXTRA);
   fusionar();
   toast("Publicado ✓ " + mensaje);
 }
@@ -1762,12 +1840,12 @@ function pintarResultados(res) {
     const div = document.createElement("div");
     div.className = "resultado";
     div.innerHTML =
-      '<img src="' + esc(r.artwork) + '" alt="">' +
+      '<img src="' + esc(urlWeb(r.artwork)) + '" alt="">' +
       "<div><div class=\"rtit\">" + esc(r.titulo) + "</div>" +
       '<div class="rsub">' + esc(r.artista) + " · " + esc(r.album) +
-      (r.anyo ? " · " + r.anyo : "") + " · " + fmtDur(r.durS) + "</div>" +
-      '<div class="rsub"><a style="color:var(--azul)" target="_blank" href="' + esc(r.tiendaUrl || "#") + '">' + r.tienda + "</a> &nbsp; " +
-      '<a style="color:var(--verde)" target="_blank" href="https://open.spotify.com/search/' + encodeURIComponent(r.titulo + " " + r.artista) + '">Spotify</a></div></div>' +
+      (r.anyo ? " · " + esc(r.anyo) : "") + " · " + fmtDur(r.durS) + "</div>" +
+      '<div class="rsub"><a style="color:var(--azul)" target="_blank" rel="noopener" href="' + esc(urlWeb(r.tiendaUrl || "#")) + '">' + esc(r.tienda) + "</a> &nbsp; " +
+      '<a style="color:var(--verde)" target="_blank" rel="noopener" href="https://open.spotify.com/search/' + encodeURIComponent(r.titulo + " " + r.artista) + '">Spotify</a></div></div>' +
       '<div class="acciones">' +
       (r.preview ? '<button class="btn-mini play">▶</button>' : "") +
       '<button class="btn-mini principal-add">Añadir</button></div>';
@@ -1775,7 +1853,7 @@ function pintarResultados(res) {
     if (bPlay) bPlay.onclick = () => {
       if (botonSonando === bPlay) { pararAudio(); return; }
       pararAudio();
-      audioActual = new Audio(r.preview);
+      audioActual = new Audio(urlWeb(r.preview));
       audioActual.play();
       audioActual.onended = pararAudio;
       bPlay.classList.add("sonando"); bPlay.textContent = "■";
@@ -2046,8 +2124,16 @@ function comprobarActualizacion() {
     .finally(() => { comprobandoVersion = false; });
 }
 $("banner-actualizar-btn").onclick = recargarDeVerdad;
-document.addEventListener("visibilitychange", () => { if (!document.hidden) comprobarActualizacion(); });
-window.addEventListener("pageshow", comprobarActualizacion);
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    comprobarActualizacion();
+    actualizarExtraRemota();
+  }
+});
+window.addEventListener("pageshow", () => {
+  comprobarActualizacion();
+  actualizarExtraRemota();
+});
 comprobarActualizacion();
 
 /* ---------- deslizar hacia abajo desde arriba del todo, para actualizar ---------- */
