@@ -306,6 +306,22 @@
    "votos": {
     "Rafeta": true
    }
+  },
+  {
+   "nombre": "HARD TO HANDLE - The Black Crowes",
+   "titulo": "HARD TO HANDLE",
+   "artista": "The Black Crowes",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 188,
+   "album": "Shake Your Money Maker",
+   "anyo": "",
+   "apple": "https://www.deezer.com/track/65707258",
+   "artwork": "https://cdn-images.dzcdn.net/images/cover/706af33605b63bd4dc5ee8ad7747ebac/250x250-000000-80-0-0.jpg",
+   "propuestaPor": "Rafeta",
+   "votos": {
+    "Rafeta": true
+   }
   }
  ],
  "overrides": {
