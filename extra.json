@@ -258,6 +258,22 @@
    "votos": {
     "Fer": true
    }
+  },
+  {
+   "nombre": "FREAK - Silverchair",
+   "titulo": "FREAK",
+   "artista": "Silverchair",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 226,
+   "album": "Freak Show",
+   "anyo": "",
+   "apple": "https://www.deezer.com/track/1037169",
+   "artwork": "https://cdn-images.dzcdn.net/images/cover/dedb2d6ce2f5f6f51e86b34a4cb9cb5f/250x250-000000-80-0-0.jpg",
+   "propuestaPor": "Rafeta",
+   "votos": {
+    "Rafeta": true
+   }
   }
  ],
  "overrides": {
