@@ -290,6 +290,22 @@
    "votos": {
     "Rafeta": true
    }
+  },
+  {
+   "nombre": "THE RIVERBOAT SONG - Ocean Colour Scene",
+   "titulo": "THE RIVERBOAT SONG",
+   "artista": "Ocean Colour Scene",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 296,
+   "album": "Moseley Shoals",
+   "anyo": "",
+   "apple": "https://www.deezer.com/track/2437168",
+   "artwork": "https://cdn-images.dzcdn.net/images/cover/928482656add6cdeb71a64d62d8b962a/250x250-000000-80-0-0.jpg",
+   "propuestaPor": "Rafeta",
+   "votos": {
+    "Rafeta": true
+   }
   }
  ],
  "overrides": {
