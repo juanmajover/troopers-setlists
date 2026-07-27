@@ -322,6 +322,22 @@
    "votos": {
     "Rafeta": true
    }
+  },
+  {
+   "nombre": "RICHARD III - Supergrass",
+   "titulo": "RICHARD III",
+   "artista": "Supergrass",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 193,
+   "album": "Supergrass Is 10 (The Best of 94-04)",
+   "anyo": "",
+   "apple": "https://www.deezer.com/track/3802710432",
+   "artwork": "https://cdn-images.dzcdn.net/images/cover/b85d521858c876576a6aef2136a6eebd/250x250-000000-80-0-0.jpg",
+   "propuestaPor": "Rafeta",
+   "votos": {
+    "Rafeta": true
+   }
   }
  ],
  "overrides": {
