@@ -371,6 +371,22 @@
    "votos": {
     "JM": true
    }
+  },
+  {
+   "nombre": "TALK DIRTY TO ME - Poison",
+   "titulo": "TALK DIRTY TO ME",
+   "artista": "Poison",
+   "afinacion": "PITCH -1",
+   "comentario": "",
+   "dur": 224,
+   "album": "Look What the Cat Dragged In (20th Anniversary Edition) [Remastered]",
+   "anyo": "1986",
+   "apple": "https://music.apple.com/us/album/talk-dirty-to-me/716014118?i=716014690&uo=4",
+   "artwork": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/4c/b7/41/4cb741b3-c2a7-b635-ca9e-fe70967ad973/13UABIM53934.rgb.jpg/100x100bb.jpg",
+   "propuestaPor": "Fer",
+   "votos": {
+    "Fer": true
+   }
   }
  ],
  "overrides": {
