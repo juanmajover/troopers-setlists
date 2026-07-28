@@ -341,22 +341,6 @@
    }
   },
   {
-   "nombre": "MEDLEY ROLLINGS - Rolling stones",
-   "titulo": "MEDLEY ROLLINGS",
-   "artista": "Rolling stones",
-   "afinacion": "",
-   "comentario": "",
-   "dur": null,
-   "album": "",
-   "anyo": "",
-   "apple": "",
-   "artwork": "",
-   "propuestaPor": "JM",
-   "votos": {
-    "JM": true
-   }
-  },
-  {
    "nombre": "MEDLEY BEATLES - Beatles",
    "titulo": "MEDLEY BEATLES",
    "artista": "Beatles",
