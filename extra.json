@@ -355,6 +355,22 @@
    "votos": {
     "JM": true
    }
+  },
+  {
+   "nombre": "MEDLEY BEATLES - Beatles",
+   "titulo": "MEDLEY BEATLES",
+   "artista": "Beatles",
+   "afinacion": "",
+   "comentario": "",
+   "dur": null,
+   "album": "",
+   "anyo": "",
+   "apple": "",
+   "artwork": "",
+   "propuestaPor": "JM",
+   "votos": {
+    "JM": true
+   }
   }
  ],
  "overrides": {
