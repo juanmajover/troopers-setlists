@@ -339,6 +339,22 @@
    "votos": {
     "Rafeta": true
    }
+  },
+  {
+   "nombre": "MEDLEY ROLLINGS - Rolling stones",
+   "titulo": "MEDLEY ROLLINGS",
+   "artista": "Rolling stones",
+   "afinacion": "",
+   "comentario": "",
+   "dur": null,
+   "album": "",
+   "anyo": "",
+   "apple": "",
+   "artwork": "",
+   "propuestaPor": "JM",
+   "votos": {
+    "JM": true
+   }
   }
  ],
  "overrides": {
