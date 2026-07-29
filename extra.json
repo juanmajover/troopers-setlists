@@ -396,6 +396,22 @@
    "votos": {
     "Fer": true
    }
+  },
+  {
+   "nombre": "DAY TRIPPER (REMASTERED 2015) - The Beatles",
+   "titulo": "DAY TRIPPER (REMASTERED 2015)",
+   "artista": "The Beatles",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 167,
+   "album": "1 (Remastered)",
+   "anyo": "",
+   "apple": "https://www.deezer.com/track/116348614",
+   "artwork": "https://cdn-images.dzcdn.net/images/cover/c65b3bd84e81056e060be144381c06c8/250x250-000000-80-0-0.jpg",
+   "propuestaPor": "Edu",
+   "votos": {
+    "Edu": true
+   }
   }
  ],
  "overrides": {
