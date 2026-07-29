@@ -502,6 +502,22 @@
    "votos": {
     "JM": true
    }
+  },
+  {
+   "nombre": "REPTILIA - The Strokes",
+   "titulo": "REPTILIA",
+   "artista": "The Strokes",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 219,
+   "album": "Room On Fire",
+   "anyo": "",
+   "apple": "https://www.deezer.com/track/14880812",
+   "artwork": "https://cdn-images.dzcdn.net/images/cover/3d1246b483aefa9bd0bcd07dfc926be8/250x250-000000-80-0-0.jpg",
+   "propuestaPor": "Edu",
+   "votos": {
+    "Edu": true
+   }
   }
  ],
  "overrides": {
