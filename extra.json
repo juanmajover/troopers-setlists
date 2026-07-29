@@ -438,6 +438,22 @@
    "votos": {
     "Edu": true
    }
+  },
+  {
+   "nombre": "KICKSTART MY HEART - Mötley Crüe",
+   "titulo": "KICKSTART MY HEART",
+   "artista": "Mötley Crüe",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 283,
+   "album": "The Dirt Soundtrack",
+   "anyo": "",
+   "apple": "https://www.deezer.com/track/3788403482",
+   "artwork": "https://cdn-images.dzcdn.net/images/cover/232b435cc6e78be9c8e4feedb1fd44fa/250x250-000000-80-0-0.jpg",
+   "propuestaPor": "Edu",
+   "votos": {
+    "Edu": true
+   }
   }
  ],
  "overrides": {
