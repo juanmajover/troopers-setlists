@@ -454,6 +454,22 @@
    "votos": {
     "Edu": true
    }
+  },
+  {
+   "nombre": "(OH) PRETTY WOMAN (2015 REMASTER) - Van Halen",
+   "titulo": "(OH) PRETTY WOMAN (2015 REMASTER)",
+   "artista": "Van Halen",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 172,
+   "album": "Diver Down (Remastered)",
+   "anyo": "",
+   "apple": "https://www.deezer.com/track/97235782",
+   "artwork": "https://cdn-images.dzcdn.net/images/cover/0bc303356c48cedca26c2330f96de8c6/250x250-000000-80-0-0.jpg",
+   "propuestaPor": "Edu",
+   "votos": {
+    "Edu": true
+   }
   }
  ],
  "overrides": {
