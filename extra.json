@@ -357,23 +357,6 @@
    }
   },
   {
-   "nombre": "MEDLEY BEATLES - Beatles",
-   "titulo": "MEDLEY BEATLES",
-   "artista": "Beatles",
-   "afinacion": "",
-   "comentario": "",
-   "dur": null,
-   "album": "",
-   "anyo": "",
-   "apple": "",
-   "artwork": "",
-   "propuestaPor": "Edu",
-   "votos": {
-    "JM": true,
-    "Edu": true
-   }
-  },
-  {
    "nombre": "TALK DIRTY TO ME - Poison",
    "titulo": "TALK DIRTY TO ME",
    "artista": "Poison",
