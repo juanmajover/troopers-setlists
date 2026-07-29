@@ -421,6 +421,22 @@
    "votos": {
     "Edu": true
    }
+  },
+  {
+   "nombre": "GET BACK (REMASTERED 2009) - The Beatles",
+   "titulo": "GET BACK (REMASTERED 2009)",
+   "artista": "The Beatles",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 189,
+   "album": "Let It Be (Remastered)",
+   "anyo": "",
+   "apple": "https://www.deezer.com/track/116348668",
+   "artwork": "https://cdn-images.dzcdn.net/images/cover/fcf05300b7c17ec77a6d01028a4bef61/250x250-000000-80-0-0.jpg",
+   "propuestaPor": "Edu",
+   "votos": {
+    "Edu": true
+   }
   }
  ],
  "overrides": {
