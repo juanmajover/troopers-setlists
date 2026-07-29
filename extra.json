@@ -534,6 +534,22 @@
    "votos": {
     "Edu": true
    }
+  },
+  {
+   "nombre": "CHELSEA DAGGER - The Fratellis",
+   "titulo": "CHELSEA DAGGER",
+   "artista": "The Fratellis",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 214,
+   "album": "Costello Music",
+   "anyo": "",
+   "apple": "https://www.deezer.com/track/1138633",
+   "artwork": "https://cdn-images.dzcdn.net/images/cover/751c93f7134fcd00dd6d879f01ff2fde/250x250-000000-80-0-0.jpg",
+   "propuestaPor": "Edu",
+   "votos": {
+    "Edu": true
+   }
   }
  ],
  "overrides": {
