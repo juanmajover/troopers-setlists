@@ -518,6 +518,22 @@
    "votos": {
     "Edu": true
    }
+  },
+  {
+   "nombre": "I FOUGHT THE LAW - The Clash",
+   "titulo": "I FOUGHT THE LAW",
+   "artista": "The Clash",
+   "afinacion": "",
+   "comentario": "",
+   "dur": 163,
+   "album": "Hits Back",
+   "anyo": "",
+   "apple": "https://www.deezer.com/track/69505564",
+   "artwork": "https://cdn-images.dzcdn.net/images/cover/feca97420dd6f5679e7cae61d6d22438/250x250-000000-80-0-0.jpg",
+   "propuestaPor": "Edu",
+   "votos": {
+    "Edu": true
+   }
   }
  ],
  "overrides": {
